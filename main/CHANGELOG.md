@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.0] - 2026-11-09
+
+- Ruolo admin (superadmin), il mio account (nominativo, password, elimina), amministrazione utenti e classi, creazione account docente
+
 ## [0.2.1] - 2026-11-09
 
 - Installer pubblicati nel repo dei download (Supabase accetta solo file fino a 50 MB); sito solo su Vercel
