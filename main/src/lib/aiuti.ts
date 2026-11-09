@@ -52,6 +52,14 @@ export const AIUTI = {
   seed: 'Un numero che fissa il caso: con lo stesso seed esce sempre lo stesso scenario, utile per far fare l\'esercizio identico a tutti.',
   sottoscorta_forzata: 'Prepara scarichi che superano la giacenza di alcuni articoli, così la classe deve accorgersi e fare un ordine al fornitore.',
   stato_compito: 'Da fare: aspetta te. Bloccato: manca un passaggio precedente. Errore: il controllo ha trovato qualcosa da correggere. Completato: fatto.',
+
+  // Amministrazione
+  ruolo_globale: 'Studente: usa il suo magazzino e le classi a cui partecipa. Docente: crea e gestisce classi. Amministratore: fa tutto ciò che fa un docente, su ogni classe, e gestisce gli account.',
+  reimposta_password: 'Imposta una password nuova al posto di quella dimenticata. Non viene mostrata a nessuno dopo: comunicala tu all\'utente, che potrà poi cambiarla dal suo account.',
+  trasferisci_classe: 'Cambia il docente proprietario della classe. Iscritti, dati e compiti restano dove sono: cambia solo chi la possiede.',
+  registro_admin: 'Elenco delle operazioni di amministrazione: chi le ha fatte, su chi e quando. Si aggiorna da solo ogni 10 secondi.',
+  online_ora: 'Utenti che hanno usato l\'app negli ultimi 45 secondi.',
+  elimina_utente: 'Cancella l\'account, il suo magazzino personale e i suoi dati. Non si può annullare. Non è possibile se possiede classi o è l\'ultimo amministratore.',
 } as const;
 
 export type ChiaveAiuto = keyof typeof AIUTI;

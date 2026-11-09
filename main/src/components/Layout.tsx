@@ -9,8 +9,8 @@ import { dataOra } from '../lib/formati';
 import { guidaHref } from '../lib/guida';
 import { nomePagina, useHeartbeat } from '../lib/heartbeat';
 import { FIRMA, NOME_PRODOTTO } from '../lib/marchio';
-import type { Azione } from '../lib/permessi';
-import { Button, Dialog } from '../ui';
+import { ETICHETTA_RUOLO_GLOBALE, eAdminGlobale, eDocenteGlobale, type Azione } from '../lib/permessi';
+import { Badge, Button, Dialog } from '../ui';
 import { Icona, SegnoMarchio, type NomeIcona } from '../ui/icone';
 import { AvvisoAggiornamento } from './Installa';
 import { InterruttoreTema } from './InterruttoreTema';
@@ -120,6 +120,7 @@ export function Layout() {
 
   // Il cassetto (telefono) si chiude con Esc e dopo ogni cambio pagina; il focus torna al pulsante che l'ha aperto.
   useEffect(() => setCassetto(false), [pathname, search]);
+  useEffect(() => setUtente(false), [pathname]);
   useEffect(() => {
     if (!cassetto) return;
     bottoneChiudi.current?.focus();
@@ -139,7 +140,8 @@ export function Layout() {
   };
 
   const base = m ? `/m/${m.id}` : '';
-  const docenteGlobale = profilo?.ruolo_globale === 'docente';
+  const docenteGlobale = eDocenteGlobale(profilo?.ruolo_globale);
+  const admin = eAdminGlobale(profilo?.ruolo_globale);
   const visibile = (v: Voce) =>
     (!v.azione || !!m?.puo(v.azione)) && (!v.soloClasse || m?.tipo === 'classe') && (!v.soloDocente || (m?.tipo === 'classe' && m.ruolo === 'docente'));
   const elementi = m
@@ -149,7 +151,7 @@ export function Layout() {
         return voci.length ? [{ gruppo: { ...e.gruppo, voci } }] : [];
       })
     : [];
-  const gruppoDocente: Gruppo | null = docenteGlobale ? { id: 'docente', testo: 'Docente', icona: 'docente', voci: [{ a: '/docente', testo: 'Le mie classi', assoluta: true }] } : null;
+  const gruppoDocente: Gruppo | null = docenteGlobale ? { id: 'docente', testo: 'Docente', icona: 'docente', voci: [{ a: '/docente', testo: admin ? 'Tutte le classi' : 'Le mie classi', assoluta: true }] } : null;
 
   const percorso = (v: Voce) => (v.assoluta ? v.a : v.a ? `${base}/${v.a}` : base);
   const attiva = (v: Voce) => {
@@ -234,6 +236,10 @@ export function Layout() {
             ),
           )}
           {gruppoDocente && vistaGruppo(gruppoDocente)}
+          {admin && <li>{linkVoce({ a: '/admin', testo: 'Amministrazione', assoluta: true }, 'scudo')}</li>}
+        </ul>
+        <ul className="nav-lista nav-account">
+          <li>{linkVoce({ a: '/account', testo: 'Il mio account', assoluta: true }, 'impostazioni')}</li>
         </ul>
         <p className="nav-piede">{FIRMA}</p>
       </nav>
@@ -266,7 +272,19 @@ export function Layout() {
             </button>
             {utente && (
               <div className="tendina">
-                <p className="muto">@{profilo?.username}</p>
+                <p className="tendina-chi">
+                  <strong>{profilo?.nome || profilo?.username}</strong>
+                  <span className="muto">@{profilo?.username}</span>
+                  {profilo && <Badge tono={admin ? 'rosso' : docenteGlobale ? 'blu' : 'grigio'}>{ETICHETTA_RUOLO_GLOBALE[profilo.ruolo_globale]}</Badge>}
+                </p>
+                <Link to="/account" className="tendina-voce" onClick={() => setUtente(false)}>
+                  <Icona nome="impostazioni" /> Il mio account
+                </Link>
+                {admin && (
+                  <Link to="/admin" className="tendina-voce" onClick={() => setUtente(false)}>
+                    <Icona nome="scudo" /> Amministrazione
+                  </Link>
+                )}
                 <Button variante="tenue" onClick={() => void esci()}>
                   Esci
                 </Button>

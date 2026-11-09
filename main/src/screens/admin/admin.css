@@ -1,0 +1,18 @@
+/* Account e Amministrazione. Solo token di style.css. */
+
+.account { max-width: 720px; }
+.dati-account { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px 24px; margin: 0 0 8px; }
+.dati-account dt { color: var(--attenuato); font-size: 0.8125rem; }
+.dati-account dd { margin: 2px 0 0; }
+.form-stretto { max-width: 420px; }
+.form-stretto .btn { margin-top: 4px; }
+.form-errore { margin: 0 0 12px; }
+
+.tema-esteso { border: 1px solid var(--bordo-forte); background: var(--superficie); padding: 0 14px; }
+
+.scheda-admin { margin-top: 16px; }
+.scheda-admin .pannello { max-width: 720px; }
+.scheda-admin .pannello:has(.registro) { max-width: none; }
+.cella-ruolo { display: grid; gap: 6px; justify-items: start; }
+.azioni-riga { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.avviso ul { margin-bottom: 8px; }

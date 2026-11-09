@@ -15,7 +15,8 @@
     "dist:mac": "vite build && electron-builder --mac --publish never",
     "icon": "node scripts/make-icon.mjs",
     "manuale": "node scripts/manuale.mjs",
-    "release": "node scripts/release.mjs"
+    "release": "node scripts/release.mjs",
+    "db:setup": "node scripts/setup-sql.mjs"
   },
   "build": {
     "appId": "it.itsmobilita.shipping",

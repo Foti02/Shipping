@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSessione } from '../context/sessione';
+import { eDocenteGlobale } from '../lib/permessi';
 import { useMutazione } from '../lib/api';
 import { Badge, Button, Dialog, EmptyState, Field } from '../ui';
 
@@ -23,7 +24,7 @@ export default function SceltaMagazzino() {
 
   const personale = magazzini.filter((m) => m.tipo === 'personale');
   const classi = magazzini.filter((m) => m.tipo === 'classe');
-  const docente = profilo?.ruolo_globale === 'docente';
+  const docente = eDocenteGlobale(profilo?.ruolo_globale);
 
   const inviaCodice = (e: FormEvent) => {
     e.preventDefault();

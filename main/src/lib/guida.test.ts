@@ -23,6 +23,8 @@ describe('guidaHref', () => {
     ['/m/abc/compiti', '/guida/esercitazione-di-gruppo-compiti-scorta-condivisa-e-riordino'],
     ['/m/abc/attivita?x=1', '/guida/esercitazione-di-gruppo-compiti-scorta-condivisa-e-riordino'],
     ['/m/abc', '/guida'],
+    ['/account', '/guida'],
+    ['/admin', '/guida'],
     ['/m/abc/documenti/boh', '/guida'],
     ['/guida/glossario', '/guida'],
   ])('%s -> %s', (da, a) => expect(guidaHref(da)).toBe(a));

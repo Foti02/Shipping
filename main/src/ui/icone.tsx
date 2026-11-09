@@ -24,7 +24,9 @@ const PERCORSI = {
   luna: 'M20 14.500A8 8 0 019.500 4a8 8 0 1010.500 10.500z',
   schermo: 'M3 5h18v11H3zM8 20h8M12 16v4',
   guida: 'M12 3a9 9 0 100 18 9 9 0 000-18zM9.500 9.500a2.500 2.500 0 114 2c-.8.600-1.500 1-1.500 2M12 17v.01',
-  spunta: 'M5 12.500l4.500 4.500L19 7.500',
+  scudo: 'M12 3l8 3v6c0 4.500-3.400 7.900-8 9-4.600-1.100-8-4.500-8-9V6zM9 12l2 2 4-4',
+  impostazioni: 'M4 7h9M17 7h3M4 17h3M11 17h9M15 4v6M9 14v6',
+  spunta:'M5 12.500l4.500 4.500L19 7.500',
 } as const;
 
 export type NomeIcona = keyof typeof PERCORSI;

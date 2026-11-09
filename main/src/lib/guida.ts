@@ -29,6 +29,7 @@ export function guidaHref(pathname: string): string {
   let sezione: string | undefined;
   if (radice === undefined || radice === '' || radice === 'accedi') sezione = SEZ.accesso;
   else if (radice === 'docente') sezione = SEZ.docente;
+  // `/account` e `/admin`: per ora la guida generale (nessun capitolo dedicato nel manuale).
   else if (radice === 'm' && id) sezione = pagina === 'documenti' ? DOCUMENTI[tipo ?? ''] : PAGINE[pagina ?? ''];
   return sezione ? `/guida/${sezione}` : '/guida';
 }

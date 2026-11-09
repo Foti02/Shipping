@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useSessione } from '../context/sessione';
+import { eDocenteGlobale } from '../lib/permessi';
 import { useApi } from '../lib/api';
 import { dataOra } from '../lib/formati';
 import { messaggioErrore } from '../lib/errori';
@@ -26,7 +27,7 @@ export interface UtenteDocente {
 export default function DocenteClasse() {
   const { id = '' } = useParams();
   const { profilo } = useSessione();
-  const docente = profilo?.ruolo_globale === 'docente';
+  const docente = eDocenteGlobale(profilo?.ruolo_globale);
   const adesso = useAdesso();
   // Aggiornamento automatico ogni 5 secondi.
   const utenti = useApi<UtenteDocente[]>('api_docente_utenti', { p_magazzino: id }, { poll: 5000, enabled: docente });

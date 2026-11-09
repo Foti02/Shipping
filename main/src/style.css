@@ -222,3 +222,12 @@ code, pre { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; fon
 
 /* Le schede duplicate della barra laterale si vedono solo quando la barra e' un cassetto. */
 @media (min-width: 801px) { .solo-piccolo { display: none; } }
+
+/* ---------- account nella barra laterale e nel menu utente ---------- */
+.nav-account { margin: auto 0 0; }
+.nav-account + .nav-piede { margin-top: 0; }
+.tendina-chi { display: grid; gap: 4px; justify-items: start; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--bordo); }
+.tendina-voce { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 8px; margin: 0 -8px; border-radius: var(--raggio); color: var(--testo); text-decoration: none; font-weight: 500; }
+.tendina-voce:hover { background: var(--superficie-2); }
+.tendina-voce .icona { color: var(--attenuato); }
+.menu-utente .tendina .btn { margin-top: 8px; width: 100%; }

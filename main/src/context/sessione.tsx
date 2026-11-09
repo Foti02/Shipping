@@ -1,13 +1,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { backend } from '../backend';
-import type { RuoloAziendale } from '../lib/permessi';
+import type { RuoloAziendale, RuoloGlobale } from '../lib/permessi';
 
 export interface Profilo {
   user_id: string;
   username: string;
   nome: string;
-  ruolo_globale: 'studente' | 'docente';
+  ruolo_globale: RuoloGlobale;
 }
 
 export interface MagazzinoInfo {

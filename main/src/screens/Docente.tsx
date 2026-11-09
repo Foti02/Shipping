@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSessione } from '../context/sessione';
+import { eDocenteGlobale } from '../lib/permessi';
 import { useApi, useMutazione } from '../lib/api';
 import { messaggioErrore } from '../lib/errori';
 import { Badge, Button, Dialog, EmptyState, Field } from '../ui';
@@ -19,7 +20,7 @@ export interface ClasseDocente {
 export default function Docente() {
   const { profilo, ricarica } = useSessione();
   const nav = useNavigate();
-  const docente = profilo?.ruolo_globale === 'docente';
+  const docente = eDocenteGlobale(profilo?.ruolo_globale);
   const classi = useApi<ClasseDocente[]>('api_docente_classi', {}, { poll: 10000, enabled: docente });
   const crea = useMutazione<{ id: string }>('api_classe_crea');
   const [nuova, setNuova] = useState(false);
@@ -47,7 +48,7 @@ export default function Docente() {
     <>
       <div className="intestazione">
         <h1>
-          Le mie classi
+          {profilo?.ruolo_globale === 'admin' ? 'Tutte le classi' : 'Le mie classi'}
         </h1>
         <Button variante="accento" onClick={() => setNuova(true)}>
           Nuova classe

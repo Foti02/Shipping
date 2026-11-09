@@ -9,7 +9,7 @@ const STATI: Record<Tema, { nome: string; icona: NomeIcona }> = {
 };
 
 /** Un pulsante, tre stati: automatico (segue il sistema), chiaro, scuro. */
-export function InterruttoreTema() {
+export function InterruttoreTema({ conTesto = false }: { conTesto?: boolean }) {
   const [tema, setTema] = useState(leggiTema);
   const cambia = () => {
     const n = prossimoTema(tema);
@@ -19,8 +19,9 @@ export function InterruttoreTema() {
   };
   const { nome, icona } = STATI[tema];
   return (
-    <button type="button" className="top-icona" onClick={cambia} aria-label={`Tema ${nome}, premi per cambiare`} title={`Tema: ${nome}`}>
+    <button type="button" className={conTesto ? 'top-icona tema-esteso' : 'top-icona'} onClick={cambia} aria-label={`Tema ${nome}, premi per cambiare`} title={`Tema: ${nome}`}>
       <Icona nome={icona} dimensione={20} />
+      {conTesto && <span>Tema {nome}</span>}
     </button>
   );
 }

@@ -76,7 +76,7 @@ input[type='checkbox'], input[type='radio'] { accent-color: var(--accento); }
 .toast-errore { background: var(--errore-sfondo); color: var(--errore-testo); border-color: var(--errore-testo); }
 
 /* DataTable: tabella densa dentro una scheda, intestazioni leggibili, righe sottili */
-.dt-scroll { overflow-x: auto; border: 1px solid var(--bordo); border-radius: var(--raggio-g); background: var(--superficie); box-shadow: var(--ombra); }
+.dt-scroll { position: relative; overflow-x: auto; border: 1px solid var(--bordo); border-radius: var(--raggio-g); background: var(--superficie); box-shadow: var(--ombra); }
 .dt table { width: 100%; border-collapse: collapse; font-size: 0.875rem; font-variant-numeric: tabular-nums; }
 .dt th { text-align: left; background: var(--superficie-2); font-weight: 600; font-size: 0.8125rem; color: var(--testo); padding: 0 10px; height: var(--alt-riga); white-space: nowrap; border-bottom: 1px solid var(--bordo-forte); }
 .dt th button, .dt-titolo { display: inline-flex; align-items: center; gap: 4px; min-height: var(--alt-riga); padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-align: inherit; }
