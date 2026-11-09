@@ -76,6 +76,7 @@ export default function Cruscotto() {
               <div><strong>{k?.sottoscorta != null ? qta(k.sottoscorta) : '-'}</strong><span>Sotto scorta</span></div>
             </div>
           )}
+          <p style={{ marginTop: 12 }}><Link to={`/m/${m.id}/analisi`}>Riordino, ABC e valorizzazione</Link></p>
         </section>
       </div>
     </>

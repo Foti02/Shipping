@@ -1,0 +1,24 @@
+/* Anagrafiche e Dati azienda. Solo token di style.css. */
+.barra-azioni { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.anagrafiche-pagina .field input[type='search'] { max-width: 420px; }
+.anagrafiche-pagina .dt-dettaglio h3 { margin-bottom: 12px; }
+
+.form-griglia { display: grid; gap: 0 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 560px) { .form-griglia { grid-template-columns: minmax(0, 1fr); } }
+.senza-cornice { border: 0; padding: 0; margin: 0; min-width: 0; }
+.senza-cornice:disabled input { opacity: 0.8; }
+
+.tabella-storico { width: 100%; border-collapse: collapse; }
+.tabella-storico th { text-align: left; padding: 8px 14px; background: var(--sfondo); color: var(--blu); white-space: nowrap; }
+.tabella-storico td { padding: 8px 14px; }
+.tabella-storico tbody tr:nth-child(even) { background: var(--zebra); }
+.tabella-storico .destra { text-align: right; }
+.dt-dettaglio .tabella-storico th { background: var(--sfondo); }
+
+@media print {
+  body:has(.anagrafiche-pagina) .nav, body:has(.anagrafiche-pagina) .top, body:has(.anagrafiche-pagina) .piede,
+  body:has(.anagrafiche-pagina) .avviso-agg, body:has(.anagrafiche-pagina) .toasts, .no-stampa { display: none !important; }
+  body:has(.anagrafiche-pagina) .shell { display: block; }
+  body:has(.anagrafiche-pagina) .contenuto { padding: 0; }
+  .anagrafiche-pagina .dt tbody tr.sel { background: none; color: inherit; }
+}

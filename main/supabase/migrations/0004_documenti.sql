@@ -27,6 +27,13 @@ end $$;
 
 -- ---------- utilita' interne ----------
 
+-- catena valida del ciclo documentale (origine -> derivato): vale per _genera e per documento_origine_id di api_documento_salva
+create function _catena_valida(p_da text, p_a text) returns boolean
+language sql immutable as $$
+  select (p_da, p_a) in (('preventivo', 'ordine_cliente'), ('ordine_cliente', 'scarico'), ('scarico', 'fattura_vendita'),
+                         ('ordine_fornitore', 'carico'), ('carico', 'fattura_acquisto'))
+$$;
+
 -- azione di permesso del tipo di documento
 create function _azione_documento(p_tipo text) returns text
 language plpgsql immutable as $$
@@ -137,7 +144,7 @@ create function _movimenta(p_magazzino uuid, p_articolo uuid, p_lotto uuid, p_ub
 returns void language plpgsql security definer set search_path = public as $$
 declare art articoli; v_blocca boolean; v_lotti boolean; v_tot numeric; v_resto numeric; v_prendi numeric; r record;
 begin
-  if p_qta is null or p_qta = 0 then raise exception 'dato_non_valido'; end if;
+  if _qta_non_valida(p_qta) or p_qta = 0 then raise exception 'dato_non_valido'; end if;
   select * into art from articoli where id = p_articolo and magazzino_id = p_magazzino;
   if not found then raise exception 'non_trovato'; end if;
   v_lotti := art.gestione_lotti;
@@ -243,11 +250,20 @@ end $$;
 -- conferma interna (nessun controllo permessi: lo fa il chiamante). Muove le giacenze per carico, scarico, reso_cliente.
 create function _conferma(p_id uuid) returns void
 language plpgsql security definer set search_path = public as $$
-declare d documenti; r record; n int; v_anno int;
+declare d documenti; r record; n int; v_anno int; v_orig uuid;
 begin
+  -- ordine dei blocchi: SEMPRE prima l'origine, poi il documento (come _genera in api_ordine_evadi): niente deadlock
+  select documento_origine_id into v_orig from documenti where id = p_id;
+  if not found then raise exception 'non_trovato'; end if;
+  if v_orig is not null then perform 1 from documenti where id = v_orig for update; end if;
   select * into d from documenti where id = p_id for update;
   if not found then raise exception 'non_trovato'; end if;
   if d.stato <> 'bozza' then raise exception 'stato_non_valido'; end if;
+  -- l'origine deve essere ancora 'confermato' (non evasa da un altro derivato, non annullata): niente doppia evasione
+  if d.documento_origine_id is distinct from v_orig
+     or (v_orig is not null and not exists (select 1 from documenti where id = v_orig and stato = 'confermato')) then
+    raise exception 'stato_non_valido';
+  end if;
   if not exists (select 1 from righe_documento where documento_id = p_id) then raise exception 'dato_non_valido'; end if;
   perform _ricalcola_documento(p_id);
 
@@ -290,13 +306,7 @@ declare o documenti; v_id uuid;
 begin
   select * into o from documenti where id = p_origine for update;
   if not found then raise exception 'non_trovato'; end if;
-  if not ((o.tipo = 'preventivo' and p_tipo = 'ordine_cliente')
-       or (o.tipo = 'ordine_cliente' and p_tipo = 'scarico')
-       or (o.tipo = 'scarico' and p_tipo = 'fattura_vendita')
-       or (o.tipo = 'ordine_fornitore' and p_tipo = 'carico')
-       or (o.tipo = 'carico' and p_tipo = 'fattura_acquisto')) then
-    raise exception 'dato_non_valido';
-  end if;
+  if not _catena_valida(o.tipo, p_tipo) then raise exception 'dato_non_valido'; end if;
   if o.stato <> 'confermato' then raise exception 'stato_non_valido'; end if;
 
   select id into v_id from documenti where documento_origine_id = p_origine and tipo = p_tipo and stato = 'bozza' limit 1;
@@ -371,6 +381,8 @@ end $$;
 
 -- p_documento: {id?, tipo (solo alla creazione), data?, anagrafica_id?, titolo?, banca?, iban?, condizioni_pagamento?, pagato?, note?,
 --   documento_origine_id?}. Con id modifica una bozza; le chiavi assenti restano invariate.
+--   documento_origine_id (se nuovo o cambiato): dello stesso magazzino, in una catena valida (come api_documento_genera) e
+--   'confermato', altrimenti dato_non_valido / stato_non_valido. Alla conferma l'origine deve essere ancora 'confermato'.
 -- p_righe (sostituiscono le precedenti): [{articolo_id?, descrizione?, qta, prezzo_cent?, sconto_perc?, iva_perc?, inps_perc?,
 --   ritenuta_perc?, lotto_id?, ubicazione_id?}]. articolo_id obbligatorio tranne nelle fatture. Prezzo mancante: da articolo.
 -- ritorna: lo stesso oggetto di api_documento_leggi (numero null: la bozza non e' numerata)
@@ -380,11 +392,12 @@ declare
   u uuid := _uid();
   v_id uuid; d documenti; v_tipo text; v_data date; v_anag uuid; v_origine uuid; v_pagato boolean;
   v_art articoli; v_art_id uuid; v_qta numeric; v_prezzo bigint; v_iva numeric; v_sconto numeric; v_desc text;
-  v_lotto uuid; v_ubi uuid; v_pos int := 0; el jsonb; n bigint;
+  v_lotto uuid; v_ubi uuid; v_pos int := 0; el jsonb; n bigint; v_inps numeric; v_rit numeric; v_o_tipo text; v_o_stato text;
 begin
   if p_documento is null or jsonb_typeof(p_documento) <> 'object' then raise exception 'dato_non_valido'; end if;
   if p_righe is null or jsonb_typeof(p_righe) <> 'array' then raise exception 'dato_non_valido'; end if;
 
+  begin  -- numeri, uuid, date malformati e check delle tabelle diventano dato_non_valido (vedi exception in fondo)
   select * into d from documenti where false;
   v_id := nullif(p_documento ->> 'id', '')::uuid;
   if v_id is not null then
@@ -407,8 +420,10 @@ begin
   end if;
   v_origine := case when p_documento ? 'documento_origine_id' then nullif(p_documento ->> 'documento_origine_id', '')::uuid
                     else d.documento_origine_id end;
-  if v_origine is not null and not exists (select 1 from documenti where id = v_origine and magazzino_id = p_magazzino) then
-    raise exception 'dato_non_valido';
+  if v_origine is not null and v_origine is distinct from d.documento_origine_id then
+    select tipo, stato into v_o_tipo, v_o_stato from documenti where id = v_origine and magazzino_id = p_magazzino;
+    if not found or not _catena_valida(v_o_tipo, v_tipo) then raise exception 'dato_non_valido'; end if;
+    if v_o_stato <> 'confermato' then raise exception 'stato_non_valido'; end if;
   end if;
   v_pagato := case when p_documento ? 'pagato' then coalesce((p_documento ->> 'pagato')::boolean, false)
                    else coalesce(d.pagato, false) end;
@@ -445,14 +460,19 @@ begin
     v_desc := coalesce(nullif(el ->> 'descrizione', ''), v_art.descrizione);
     if v_desc is null then raise exception 'dato_non_valido'; end if;
     v_qta := coalesce((el ->> 'qta')::numeric, 1);
-    if v_qta <= 0 then raise exception 'dato_non_valido'; end if;
+    if _qta_non_valida(v_qta) or v_qta <= 0 then raise exception 'dato_non_valido'; end if;
     v_prezzo := coalesce(round((el ->> 'prezzo_cent')::numeric)::bigint,
                          case when v_art_id is null then 0
                               when v_tipo in ('carico', 'ordine_fornitore', 'fattura_acquisto') then v_art.prezzo_acquisto_cent
                               else round(v_art.prezzo_acquisto_cent * (1 + v_art.ricarico_perc / 100))::bigint end);
     v_sconto := coalesce((el ->> 'sconto_perc')::numeric, 0);
-    if v_sconto < 0 or v_sconto > 100 then raise exception 'dato_non_valido'; end if;
     v_iva := coalesce((el ->> 'iva_perc')::numeric, v_art.iva_perc, 22);
+    v_inps := coalesce((el ->> 'inps_perc')::numeric, 0);
+    v_rit := coalesce((el ->> 'ritenuta_perc')::numeric, 0);
+    -- percentuali 0..100 (between respinge anche NaN)
+    if not (v_sconto between 0 and 100 and v_iva between 0 and 100 and v_inps between 0 and 100 and v_rit between 0 and 100) then
+      raise exception 'dato_non_valido';
+    end if;
     v_lotto := nullif(el ->> 'lotto_id', '')::uuid;
     v_ubi := nullif(el ->> 'ubicazione_id', '')::uuid;
     if v_lotto is not null and not exists (select 1 from lotti where id = v_lotto and magazzino_id = p_magazzino
@@ -464,13 +484,16 @@ begin
     end if;
     insert into righe_documento (documento_id, posizione, articolo_id, descrizione, qta, prezzo_cent, sconto_perc, iva_perc,
                                  inps_perc, ritenuta_perc, lotto_id, ubicazione_id)
-    values (v_id, v_pos, v_art_id, v_desc, v_qta, v_prezzo, v_sconto, v_iva,
-            coalesce((el ->> 'inps_perc')::numeric, 0), coalesce((el ->> 'ritenuta_perc')::numeric, 0), v_lotto, v_ubi);
+    values (v_id, v_pos, v_art_id, v_desc, v_qta, v_prezzo, v_sconto, v_iva, v_inps, v_rit, v_lotto, v_ubi);
   end loop;
 
   perform _ricalcola_documento(v_id);
   perform _registra(p_magazzino, 'documento_salva', 'documento', v_id, jsonb_build_object('tipo', v_tipo, 'righe', v_pos));
   return _documento_completo(v_id);
+  exception when invalid_text_representation or numeric_value_out_of_range or datatype_mismatch or check_violation
+                 or datetime_field_overflow or invalid_datetime_format then
+    raise exception 'dato_non_valido';
+  end;
 end $$;
 
 -- ritorna: lo stesso oggetto di api_documento_leggi, con stato 'confermato' e numero assegnato.
@@ -490,9 +513,13 @@ end $$;
 -- Storna i movimenti (causale annullo, stesso lotto/ubicazione); se l'origine era evasa torna 'confermato'.
 create function api_documento_annulla(p_id uuid) returns jsonb
 language plpgsql security definer set search_path = public as $$
-declare d documenti; m record;
+declare d documenti; m record; v_orig uuid;
 begin
   perform _uid();
+  -- stesso ordine di _conferma: prima l'origine, poi il documento
+  select documento_origine_id into v_orig from documenti where id = p_id;
+  if not found then raise exception 'non_trovato'; end if;
+  if v_orig is not null then perform 1 from documenti where id = v_orig for update; end if;
   select * into d from documenti where id = p_id for update;
   if not found then raise exception 'non_trovato'; end if;
   perform _richiedi(d.magazzino_id, _azione_documento_o_errore(d.tipo));
@@ -621,6 +648,14 @@ begin
   return v;
 end $$;
 
+-- Stub ridefiniti con create or replace in 0006_scenari.sql (valutazione dei compiti trasferimento e inventario).
+create function _valuta_trasferimento(p_magazzino uuid, p_articolo uuid, p_qta numeric) returns void
+language plpgsql security definer set search_path = public as $$
+begin return; end $$;
+create function _valuta_inventario(p_magazzino uuid, p_articolo uuid) returns void
+language plpgsql security definer set search_path = public as $$
+begin return; end $$;
+
 -- ritorna: {ok: true, articolo_id, lotto_id, da, a, qta}. Due movimenti (trasferimento_in, trasferimento_out) nella stessa
 -- transazione; p_da e p_a possono essere nulli = "senza ubicazione" ma devono differire. Richiede 'trasferimento'.
 create function api_trasferimento(p_magazzino uuid, p_articolo uuid, p_lotto uuid, p_da uuid, p_a uuid, p_qta numeric) returns jsonb
@@ -629,7 +664,7 @@ declare v_costo bigint;
 begin
   perform _uid();
   perform _richiedi(p_magazzino, 'trasferimento');
-  if p_qta is null or p_qta <= 0 or p_da is not distinct from p_a then raise exception 'dato_non_valido'; end if;
+  if _qta_non_valida(p_qta) or p_qta <= 0 or p_da is not distinct from p_a then raise exception 'dato_non_valido'; end if;
   if not exists (select 1 from articoli where id = p_articolo and magazzino_id = p_magazzino) then raise exception 'non_trovato'; end if;
   if p_lotto is not null and not exists (select 1 from lotti where id = p_lotto and articolo_id = p_articolo) then raise exception 'dato_non_valido'; end if;
   if (p_da is not null and not exists (select 1 from ubicazioni where id = p_da and magazzino_id = p_magazzino))
@@ -640,6 +675,7 @@ begin
   -- prima entra, poi esce: il totale non scende mai sotto il punto di riordino a meta' operazione
   perform _movimenta(p_magazzino, p_articolo, p_lotto, p_a, p_qta, v_costo, 'trasferimento_in', null, true);
   perform _movimenta(p_magazzino, p_articolo, p_lotto, p_da, -p_qta, v_costo, 'trasferimento_out', null, true);
+  perform _valuta_trasferimento(p_magazzino, p_articolo, p_qta);
   perform _registra(p_magazzino, 'trasferimento', 'articolo', p_articolo,
                     jsonb_build_object('qta', p_qta, 'da', p_da, 'a', p_a, 'lotto_id', p_lotto));
   return jsonb_build_object('ok', true, 'articolo_id', p_articolo, 'lotto_id', p_lotto, 'da', p_da, 'a', p_a, 'qta', p_qta);

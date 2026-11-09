@@ -99,7 +99,7 @@ end $$;
 -- p_causale: conteggio | danneggiato | smarrito | errore_registrazione. differenza = qta_contata - qta_sistema.
 create function api_inventario_rettifica(p_riga uuid, p_causale text) returns jsonb
 language plpgsql security definer set search_path = public as $$
-declare r record; v_diff numeric; v_costo bigint; v_mov boolean := false; v_matr text;
+declare r record; v_diff numeric; v_mov boolean := false; v_matr text;
 begin
   select ir.*, i.magazzino_id as mag, i.stato as inv_stato into r
   from inventario_righe ir join inventari i on i.id = ir.inventario_id where ir.id = p_riga for update of ir;
@@ -113,13 +113,12 @@ begin
   v_diff := r.qta_contata - r.qta_sistema;
   select matricola into v_matr from articoli where id = r.articolo_id;
   if v_diff <> 0 then
-    -- costo di riferimento: costo medio ponderato attuale, altrimenti prezzo di acquisto dell'articolo
-    select coalesce(case when v.qta > 0 then round(v.cmp / v.qta) end, a.prezzo_acquisto_cent) into v_costo
-    from articoli a cross join lateral _valorizza_articolo(a.id, null) v where a.id = r.articolo_id;
-    perform _movimenta(r.mag, r.articolo_id, r.lotto_id, r.ubicazione_id, v_diff, v_costo, 'rettifica', null);
+    -- esatto = true: tocca proprio la riga (lotto, ubicazione) contata, senza FEFO/FIFO
+    perform _movimenta(r.mag, r.articolo_id, r.lotto_id, r.ubicazione_id, v_diff, _costo_medio(r.articolo_id), 'rettifica', null, true);
     v_mov := true;
   end if;
   update inventario_righe set causale = p_causale, rettificata = true, user_id = _uid() where id = p_riga;
+  perform _valuta_inventario(r.mag, r.articolo_id);
   perform _registra(r.mag, 'inventario_rettifica', 'inventario', r.inventario_id,
                     jsonb_build_object('riga', p_riga, 'matricola', v_matr, 'differenza', v_diff, 'causale', p_causale));
   return jsonb_build_object('riga', p_riga, 'differenza', v_diff, 'movimento', v_mov);

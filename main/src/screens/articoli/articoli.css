@@ -1,0 +1,71 @@
+/* Schermata Articoli: solo token di style.css, superfici piene, nessun bordo o ombra. */
+
+.art-barra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.art-filtri { display: grid; grid-template-columns: minmax(180px, 2fr) minmax(160px, 1fr); gap: 12px; margin-bottom: 4px; }
+.art-filtri .field { margin-bottom: 0; }
+.art-riga { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; margin: 8px 0 12px; }
+.art-riga p { margin: 0; }
+
+/* Icona di stato */
+.art-stato { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; line-height: 1; vertical-align: middle; }
+.art-stato-verde { background: var(--ok-sfondo); color: var(--ok-testo); }
+.art-stato-giallo { background: var(--avviso-sfondo); color: var(--avviso-testo); }
+.art-stato-blu { background: var(--info-sfondo); color: var(--info-testo); }
+.art-legenda { display: flex; flex-wrap: wrap; gap: 4px 20px; list-style: none; margin: 0; padding: 0; font-size: 0.85rem; color: var(--attenuato); }
+
+/* Casella di spunta con area di tocco da 44px */
+.art-spunta { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; margin: -10px -14px; cursor: pointer; }
+.art-spunta input { width: 22px; height: 22px; accent-color: var(--blu); }
+.art-spunta-tutti { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 700; color: var(--blu); cursor: pointer; }
+.art-spunta-tutti input { width: 22px; height: 22px; accent-color: var(--blu); }
+.dt tbody tr .art-num { font-variant-numeric: tabular-nums; }
+
+/* Pannello sotto la tabella */
+.art-pannello { margin-top: 16px; background: var(--pannello); border-radius: 20px; padding: 20px; }
+.art-pannello h2 { font-size: 1.1rem; }
+.art-pannello .tabs button { background: var(--sfondo); }
+.art-pannello .tabs button[aria-selected='true'] { background: var(--blu); }
+.art-pannello .dt tbody tr { cursor: default; }
+
+/* Elenco a carte (telefono) */
+.art-carte { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.art-carta { background: var(--pannello); border-radius: 16px; display: flex; align-items: stretch; }
+.art-carta.sel { background: var(--selezione); color: var(--sul-blu); }
+.art-carta .art-spunta { margin: 0; align-self: flex-start; }
+.art-carta-corpo { flex: 1; min-width: 0; min-height: 44px; border: 0; background: none; text-align: left; padding: 12px 14px; cursor: pointer; display: grid; gap: 6px; }
+.art-carta-testa { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.art-carta-testa strong { overflow-wrap: anywhere; }
+.art-carta-num { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 8px; font-size: 0.85rem; }
+.art-carta-num span { display: block; opacity: 0.8; font-size: 0.75rem; }
+
+/* Moduli */
+.art-griglia2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.art-griglia2 .largo { grid-column: 1 / -1; }
+.field textarea { min-height: 88px; padding: 10px 14px; border: 0; border-radius: 12px; background: var(--pannello); color: var(--testo); width: 100%; font: inherit; resize: vertical; }
+.panel .field textarea, .art-pannello .field textarea { background: var(--sfondo); }
+.art-check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 700; color: var(--blu); cursor: pointer; margin-bottom: 4px; }
+.art-check input { width: 22px; height: 22px; accent-color: var(--blu); }
+dl.art-prezzi { margin: 4px 0 12px; }
+.art-prezzi { background: var(--pannello); border-radius: 16px; padding: 12px 16px; margin: 4px 0 12px; display: grid; gap: 4px; }
+.art-prezzi div { display: flex; justify-content: space-between; gap: 12px; }
+.art-prezzi dt { color: var(--attenuato); }
+.art-prezzi dd { margin: 0; font-weight: 700; color: var(--blu); }
+.art-anteprima { max-height: 240px; overflow: auto; border-radius: var(--raggio); margin-bottom: 12px; }
+.art-esito-ok { color: var(--ok-testo); font-weight: 700; }
+.art-riepilogo { background: var(--pannello); border-radius: 16px; padding: 12px 16px; margin-bottom: 12px; }
+.art-riepilogo ul { margin: 8px 0 0; padding-left: 20px; }
+.solo-stampa { display: none; }
+
+@media (max-width: 800px) {
+  .art-filtri, .art-griglia2 { grid-template-columns: 1fr; }
+  .art-barra .btn { flex: 1 1 auto; padding: 0 16px; }
+}
+
+@media print {
+  .no-stampa, .nav, .top, .piede, .avviso-agg, .toasts { display: none !important; }
+  .shell, .colonna { display: block; }
+  .solo-stampa { display: block; }
+  .contenuto { padding: 0; }
+  .dt-scroll { overflow: visible; }
+  .dt tbody tr.sel { background: none; color: inherit; }
+}

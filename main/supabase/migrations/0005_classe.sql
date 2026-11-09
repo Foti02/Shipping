@@ -17,14 +17,18 @@ begin
 end $$;
 
 -- ritorna: {id, nome, tipo:'classe', codice_ingresso, codice_attivo}
+-- Massimo 50 classi per docente e nome di al massimo 500 caratteri, altrimenti dato_non_valido.
 create function api_classe_crea(p_nome text) returns jsonb
 language plpgsql security definer set search_path = public as $$
 declare u uuid := _uid(); v_nome text := btrim(coalesce(p_nome, '')); mid uuid; cod text;
 begin
-  if not exists (select 1 from profili where user_id = u and ruolo_globale = 'docente') then
-    raise exception 'permesso_negato';
+  -- il blocco sulla riga del profilo mette in fila due creazioni insieme (il limite non si supera)
+  perform 1 from profili where user_id = u and ruolo_globale = 'docente' for update;
+  if not found then raise exception 'permesso_negato'; end if;
+  if v_nome = '' or char_length(v_nome) > 500
+     or (select count(*) from magazzini where proprietario_id = u and tipo = 'classe') >= 50 then
+    raise exception 'dato_non_valido';
   end if;
-  if v_nome = '' then raise exception 'dato_non_valido'; end if;
   loop
     cod := _codice_classe();
     begin
@@ -163,7 +167,8 @@ begin
   select * into m from magazzini where id = p_magazzino and tipo = 'classe';
   if not found then raise exception 'non_trovato'; end if;
   if p_conferma is distinct from m.nome then raise exception 'conferma_errata'; end if;
-  -- documenti prima: righe_documento e documenti hanno fk "restrict" verso articoli e anagrafiche
+  -- compiti e documenti prima: compiti e righe_documento hanno fk "restrict" verso articoli e anagrafiche
+  delete from compiti where magazzino_id = p_magazzino;
   delete from documenti where magazzino_id = p_magazzino;
   delete from magazzini where id = p_magazzino;
   return jsonb_build_object('ok', true);
@@ -189,7 +194,8 @@ end $$;
 --            magazzino_usato:null|{tipo:'classe',id,nome}|{tipo:'personale'},
 --            ultima_azione:string|null, ultima_azione_il:string|null,
 --            compiti:{totale, completati, errori, bloccati}}]   (solo studenti, ordinati per username)
--- Privacy: per un magazzino personale si vede solo il tipo (e la pagina e' nascosta); id e nome solo per le classi.
+-- Privacy: per un magazzino personale si vede solo il tipo (e la pagina e' nascosta); id, nome e pagina solo per le classi
+-- di cui CHI CHIAMA e' docente: per la classe di un altro docente si vede solo {tipo:'classe'} e la pagina e' nascosta.
 -- magazzino_usato e' l'ultimo noto, anche se l'iscritto e' offline. ultima_azione: ultima riga di attivita' nella classe.
 create function api_docente_utenti(p_magazzino uuid) returns jsonb
 language plpgsql security definer set search_path = public as $$
@@ -200,10 +206,10 @@ begin
       'user_id', pr.user_id, 'username', pr.username, 'nome', pr.nome,
       'ruolo_aziendale', mb.ruolo_aziendale,
       'online', coalesce(pz.visto_il > now() - interval '45 seconds', false),
-      'pagina', case when pm.tipo = 'personale' then null else pz.pagina end,
-      'magazzino_usato', case pm.tipo
-                           when 'classe' then jsonb_build_object('tipo', 'classe', 'id', pm.id, 'nome', pm.nome)
-                           when 'personale' then jsonb_build_object('tipo', 'personale')
+      'pagina', case when pm.tipo = 'classe' and _sono_docente(pm.id) then pz.pagina end,
+      'magazzino_usato', case when pm.tipo = 'classe' and _sono_docente(pm.id)
+                                then jsonb_build_object('tipo', 'classe', 'id', pm.id, 'nome', pm.nome)
+                              when pm.tipo is not null then jsonb_build_object('tipo', pm.tipo)
                          end,
       'ultima_azione', ua.azione,
       'ultima_azione_il', ua.created_at,

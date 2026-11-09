@@ -4,6 +4,8 @@
 -- tempi timestamptz. Ogni tabella ha RLS attiva SENZA policy: nessun accesso diretto, tutto passa
 -- dalle funzioni api_* (security definer) che controllano chi chiama.
 -- Gira identica su Supabase e su PGlite (local-demo): niente estensioni, niente Realtime.
+-- Check numerici: 'NaN' in Postgres e' maggiore di ogni numero e supera ogni "<= 0" / ">= 0": va escluso a parte (<> 'NaN')
+-- oppure con between (che lo respinge). Testi liberi principali: massimo 500 caratteri (pagina della presenza: 100).
 
 -- ---------- identita' ----------
 create table profili (
@@ -17,7 +19,7 @@ create table profili (
 
 create table magazzini (
   id uuid primary key default gen_random_uuid(),
-  nome text not null,
+  nome text not null check (char_length(nome) <= 500),
   tipo text not null check (tipo in ('personale','classe')),
   proprietario_id uuid not null references profili(user_id) on delete cascade,
   codice_ingresso text unique check (codice_ingresso ~ '^[A-Z0-9]{6}$'),
@@ -49,7 +51,7 @@ create table permessi_ruolo (
 
 create table azienda (
   magazzino_id uuid primary key references magazzini(id) on delete cascade,
-  ragione_sociale text not null default '',
+  ragione_sociale text not null default '' check (char_length(ragione_sociale) <= 500),
   indirizzo text, comune text, nazione text default 'Italia', fax text, cod_fisc text, p_iva text,
   telefono text, cellulare text, email text, sito_web text, capitale_sociale text, altro text,
   updated_at timestamptz not null default now()
@@ -59,7 +61,7 @@ create table azienda (
 create table presenze (
   user_id uuid primary key references profili(user_id) on delete cascade,
   magazzino_id uuid references magazzini(id) on delete set null,
-  pagina text,
+  pagina text check (char_length(pagina) <= 100),
   visto_il timestamptz not null default now()
 );
 
@@ -74,6 +76,7 @@ create table attivita (
   created_at timestamptz not null default now()
 );
 create index on attivita (magazzino_id, id desc);
+create index on attivita (magazzino_id, user_id, id desc);  -- ultima azione per utente (api_docente_utenti)
 
 create table notifiche (
   id uuid primary key default gen_random_uuid(),
@@ -98,12 +101,12 @@ create table anagrafiche (
   magazzino_id uuid not null references magazzini(id) on delete cascade,
   tipo text not null check (tipo in ('cliente','fornitore')),
   codice text,
-  ragione_sociale text not null,
+  ragione_sociale text not null check (char_length(ragione_sociale) <= 500),
   indirizzo text, comune text, email text, sito_web text, banca text, iban text,
   cod_fisc text, p_iva text, telefono text, cellulare text,
-  sconto_perc numeric(5,2) not null default 0,
+  sconto_perc numeric(5,2) not null default 0 check (sconto_perc between 0 and 100),
   lead_time_giorni int not null default 3,  -- per i fornitori: giorni tra ordine e arrivo
-  note text,
+  note text check (char_length(note) <= 500),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -113,7 +116,7 @@ create unique index on anagrafiche (magazzino_id, tipo, codice) where codice is 
 create table ubicazioni (
   id uuid primary key default gen_random_uuid(),
   magazzino_id uuid not null references magazzini(id) on delete cascade,
-  codice text not null,  -- es. A-01-03
+  codice text not null check (char_length(codice) <= 500),  -- es. A-01-03
   zona text, corridoio text, scaffale text,
   created_at timestamptz not null default now(),
   unique (magazzino_id, codice)
@@ -122,28 +125,28 @@ create table ubicazioni (
 create table articoli (
   id uuid primary key default gen_random_uuid(),
   magazzino_id uuid not null references magazzini(id) on delete cascade,
-  matricola text not null,
-  descrizione text not null,
+  matricola text not null check (char_length(matricola) <= 500),
+  descrizione text not null check (char_length(descrizione) <= 500),
   um text not null default 'PZ.',
   categoria text not null default 'Standard',
   gruppo text,
   prezzo_acquisto_cent bigint not null default 0,
-  iva_perc numeric(5,2) not null default 22,
-  ricarico_perc numeric(5,2) not null default 0,
-  sconto_perc numeric(5,2) not null default 0,
-  scorta_minima numeric(14,3) not null default 0,
-  scorta_sicurezza numeric(14,3) not null default 0,
-  punto_riordino numeric(14,3) not null default 0,
+  iva_perc numeric(5,2) not null default 22 check (iva_perc between 0 and 100),
+  ricarico_perc numeric(5,2) not null default 0 check (ricarico_perc between 0 and 999.99),
+  sconto_perc numeric(5,2) not null default 0 check (sconto_perc between 0 and 100),
+  scorta_minima numeric(14,3) not null default 0 check (scorta_minima >= 0 and scorta_minima <> 'NaN'),
+  scorta_sicurezza numeric(14,3) not null default 0 check (scorta_sicurezza >= 0 and scorta_sicurezza <> 'NaN'),
+  punto_riordino numeric(14,3) not null default 0 check (punto_riordino >= 0 and punto_riordino <> 'NaN'),
   lead_time_giorni int not null default 3,
-  domanda_giornaliera numeric(14,3),           -- nulla = calcolata dai movimenti
+  domanda_giornaliera numeric(14,3) check (domanda_giornaliera >= 0 and domanda_giornaliera <> 'NaN'),  -- nulla = calcolata dai movimenti
   costo_ordine_cent bigint not null default 0,  -- per EOQ
-  costo_mantenimento_perc numeric(5,2) not null default 20,
+  costo_mantenimento_perc numeric(5,2) not null default 20 check (costo_mantenimento_perc between 0 and 100),
   barcode text,
   ubicazione_id uuid references ubicazioni(id) on delete set null,
   fornitore_abituale_id uuid references anagrafiche(id) on delete set null,
   codice_fornitore text,
   gestione_lotti boolean not null default false,
-  note text,
+  note text check (char_length(note) <= 500),
   attivo boolean not null default true,
   scenario_id uuid,  -- fk aggiunta sotto: articoli creati da uno scenario
   created_at timestamptz not null default now(),
@@ -160,7 +163,7 @@ create table lotti (
   id uuid primary key default gen_random_uuid(),
   magazzino_id uuid not null references magazzini(id) on delete cascade,
   articolo_id uuid not null references articoli(id) on delete cascade,
-  codice text not null,
+  codice text not null check (char_length(codice) <= 500),
   scadenza date,
   created_at timestamptz not null default now(),
   unique (articolo_id, codice)
@@ -174,7 +177,7 @@ create table giacenze (
   articolo_id uuid not null references articoli(id) on delete cascade,
   lotto_id uuid references lotti(id) on delete cascade,
   ubicazione_id uuid references ubicazioni(id) on delete cascade,
-  qta numeric(14,3) not null default 0
+  qta numeric(14,3) not null default 0 check (qta <> 'NaN')
 );
 create unique index giacenze_chiave on giacenze (
   articolo_id,
@@ -199,9 +202,9 @@ create table documenti (
   stato text not null default 'bozza' check (stato in ('bozza','confermato','evaso','annullato')),
   stato_spedizione text check (stato_spedizione in ('da_preparare','preparato','spedito','consegnato')),
   documento_origine_id uuid references documenti(id) on delete set null,
-  titolo text, banca text, iban text, condizioni_pagamento text,
+  titolo text check (char_length(titolo) <= 500), banca text, iban text, condizioni_pagamento text,
   pagato boolean not null default false,
-  note text,
+  note text check (char_length(note) <= 500),
   imponibile_cent bigint not null default 0,
   imposta_cent bigint not null default 0,
   inps_cent bigint not null default 0,
@@ -222,13 +225,13 @@ create table righe_documento (
   documento_id uuid not null references documenti(id) on delete cascade,
   posizione int not null,
   articolo_id uuid references articoli(id) on delete restrict,  -- nullo nelle righe libere delle fatture
-  descrizione text not null,
-  qta numeric(14,3) not null default 1,
+  descrizione text not null check (char_length(descrizione) <= 500),
+  qta numeric(14,3) not null default 1 check (qta > 0 and qta <> 'NaN'),
   prezzo_cent bigint not null default 0,
-  sconto_perc numeric(5,2) not null default 0,
-  iva_perc numeric(5,2) not null default 22,
-  inps_perc numeric(5,2) not null default 0,
-  ritenuta_perc numeric(5,2) not null default 0,
+  sconto_perc numeric(5,2) not null default 0 check (sconto_perc between 0 and 100),
+  iva_perc numeric(5,2) not null default 22 check (iva_perc between 0 and 100),
+  inps_perc numeric(5,2) not null default 0 check (inps_perc between 0 and 100),
+  ritenuta_perc numeric(5,2) not null default 0 check (ritenuta_perc between 0 and 100),
   lotto_id uuid references lotti(id) on delete set null,
   ubicazione_id uuid references ubicazioni(id) on delete set null,
   totale_cent bigint not null default 0,
@@ -243,7 +246,7 @@ create table movimenti_stock (
   articolo_id uuid not null references articoli(id) on delete cascade,
   lotto_id uuid references lotti(id) on delete set null,
   ubicazione_id uuid references ubicazioni(id) on delete set null,
-  qta numeric(14,3) not null,  -- con segno: + entra, - esce
+  qta numeric(14,3) not null check (qta <> 'NaN'),  -- con segno: + entra, - esce
   costo_unit_cent bigint not null default 0,
   causale text not null check (causale in ('apertura','carico','scarico','reso_cliente','rettifica','trasferimento_out','trasferimento_in','annullo')),
   documento_id uuid references documenti(id) on delete set null,
@@ -266,7 +269,7 @@ create table contatori (
 create table inventari (
   id uuid primary key default gen_random_uuid(),
   magazzino_id uuid not null references magazzini(id) on delete cascade,
-  nome text not null,
+  nome text not null check (char_length(nome) <= 500),
   stato text not null default 'aperto' check (stato in ('aperto','chiuso')),
   creato_da uuid references profili(user_id) on delete set null,
   created_at timestamptz not null default now(),
@@ -280,8 +283,8 @@ create table inventario_righe (
   articolo_id uuid not null references articoli(id) on delete cascade,
   lotto_id uuid references lotti(id) on delete set null,
   ubicazione_id uuid references ubicazioni(id) on delete set null,
-  qta_sistema numeric(14,3) not null,
-  qta_contata numeric(14,3),
+  qta_sistema numeric(14,3) not null check (qta_sistema <> 'NaN'),
+  qta_contata numeric(14,3) check (qta_contata >= 0 and qta_contata <> 'NaN'),
   causale text check (causale in ('conteggio','danneggiato','smarrito','errore_registrazione')),
   rettificata boolean not null default false,
   user_id uuid references profili(user_id) on delete set null
@@ -293,8 +296,8 @@ create table scadenze (
   id uuid primary key default gen_random_uuid(),
   magazzino_id uuid not null references magazzini(id) on delete cascade,
   user_id uuid not null references profili(user_id) on delete cascade,  -- agenda personale
-  oggetto text not null,
-  descrizione text,
+  oggetto text not null check (char_length(oggetto) <= 500),
+  descrizione text check (char_length(descrizione) <= 500),
   inizio timestamptz not null,
   fine timestamptz not null,
   tipo text not null default 'appuntamento' check (tipo in ('appuntamento','scadenza')),
@@ -309,7 +312,7 @@ create index on scadenze (magazzino_id, user_id, inizio);
 create table scenari (
   id uuid primary key default gen_random_uuid(),
   magazzino_id uuid not null references magazzini(id) on delete cascade,
-  nome text not null,
+  nome text not null check (char_length(nome) <= 500),
   descrizione text,
   stato text not null default 'bozza' check (stato in ('bozza','attivo','chiuso')),
   seed int not null default 1,
@@ -327,7 +330,7 @@ create table scenario_fisico (
   scenario_id uuid not null references scenari(id) on delete cascade,
   articolo_id uuid not null references articoli(id) on delete cascade,
   ubicazione_id uuid references ubicazioni(id) on delete cascade,
-  qta_reale numeric(14,3) not null
+  qta_reale numeric(14,3) not null check (qta_reale >= 0 and qta_reale <> 'NaN')
 );
 create index on scenario_fisico (scenario_id);
 
@@ -340,9 +343,10 @@ create table compiti (
   tipo text not null check (tipo in ('carico','scarico','reso_cliente','ordine_fornitore','evadi_ordine','preventivo','ordine_cliente','spedizione','fattura_vendita','fattura_acquisto','inventario','trasferimento','riordino')),
   titolo text not null,
   istruzioni text,
-  articolo_id uuid references articoli(id) on delete cascade,
-  anagrafica_id uuid references anagrafiche(id) on delete cascade,
-  qta numeric(14,3),
+  -- restrict: eliminare una merce o un cliente dello scenario non deve cancellare i compiti degli altri studenti
+  articolo_id uuid references articoli(id) on delete restrict,
+  anagrafica_id uuid references anagrafiche(id) on delete restrict,
+  qta numeric(14,3) check (qta <> 'NaN'),
   parametri jsonb not null default '{}',
   dipende_da uuid references compiti(id) on delete set null,
   origine text not null default 'generato' check (origine in ('generato','dinamico')),

@@ -40,7 +40,7 @@ begin
       capitale_sociale = v_new.capitale_sociale, altro = v_new.altro
     where magazzino_id = p_magazzino returning * into v_az;
   exception
-    when invalid_text_representation or datatype_mismatch or not_null_violation then raise exception 'dato_non_valido';
+    when invalid_text_representation or datatype_mismatch or not_null_violation or check_violation then raise exception 'dato_non_valido';
   end;
   perform _registra(p_magazzino, 'azienda.salva', 'azienda', p_magazzino, jsonb_build_object('ragione_sociale', v_az.ragione_sociale));
   return to_jsonb(v_az);
@@ -116,7 +116,8 @@ begin
   return to_jsonb(v_new);
 end $$;
 
--- Permesso: anagrafiche.scrivi. Se ha documenti collegati: stato_non_valido.
+-- Permesso: anagrafiche.scrivi. Se ha documenti collegati o e' usata nei compiti di uno scenario: stato_non_valido
+-- (nel secondo caso con detail 'usata_nei_compiti').
 -- ritorna: {ok: true, id}
 create function api_anagrafica_elimina(p_id uuid) returns jsonb
 language plpgsql security definer set search_path = public as $$
@@ -125,6 +126,9 @@ begin
   select * into v_ana from anagrafiche where id = p_id;
   if not found then raise exception 'non_trovato'; end if;
   perform _richiedi(v_ana.magazzino_id, 'anagrafiche.scrivi');
+  if exists (select 1 from compiti where anagrafica_id = p_id) then
+    raise exception 'stato_non_valido' using detail = 'usata_nei_compiti', hint = 'Cliente o fornitore usato nei compiti di uno scenario: non si puo'' eliminare.';
+  end if;
   begin
     delete from anagrafiche where id = p_id;
   exception when foreign_key_violation or restrict_violation then raise exception 'stato_non_valido';
@@ -174,7 +178,7 @@ begin
         raise exception 'dato_non_valido';
       end if;
       v_giac := coalesce(nullif(p_dati ->> 'giacenza_iniziale', '')::numeric, 0);
-      if v_giac < 0 then raise exception 'dato_non_valido'; end if;
+      if _qta_non_valida(v_giac) or v_giac < 0 then raise exception 'dato_non_valido'; end if;
       insert into articoli (magazzino_id, matricola, descrizione)
       values (p_magazzino, btrim(p_dati ->> 'matricola'), btrim(p_dati ->> 'descrizione')) returning * into v_old;
     else
@@ -339,7 +343,8 @@ begin
   return to_jsonb(v_art);
 end $$;
 
--- Solo se l'articolo non ha movimenti ne' righe di documento, altrimenti stato_non_valido. Permesso: articoli.scrivi.
+-- Solo se l'articolo non ha movimenti, righe di documento ne' compiti di scenario, altrimenti stato_non_valido
+-- (per i compiti con detail 'usato_nei_compiti'). Permesso: articoli.scrivi.
 -- ritorna: {ok: true, id}
 create function api_articolo_elimina(p_id uuid) returns jsonb
 language plpgsql security definer set search_path = public as $$
@@ -351,6 +356,9 @@ begin
   if exists (select 1 from movimenti_stock where articolo_id = p_id)
      or exists (select 1 from righe_documento where articolo_id = p_id) then
     raise exception 'stato_non_valido';
+  end if;
+  if exists (select 1 from compiti where articolo_id = p_id) then
+    raise exception 'stato_non_valido' using detail = 'usato_nei_compiti', hint = 'Articolo usato nei compiti di uno scenario: non si puo'' eliminare.';
   end if;
   begin
     delete from articoli where id = p_id;
@@ -402,7 +410,7 @@ language plpgsql security definer set search_path = public as $$
 declare v_ids uuid[]; v_n int;
 begin
   perform _richiedi(p_magazzino, 'articoli.scrivi');
-  if p_ids is null or jsonb_typeof(p_ids) <> 'array' or jsonb_array_length(p_ids) = 0 or p_valore is null
+  if p_ids is null or jsonb_typeof(p_ids) <> 'array' or jsonb_array_length(p_ids) = 0 or _qta_non_valida(p_valore)
      or p_tipo not in ('prezzo_perc', 'ricarico_perc', 'sconto_perc') then
     raise exception 'dato_non_valido';
   end if;
@@ -415,12 +423,15 @@ begin
     select array_agg(value::uuid) into v_ids from jsonb_array_elements_text(p_ids);
   exception when invalid_text_representation then raise exception 'dato_non_valido';
   end;
-  update articoli set
-    prezzo_acquisto_cent = case when p_tipo = 'prezzo_perc' then round(prezzo_acquisto_cent * (1 + p_valore / 100))::bigint else prezzo_acquisto_cent end,
-    ricarico_perc = case when p_tipo = 'ricarico_perc' then p_valore else ricarico_perc end,
-    sconto_perc = case when p_tipo = 'sconto_perc' then p_valore else sconto_perc end
-  where magazzino_id = p_magazzino and id = any (v_ids);
-  get diagnostics v_n = row_count;
+  begin
+    update articoli set
+      prezzo_acquisto_cent = case when p_tipo = 'prezzo_perc' then round(prezzo_acquisto_cent * (1 + p_valore / 100))::bigint else prezzo_acquisto_cent end,
+      ricarico_perc = case when p_tipo = 'ricarico_perc' then p_valore else ricarico_perc end,
+      sconto_perc = case when p_tipo = 'sconto_perc' then p_valore else sconto_perc end
+    where magazzino_id = p_magazzino and id = any (v_ids);
+    get diagnostics v_n = row_count;
+  exception when numeric_value_out_of_range or check_violation then raise exception 'dato_non_valido';  -- prezzo oltre bigint
+  end;
   perform _registra(p_magazzino, 'articoli.variazione', 'articolo', null,
                     jsonb_build_object('tipo', p_tipo, 'valore', p_valore, 'aggiornati', v_n));
   return jsonb_build_object('aggiornati', v_n);
@@ -474,6 +485,7 @@ begin
       where id = (p_dati ->> 'id')::uuid returning * into v_ub;
     end if;
   exception when unique_violation then raise exception 'gia_esiste';
+            when check_violation then raise exception 'dato_non_valido';
   end;
   perform _registra(v_m, case when v_crea then 'ubicazione.crea' else 'ubicazione.modifica' end, 'ubicazione', v_ub.id,
                     jsonb_build_object('codice', v_ub.codice));
@@ -545,7 +557,7 @@ begin
     end if;
   exception
     when unique_violation then raise exception 'gia_esiste';
-    when invalid_text_representation or datetime_field_overflow or invalid_datetime_format then raise exception 'dato_non_valido';
+    when invalid_text_representation or datetime_field_overflow or invalid_datetime_format or check_violation then raise exception 'dato_non_valido';
   end;
   perform _registra(v_m, case when v_crea then 'lotto.crea' else 'lotto.modifica' end, 'lotto', v_lotto.id,
                     jsonb_build_object('codice', v_lotto.codice, 'articolo_id', v_lotto.articolo_id));

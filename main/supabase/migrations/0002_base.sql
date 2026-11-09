@@ -9,6 +9,12 @@ begin
   return v;
 end $$;
 
+-- vero se la quantita' non e' utilizzabile: nulla, NaN, infinita o oltre il limite di numeric(14,3).
+-- Serve perche' 'NaN' supera ogni controllo "<= 0" / "< 0" (e' maggiore di tutto) e poi avvelena giacenze e totali.
+create function _qta_non_valida(n numeric) returns boolean language sql immutable as $$
+  select n is null or n in ('NaN', 'Infinity', '-Infinity') or abs(n) >= 100000000000
+$$;
+
 -- riga di appartenenza di chi chiama, o permesso_negato
 create function _membro(p_magazzino uuid) returns membri
 language plpgsql stable security definer set search_path = public as $$
@@ -51,9 +57,11 @@ begin
   values (p_magazzino, auth.uid(), p_azione, p_entita, p_entita_id, coalesce(p_dettagli, '{}'));
 end $$;
 
--- ogni nuovo utente (Supabase Auth o shim locale) riceve il profilo; lo username arriva nei metadati
+-- ogni nuovo utente (Supabase Auth o shim locale) riceve il profilo. Lo username viene SOLO dall'email finta
+-- <username>@shipping.local, mai dai metadati (modificabili da chi si registra): altrimenti chiunque potrebbe prenotare lo
+-- username di un docente, che viene promosso per username.
 create function _nuovo_utente() returns trigger language plpgsql security definer set search_path = public as $$
-declare u text := lower(coalesce(new.raw_user_meta_data ->> 'username', split_part(new.email, '@', 1)));
+declare u text := lower(split_part(coalesce(new.email, ''), '@', 1));
 begin
   insert into profili (user_id, username, nome)
   values (new.id, u, coalesce(new.raw_user_meta_data ->> 'nome', ''));
@@ -75,8 +83,10 @@ declare u uuid := _uid(); p profili; mid uuid;
 begin
   select * into p from profili where user_id = u;
   if not found then raise exception 'non_trovato'; end if;
-  if not exists (select 1 from magazzini where proprietario_id = u and tipo = 'personale') then
-    insert into magazzini (nome, tipo, proprietario_id) values ('Il mio magazzino', 'personale', u) returning id into mid;
+  -- un solo magazzino personale per utente (indice unico parziale): due chiamate insieme non danno errore, la seconda non fa nulla
+  insert into magazzini (nome, tipo, proprietario_id) values ('Il mio magazzino', 'personale', u)
+  on conflict (proprietario_id) where tipo = 'personale' do nothing returning id into mid;
+  if mid is not null then
     insert into membri (magazzino_id, user_id, ruolo) values (mid, u, 'studente');
     insert into azienda (magazzino_id) values (mid);
   end if;
@@ -95,7 +105,8 @@ language plpgsql security definer set search_path = public as $$
 declare u uuid := _uid();
 begin
   if p_magazzino is not null then perform _membro(p_magazzino); end if;
-  insert into presenze (user_id, magazzino_id, pagina, visto_il) values (u, p_magazzino, p_pagina, now())
+  -- pagina: testo libero del client, troncato a 100 caratteri
+  insert into presenze (user_id, magazzino_id, pagina, visto_il) values (u, p_magazzino, left(p_pagina, 100), now())
   on conflict (user_id) do update set magazzino_id = excluded.magazzino_id, pagina = excluded.pagina, visto_il = now();
   return jsonb_build_object('ok', true);
 end $$;

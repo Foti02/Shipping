@@ -65,3 +65,8 @@
 .dt tbody tr:hover { background: var(--pannello); }
 .dt tbody tr.sel { background: var(--selezione); color: var(--sul-blu); }
 .dt-dettaglio { margin-top: 16px; background: var(--pannello); border-radius: 20px; padding: 20px; }
+
+/* Sopra un pannello (stesso colore) i controlli passano alla tinta di sfondo per restare visibili. */
+.panel .field input, .panel .field select, .carta .field input, .carta .field select, .dt-dettaglio .field input, .dt-dettaglio .field select,
+.panel .tabs button, .panel .btn-tenue, .carta .btn-tenue, .vuoto .btn-tenue { background: var(--sfondo); }
+.panel .tabs button[aria-selected='true'] { background: var(--blu); }
