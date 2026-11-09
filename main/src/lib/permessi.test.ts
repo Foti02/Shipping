@@ -17,6 +17,7 @@ test('matrice dei ruoli aziendali (sezione 4 del contratto)', () => {
   expect(puoAzione(classe('magazziniere'), 'scarico')).toBe(true);
   expect(puoAzione(classe('magazziniere'), 'fattura')).toBe(false);
   expect(puoAzione(classe('acquisti'), 'ordine_fornitore')).toBe(true);
+  expect(puoAzione(classe('acquisti'), 'evadi_ordine')).toBe(true); // come nel database (0006_scenari.sql)
   expect(puoAzione(classe('acquisti'), 'carico')).toBe(false);
   expect(puoAzione(classe('commerciale'), 'preventivo')).toBe(true);
   expect(puoAzione(classe('commerciale'), 'articoli.scrivi')).toBe(false);

@@ -1,0 +1,907 @@
+[
+ {
+  "file": "01-accedi.png",
+  "capitolo": "A",
+  "titolo": "Pagina di accesso",
+  "cosa_si_vede": "La pagina Accedi con i campi Nome utente e Password, le schede Accedi/Registrati e il pannello demo \"Entra come\".",
+  "passaggi": [
+   "Apri l'indirizzo dell'app: compare la pagina Accedi.",
+   "Se hai già un account scrivi nome utente e password e premi Accedi.",
+   "Se non ce l'hai, apri la scheda Registrati."
+  ],
+  "utente": "nessuno (non ancora entrato)"
+ },
+ {
+  "file": "02-registrazione-compilata.png",
+  "capitolo": "A",
+  "titolo": "Registrazione compilata",
+  "cosa_si_vede": "La scheda Registrati con nome, nome utente e password compilati e il pulsante Crea account.",
+  "passaggi": [
+   "Scheda Registrati.",
+   "Scrivi il tuo nome (es. Marco Rossi).",
+   "Scegli un nome utente: 3-20 caratteri, solo minuscole, numeri, punto, trattino (es. marco.rossi).",
+   "Scegli una password di almeno 6 caratteri.",
+   "Premi Crea account."
+  ],
+  "utente": "nuovo utente marco.rossi"
+ },
+ {
+  "file": "03-scelta-magazzino.png",
+  "capitolo": "A",
+  "titolo": "Scelta del magazzino",
+  "cosa_si_vede": "La schermata \"Scegli il magazzino\" con le carte Il mio magazzino, Le mie classi (vuota) ed Entra con codice.",
+  "passaggi": [
+   "Dopo la registrazione si apre \"Scegli il magazzino\".",
+   "\"Il mio magazzino\" è solo tuo, per fare pratica.",
+   "In \"Entra con codice\" scrivi il codice a 6 caratteri del docente per entrare in una classe.",
+   "Premi Entra accanto a \"Il mio magazzino\"."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "04-accesso-compilato.png",
+  "capitolo": "A",
+  "titolo": "Accesso con nome utente e password",
+  "cosa_si_vede": "La scheda Accedi con nome utente e password compilati (password nascosta) e il pulsante Accedi.",
+  "passaggi": [
+   "Scheda Accedi.",
+   "Scrivi il tuo nome utente e la password.",
+   "Premi Accedi."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "05-entra-con-codice.png",
+  "capitolo": "A",
+  "titolo": "Entra in una classe con il codice",
+  "cosa_si_vede": "La carta \"Entra con codice\" con il codice di 6 caratteri scritto nel campo e il pulsante Entra attivo.",
+  "passaggi": [
+   "Nella schermata \"Scegli il magazzino\" trova la carta \"Entra con codice\".",
+   "Scrivi il codice di 6 caratteri che ti ha dato il docente (maiuscole automatiche).",
+   "Premi Entra."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "06-classe-primo-ingresso.png",
+  "capitolo": "A",
+  "titolo": "Primo ingresso nella classe",
+  "cosa_si_vede": "Il Cruscotto della classe 4B Logistica appena entrata: in alto il nome della classe (tipo \"classe\", senza ruolo aziendale) e nel menu la sezione Classe con Compiti e Attività.",
+  "passaggi": [
+   "Dopo Entra si apre il magazzino della classe.",
+   "In alto vedi il nome della classe; finché il docente non ti assegna un ruolo aziendale sei \"jolly\" e puoi fare tutte le azioni.",
+   "Nel menu c'è la sezione Classe con Compiti e Attività."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "07-tel-scelta-magazzino.png",
+  "capitolo": "A",
+  "titolo": "Telefono: scelta del magazzino",
+  "cosa_si_vede": "La schermata \"Scegli il magazzino\" su telefono (larghezza 375): le carte sono una sotto l'altra e il menu è nascosto dietro il pulsante in alto.",
+  "passaggi": [
+   "Sul telefono le carte si dispongono in colonna.",
+   "Il menu laterale si apre con il pulsante a tre righe in alto a sinistra."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "08-tel-menu.png",
+  "capitolo": "A",
+  "titolo": "Telefono: menu a cassetto",
+  "cosa_si_vede": "Il menu principale aperto come cassetto laterale su telefono, con i gruppi Articoli, Documenti, Anagrafiche, Agenda, Magazzino.",
+  "passaggi": [
+   "Premi il pulsante a tre righe in alto a sinistra.",
+   "Si apre il menu a cassetto: scegli una voce e il menu si richiude da solo.",
+   "Esc o il pulsante di chiusura lo richiudono."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "09-fornitore-compilato.png",
+  "capitolo": "B",
+  "titolo": "Nuovo fornitore",
+  "cosa_si_vede": "Il dialogo Anagrafica compilato per il fornitore Ferramenta Bianchi S.r.l. con codice, indirizzo, partita IVA e giorni di consegna.",
+  "passaggi": [
+   "Menu Anagrafiche, poi Nuovo fornitore.",
+   "Scrivi codice, ragione sociale (obbligatoria) e gli altri dati.",
+   "Nei fornitori indica i Giorni di consegna: servono al calcolo del riordino.",
+   "Premi Salva."
+  ],
+  "utente": "marco.rossi (magazzino personale)"
+ },
+ {
+  "file": "10-articolo-scheda-dati.png",
+  "capitolo": "B",
+  "titolo": "Nuovo articolo: scheda Dati compilata",
+  "cosa_si_vede": "Scheda Dati con matricola CAC-PH2, descrizione, unità di misura PZ., categoria Utensili e note.",
+  "passaggi": [
+   "Scrivi la Matricola (codice unico, obbligatorio) e la Descrizione (obbligatoria).",
+   "Scegli l'unità di misura (PZ., KG., LT., ...) e la categoria.",
+   "Passa alla scheda Prezzi."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "11-articolo-scheda-prezzi.png",
+  "capitolo": "B",
+  "titolo": "Nuovo articolo: scheda Prezzi",
+  "cosa_si_vede": "Scheda Prezzi con prezzo di acquisto 4,50 euro, IVA 22%, ricarico 40% e i prezzi calcolati sotto (acquisto con IVA, listino, vendita).",
+  "passaggi": [
+   "Scheda Prezzi.",
+   "Scrivi il prezzo di acquisto in euro senza IVA (es. 4,50) e l'IVA.",
+   "Scrivi il ricarico di vendita in percentuale: i prezzi di listino e di vendita si calcolano da soli."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "12-articolo-scheda-scorte.png",
+  "capitolo": "B",
+  "titolo": "Nuovo articolo: scheda Scorte",
+  "cosa_si_vede": "Scheda Scorte con giacenza iniziale 60, scorta minima 20, sicurezza 10, punto di riordino 25, lead time 3 giorni, domanda 4 al giorno, costo ordine 15 euro.",
+  "passaggi": [
+   "Scheda Scorte.",
+   "Scrivi la giacenza iniziale (si imposta solo alla creazione).",
+   "Compila scorta minima, di sicurezza, punto di riordino, lead time e domanda giornaliera: servono per le esercitazioni sul riordino.",
+   "Lascia vuoto il punto di riordino per farlo proporre al programma."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "13-articolo-scheda-logistica.png",
+  "capitolo": "B",
+  "titolo": "Nuovo articolo: scheda Logistica",
+  "cosa_si_vede": "Scheda Logistica con fornitore abituale Ferramenta Bianchi, codice del fornitore e la casella Gestione lotti.",
+  "passaggi": [
+   "Scheda Logistica.",
+   "Scegli ubicazione e fornitore abituale (il fornitore va creato prima in Anagrafiche).",
+   "Premi Salva."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "14-elenco-articoli.png",
+  "capitolo": "B",
+  "titolo": "Elenco articoli con stato riga",
+  "cosa_si_vede": "Elenco articoli con carichi, scarichi, resi, giacenza e colonna Stato: il segno ! (giallo) segnala i Guanti sotto il punto di riordino; sotto la lista i movimenti dell'articolo selezionato.",
+  "passaggi": [
+   "Menu Articoli.",
+   "Leggi la colonna Stato: ✓ disponibile, ! sotto il punto di riordino, → merce già ordinata in arrivo.",
+   "Clicca una riga per vedere i movimenti e le giacenze dell'articolo."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "15-carico-compilato.png",
+  "capitolo": "B",
+  "titolo": "Carico da fornitore compilato",
+  "cosa_si_vede": "Il dialogo \"Nuovo: carico\" con fornitore Ferramenta Bianchi, riga Guanti da lavoro taglia L, quantità 50, prezzo e totali calcolati.",
+  "passaggi": [
+   "Scegli il Fornitore scrivendo nome o codice e selezionandolo dalla lista.",
+   "Nella riga scegli l'Articolo: descrizione, prezzo e IVA si compilano da soli.",
+   "Scrivi la Quantità (es. 50).",
+   "Controlla i totali, poi premi Conferma: la merce entra a magazzino. \"Salva bozza\" non muove il magazzino."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "16-carico-confermato.png",
+  "capitolo": "B",
+  "titolo": "Carico confermato",
+  "cosa_si_vede": "L'elenco Carichi con il documento numerato e confermato, e il dettaglio sotto con le righe e i pulsanti di azione.",
+  "passaggi": [
+   "Dopo Conferma il carico riceve il numero e passa a \"Confermato\".",
+   "La giacenza dei Guanti sale di 50 pezzi.",
+   "Clicca il documento in elenco per rivederne il dettaglio."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "17-scarico-compilato.png",
+  "capitolo": "B",
+  "titolo": "Scarico a un cliente compilato",
+  "cosa_si_vede": "Il dialogo \"Nuovo: scarico\" con cliente Edilizia Colombo e 10 cacciaviti.",
+  "passaggi": [
+   "Menu Documenti, poi DDT / Scarichi, poi \"Nuovo: scarico\".",
+   "Scegli il Cliente dalla lista.",
+   "Scegli l'articolo e scrivi la quantità da consegnare (es. 10).",
+   "Premi Conferma: la merce esce dal magazzino."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "18-scarico-confermato.png",
+  "capitolo": "B",
+  "titolo": "Scarico confermato",
+  "cosa_si_vede": "L'elenco DDT/Scarichi con il documento confermato e il dettaglio con le righe e i pulsanti per generare la fattura di vendita.",
+  "passaggi": [
+   "Dopo Conferma lo scarico è numerato e la giacenza dei Cacciaviti scende da 60 a 50.",
+   "Da qui si può generare la fattura di vendita."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "19-scarico-giacenza-insufficiente.png",
+  "capitolo": "B",
+  "titolo": "Scarico rifiutato: giacenza insufficiente",
+  "cosa_si_vede": "Il messaggio rosso \"Giacenza insufficiente: lo scarico non è stato confermato (la bozza è salvata)\" con disponibili e richiesti e i link a ordine fornitore e suggerimenti di riordino.",
+  "passaggi": [
+   "Premi Conferma con una quantità troppo alta.",
+   "Il programma non scarica e mostra \"Giacenza insufficiente\" con i pezzi disponibili e richiesti.",
+   "Riduci la quantità, oppure riordina la merce con un ordine fornitore o dai suggerimenti di riordino."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "20-suggerimento-punto-riordino.png",
+  "capitolo": "B",
+  "titolo": "Suggerimento al mouse: Punto di riordino",
+  "cosa_si_vede": "Nella scheda Scorte, il riquadro di aiuto che compare sul campo \"Punto di riordino\" dopo 1,5 secondi: spiega che è domanda al giorno per lead time più scorta di sicurezza.",
+  "passaggi": [
+   "Apri Nuovo articolo e vai alla scheda Scorte.",
+   "Ferma il mouse per un secondo e mezzo sull'etichetta \"Punto di riordino\".",
+   "Compare un riquadro con la spiegazione; funziona anche su Lead time, Scorta di sicurezza, Ricarico e altre voci.",
+   "Sul telefono compare un \"?\" da toccare."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "21-tel-articoli.png",
+  "capitolo": "B",
+  "titolo": "Telefono: elenco articoli",
+  "cosa_si_vede": "L'elenco articoli su telefono: pulsanti in colonna, ricerca, filtri e ogni articolo come scheda con matricola, descrizione, giacenza e stato.",
+  "passaggi": [
+   "Apri Articoli dal menu.",
+   "Sul telefono ogni articolo è una scheda; il segno a destra è lo stato (giallo = sotto il punto di riordino).",
+   "I pulsanti Nuovo articolo, Modifica ed Elimina restano in alto."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "22-tel-nuovo-documento.png",
+  "capitolo": "B",
+  "titolo": "Telefono: nuovo documento",
+  "cosa_si_vede": "Il dialogo \"Nuovo: carico\" a tutta larghezza su telefono con data, fornitore e la prima riga.",
+  "passaggi": [
+   "Su telefono i dialoghi occupano tutto lo schermo.",
+   "Scorri verso il basso per righe, totali e pulsanti Conferma e Salva bozza."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "23-preventivo-compilato.png",
+  "capitolo": "C",
+  "titolo": "Preventivo compilato",
+  "cosa_si_vede": "Il dialogo \"Nuovo: preventivo\" per Edilizia Colombo con due righe (20 nastri adesivi e 5 cacciaviti) e i totali.",
+  "passaggi": [
+   "Menu Documenti, poi Preventivi, poi \"Nuovo: preventivo\".",
+   "Scegli il cliente e aggiungi le righe con \"Aggiungi riga\".",
+   "Un preventivo non muove il magazzino.",
+   "Premi Conferma (o Salva bozza per finire dopo)."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "24-preventivo-confermato.png",
+  "capitolo": "C",
+  "titolo": "Preventivo confermato",
+  "cosa_si_vede": "Il preventivo confermato con righe e totali e il pulsante \"Genera ordine cliente\" per passare al documento successivo.",
+  "passaggi": [
+   "Il preventivo è confermato e numerato.",
+   "Per passare al passo successivo premi \"Genera ordine cliente\": le righe vengono copiate."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "25-ordine-cliente-confermato.png",
+  "capitolo": "C",
+  "titolo": "Ordine cliente confermato",
+  "cosa_si_vede": "L'ordine cliente confermato, con la sezione Spedizione a quattro passi, i Documenti collegati (origine: preventivo evaso) e il pulsante \"Genera scarico (DDT)\".",
+  "passaggi": [
+   "Conferma l'ordine.",
+   "Nel dettaglio compaiono il percorso di spedizione e i documenti collegati: l'origine è il preventivo, ora \"Evaso\".",
+   "Per preparare la consegna premi \"Genera scarico (DDT)\"."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "26-ddt-confermato-spedizione.png",
+  "capitolo": "C",
+  "titolo": "DDT confermato: percorso di spedizione",
+  "cosa_si_vede": "Il DDT confermato con la sezione Spedizione (Da preparare, Preparato, Spedito, Consegnato) e il pulsante \"Segna come: preparato\".",
+  "passaggi": [
+   "Il DDT confermato parte dallo stato \"Da preparare\".",
+   "Premi \"Segna come: preparato\", poi \"spedito\" e infine \"consegnato\": si va solo in avanti."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "27-ddt-spedito.png",
+  "capitolo": "C",
+  "titolo": "DDT spedito",
+  "cosa_si_vede": "La sezione Spedizione con i passi Da preparare e Preparato completati e Spedito raggiunto; il pulsante propone \"Segna come: consegnato\".",
+  "passaggi": [
+   "Dopo \"preparato\" e \"spedito\" il percorso mostra i primi tre passi.",
+   "Premi \"Segna come: consegnato\" a consegna avvenuta."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "28-fattura-vendita-inps-ritenuta.png",
+  "capitolo": "C",
+  "titolo": "Fattura di vendita con INPS e ritenuta",
+  "cosa_si_vede": "Il dialogo della fattura di vendita generata dal DDT: banca, IBAN, condizioni di pagamento e, su ogni riga, i campi IVA, INPS 4% e Ritenuta 20%; i totali si ricalcolano.",
+  "passaggi": [
+   "\"Genera fattura di vendita\" apre la fattura con le righe del DDT.",
+   "Compila Banca, IBAN e Condizioni di pagamento.",
+   "Se serve, scrivi in ogni riga la percentuale INPS (es. 4) e la Ritenuta d'acconto (es. 20): il totale da pagare si aggiorna.",
+   "Premi Conferma."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "29-fattura-vendita-totali.png",
+  "capitolo": "C",
+  "titolo": "Totali della fattura con INPS e ritenuta",
+  "cosa_si_vede": "La parte bassa del dialogo fattura con i totali (imponibile, INPS, imposta, ritenuta, totale) e i pulsanti Chiudi, Salva bozza, Conferma.",
+  "passaggi": [
+   "Scorri in fondo al dialogo: leggi imponibile, INPS, IVA, ritenuta e totale da incassare.",
+   "Premi Conferma per numerare la fattura."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "30-fattura-vendita-confermata.png",
+  "capitolo": "C",
+  "titolo": "Fattura di vendita confermata",
+  "cosa_si_vede": "Elenco fatture con la fattura confermata \"Da pagare\", dettaglio con totali, documenti collegati (origine DDT) e pulsante \"Segna pagato\".",
+  "passaggi": [
+   "La fattura è confermata e compare \"Da pagare\".",
+   "Quando il cliente paga premi \"Segna pagato\"."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "31-catena-documenti-collegati.png",
+  "capitolo": "C",
+  "titolo": "Catena dei documenti collegati",
+  "cosa_si_vede": "Il DDT 2/2026 con la sezione \"Documenti collegati\": origine Ordine cliente 1/2026 (evaso) e derivato Fattura di vendita 1/2026, entrambi cliccabili.",
+  "passaggi": [
+   "Apri un documento dall'elenco (qui un DDT).",
+   "In \"Documenti collegati\" vedi l'origine (ordine cliente) e i documenti derivati (fattura).",
+   "Clicca un nome per saltare a quel documento e ripercorrere la catena preventivo, ordine, DDT, fattura."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "32-ordine-fornitore-compilato.png",
+  "capitolo": "D",
+  "titolo": "Ordine fornitore compilato",
+  "cosa_si_vede": "Il dialogo \"Nuovo: ordine fornitore\" per Ferramenta Bianchi con 80 nastri adesivi e 30 cacciaviti a prezzo di acquisto.",
+  "passaggi": [
+   "Menu Documenti, poi Ordini fornitore, poi \"Nuovo: ordine fornitore\".",
+   "Scegli il fornitore e le righe: il prezzo proposto è quello di acquisto.",
+   "Premi Conferma: l'ordine non muove il magazzino, ma segnala \"merce in arrivo\"."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "33-articoli-merce-in-arrivo.png",
+  "capitolo": "D",
+  "titolo": "Articoli con merce ordinata in arrivo",
+  "cosa_si_vede": "L'elenco articoli con la colonna Ordinato valorizzata (80 e 30) e il segno blu \"merce ordinata in arrivo\" nella colonna Stato.",
+  "passaggi": [
+   "Dopo la conferma dell'ordine fornitore, in Articoli la colonna Ordinato mostra le quantità attese.",
+   "Il segno blu (freccia) indica merce già ordinata."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "34-ordine-evaso-carico.png",
+  "capitolo": "D",
+  "titolo": "Ordine evaso: carico generato",
+  "cosa_si_vede": "Dopo \"Evadi ordine\" si apre il carico già confermato con le righe dell'ordine e i documenti collegati (origine: ordine fornitore).",
+  "passaggi": [
+   "Premi \"Evadi ordine\".",
+   "Il programma crea e conferma il carico: la merce entra in magazzino.",
+   "L'ordine passa a \"Evaso\" e il carico è collegato all'ordine."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "35-fattura-acquisto-confermata.png",
+  "capitolo": "D",
+  "titolo": "Fattura di acquisto confermata",
+  "cosa_si_vede": "La fattura di acquisto confermata \"Da pagare\" con documenti collegati (origine: carico) e pulsante \"Segna pagato\".",
+  "passaggi": [
+   "La fattura di acquisto è confermata.",
+   "Il ciclo ordine fornitore, carico, fattura è completo.",
+   "Quando la paghi premi \"Segna pagato\"."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "36-cliente-nuovo-compilato.png",
+  "capitolo": "E",
+  "titolo": "Nuovo cliente",
+  "cosa_si_vede": "Il dialogo Anagrafica compilato per il cliente Trasporti Rapidi S.r.l. con indirizzo, e-mail, partita IVA e sconto del 5%.",
+  "passaggi": [
+   "Anagrafiche, poi Nuovo cliente.",
+   "Scrivi la ragione sociale (obbligatoria) e gli altri dati.",
+   "Lo Sconto % del cliente può essere proposto nei documenti.",
+   "Premi Salva."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "37-dati-azienda.png",
+  "capitolo": "E",
+  "titolo": "Dati azienda",
+  "cosa_si_vede": "Il dialogo \"Dati azienda\" compilato con ragione sociale, indirizzo, partita IVA, telefono, e-mail e capitale sociale: sono i dati che compaiono nei documenti stampati.",
+  "passaggi": [
+   "Anagrafiche, poi Dati azienda.",
+   "Scrivi i dati della tua azienda (ragione sociale obbligatoria): finiscono nell'intestazione dei documenti stampati.",
+   "Premi Salva."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "38-scadenza-compilata.png",
+  "capitolo": "E",
+  "titolo": "Nuovo appuntamento compilato",
+  "cosa_si_vede": "Il dialogo \"Scadenza o appuntamento\" compilato: oggetto, descrizione, inizio e fine, tipo Appuntamento e fornitore collegato.",
+  "passaggi": [
+   "Scrivi l'Oggetto (obbligatorio) e, se vuoi, la descrizione.",
+   "Scegli Inizio e Fine.",
+   "Scegli il Tipo: Appuntamento o Scadenza.",
+   "Se serve, collega un cliente o un fornitore e premi Salva."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "39-agenda-mese-e-giorno.png",
+  "capitolo": "E",
+  "titolo": "Agenda: vista mese e vista giorno",
+  "cosa_si_vede": "Il calendario del mese con i giorni che hanno impegni segnati e, a destra, le fasce orarie del giorno di oggi con l'appuntamento delle 15.",
+  "passaggi": [
+   "Dopo Salva l'impegno compare nel calendario del mese e nella vista del giorno.",
+   "Usa le frecce per cambiare mese o giorno e \"Oggi\" per tornare a oggi.",
+   "Clicca un giorno del mese per vederlo a destra."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "40-tel-agenda.png",
+  "capitolo": "E",
+  "titolo": "Telefono: agenda",
+  "cosa_si_vede": "L'Agenda su telefono con il calendario del mese a tutta larghezza sopra la vista del giorno.",
+  "passaggi": [
+   "Apri Agenda.",
+   "Su telefono mese e giorno sono uno sotto l'altro: scorri per vedere le fasce orarie."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "41-inventario-aperto.png",
+  "capitolo": "F",
+  "titolo": "Inventario aperto",
+  "cosa_si_vede": "La tabella delle righe da contare: per ogni articolo la quantità di sistema, \"da contare\" come quantità contata e il pulsante Conta.",
+  "passaggi": [
+   "Ogni riga mostra la quantità di Sistema.",
+   "Premi \"Conta\" su una riga per registrare quanti pezzi trovi davvero a scaffale.",
+   "Per chiudere l'inventario devi contare tutte le righe."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "42-inventario-conta.png",
+  "capitolo": "F",
+  "titolo": "Conteggio di una riga",
+  "cosa_si_vede": "Il dialogo \"Conta CAC-PH2\" con la quantità contata 73 scritta e i pulsanti Rivela il fisico e Registra quantità.",
+  "passaggi": [
+   "Nel dialogo scrivi la quantità contata (qui 73 cacciaviti trovati a scaffale su 75 di sistema).",
+   "Premi \"Registra quantità\".",
+   "Nelle esercitazioni di classe, \"Rivela il fisico\" mostra la quantità reale simulata dal docente."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "43-inventario-differenza-causale.png",
+  "capitolo": "F",
+  "titolo": "Differenza e causale di rettifica",
+  "cosa_si_vede": "La riga CAC-PH2 con Sistema 75, Contata 73, Differenza -2, la scelta della causale (Merce danneggiata) e il pulsante Rettifica.",
+  "passaggi": [
+   "Dopo il conteggio la colonna Differenza mostra -2.",
+   "Scegli la causa dall'elenco (errore di conteggio, merce danneggiata, smarrita, errore di registrazione).",
+   "Premi Rettifica: il sistema si allinea al fisico."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "44-inventario-chiuso.png",
+  "capitolo": "F",
+  "titolo": "Inventario chiuso",
+  "cosa_si_vede": "L'inventario chiuso con il riepilogo \"1 righe rettificate su 3\" e la tabella finale con la rettifica registrata.",
+  "passaggi": [
+   "Premi \"Chiudi inventario\".",
+   "Il riepilogo indica quante righe sono state rettificate.",
+   "In Articoli, il movimento di rettifica compare tra i movimenti dell'articolo."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "45-inventario-rivela-fisico.png",
+  "capitolo": "F",
+  "titolo": "Conta con \"Rivela il fisico\" (esercitazione)",
+  "cosa_si_vede": "Nella classe con uno scenario con inventario, il dialogo \"Conta S1-015\" con i pulsanti \"Rivela il fisico\" e \"Registra quantità\".",
+  "passaggi": [
+   "In una classe con scenario, apri un inventario e premi \"Conta\" sulla merce del compito.",
+   "Premi \"Rivela il fisico\": il programma mostra la quantità reale simulata dal docente (così non devi contare davvero).",
+   "In alternativa scrivi tu la quantità e premi \"Registra quantità\"."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "46-analisi-riordino.png",
+  "capitolo": "G",
+  "titolo": "Analisi: suggerimenti di riordino con EOQ",
+  "cosa_si_vede": "La scheda Riordino con la tabella degli articoli da riordinare: giacenza, punto di riordino, quantità economica EOQ e urgenza, con la formula spiegata sopra.",
+  "passaggi": [
+   "Menu Magazzino, poi Analisi, scheda Riordino.",
+   "\"Solo da riordinare\" elenca gli articoli sotto il punto di riordino.",
+   "Leggi la colonna EOQ: è la quantità economica da ordinare per tenere minimo il costo totale.",
+   "Premi \"Vai agli ordini fornitore\" per fare l'ordine."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "47-analisi-kpi.png",
+  "capitolo": "G",
+  "titolo": "KPI: valore, rotazione, copertura",
+  "cosa_si_vede": "La scheda KPI con valore della giacenza, rotazione, copertura in giorni, articoli sotto scorta e la classificazione ABC.",
+  "passaggi": [
+   "Scheda KPI.",
+   "Leggi valore giacenza, rotazione (quanto spesso gira la merce) e copertura (giorni che dura la scorta).",
+   "Scegli il periodo di analisi se previsto."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "48-analisi-valorizzazione.png",
+  "capitolo": "G",
+  "titolo": "Valorizzazione: costo medio, FIFO, LIFO",
+  "cosa_si_vede": "La scheda Valorizzazione con il valore di ogni articolo con costo medio ponderato, FIFO e LIFO, le differenze tra metodi e i totali, dopo carichi a prezzi diversi.",
+  "passaggi": [
+   "Scheda Valorizzazione.",
+   "Lo stesso magazzino è valutato con tre metodi: costo medio ponderato, FIFO (esce prima ciò che è entrato prima, restano i prezzi recenti) e LIFO (esce prima l'ultimo entrato, restano i prezzi vecchi).",
+   "I valori differiscono perché i carichi sono avvenuti a prezzi diversi (es. cacciaviti a 4,50 e poi a 5,20)."
+  ],
+  "utente": "marco.rossi"
+ },
+ {
+  "file": "49-docente-scelta-magazzino.png",
+  "capitolo": "H",
+  "titolo": "Scelta magazzino del docente",
+  "cosa_si_vede": "La schermata \"Scegli il magazzino\" vista dal docente, con Le mie classi (Classe demo) e i pulsanti \"Nuova classe\" e \"Area docente\".",
+  "passaggi": [
+   "Accedi come docente.",
+   "Nelle carte trovi \"Il mio magazzino\", le tue classi e, solo per il docente, \"Nuova classe\" e \"Area docente\"."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "50-nuova-classe.png",
+  "capitolo": "H",
+  "titolo": "Nuova classe",
+  "cosa_si_vede": "Il dialogo \"Nuova classe\" con il nome 4B Logistica e i pulsanti Annulla e Crea.",
+  "passaggi": [
+   "Premi \"Nuova classe\".",
+   "Scrivi il nome della classe (es. 4B Logistica).",
+   "Premi Crea: si apre il magazzino della nuova classe."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "51-classe-codice-ingresso.png",
+  "capitolo": "H",
+  "titolo": "Impostazioni classe: codice di ingresso",
+  "cosa_si_vede": "La pagina Impostazioni classe della nuova classe 4B Logistica con il codice di ingresso a 6 caratteri, i pulsanti Copia, Mostra in grande, Stampa, Disattiva codice, Rigenera e la tabella dei membri.",
+  "passaggi": [
+   "Menu Classe, poi Impostazioni classe.",
+   "In \"Codice di ingresso\" trovi il codice da dare agli studenti: lo scrivono in \"Entra con codice\".",
+   "Usa Copia, \"Mostra in grande\" per proiettarlo, Stampa, oppure Disattiva codice quando la classe è al completo e Rigenera per cambiarlo."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "52-classe-membri-ruoli.png",
+  "capitolo": "H",
+  "titolo": "Membri della classe e ruoli aziendali",
+  "cosa_si_vede": "La tabella dei membri della Classe demo con il ruolo di ciascuno e la scelta del ruolo aziendale (magazziniere, acquisti, commerciale, amministrazione, jolly).",
+  "passaggi": [
+   "In Impostazioni classe guarda la tabella Membri.",
+   "Per ogni studente scegli il Ruolo aziendale: decide quali azioni può fare (es. solo il magazziniere carica e scarica; solo amministrazione fa le fatture).",
+   "Jolly significa nessun ruolo: tutte le azioni."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "53-classe-impostazioni-zona-pericolosa.png",
+  "capitolo": "H",
+  "titolo": "Impostazioni del magazzino e zona pericolosa",
+  "cosa_si_vede": "In fondo a Impostazioni classe: la scelta sulla giacenza negativa (bloccata o consentita) e la Zona pericolosa con \"Azzera dati\" ed \"Elimina classe\".",
+  "passaggi": [
+   "Scorri in fondo a Impostazioni classe.",
+   "\"Giacenza negativa\": scegli se lo scarico oltre la giacenza è bloccato (consigliato) o consentito.",
+   "\"Azzera dati\" cancella i dati della classe ma tiene membri e codice; \"Elimina classe\" cancella tutto."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "54-classe-azzera-conferma.png",
+  "capitolo": "H",
+  "titolo": "Azzera dati: finestra di conferma",
+  "cosa_si_vede": "La finestra di conferma di \"Azzera dati\": per procedere bisogna scrivere il nome della classe; il pulsante di conferma resta disattivato finché il nome non coincide. La finestra non è stata confermata.",
+  "passaggi": [
+   "Premi \"Azzera dati\".",
+   "Per sicurezza il programma chiede di scrivere il nome esatto della classe.",
+   "Solo se sei sicuro scrivi il nome e conferma; altrimenti premi Annulla."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "55-scenario-crea.png",
+  "capitolo": "H",
+  "titolo": "Crea scenario con sottoscorta forzata e inventario",
+  "cosa_si_vede": "Il dialogo \"Crea scenario\" con nome, seed 1, 12 articoli, Sottoscorta forzata = Sì e Con inventario = Sì.",
+  "passaggi": [
+   "Nell'area docente della classe premi \"Crea scenario\".",
+   "Scrivi il nome; il Seed rende lo scenario ripetibile (stesso seed = stessi dati).",
+   "Imposta il numero di articoli.",
+   "\"Sottoscorta forzata: Sì\" fa scattare la scorta bassa quando più studenti scaricano la stessa merce.",
+   "\"Con inventario: Sì\" crea una differenza tra sistema e fisico da scoprire.",
+   "Premi Genera."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "56-scenario-bozza-compiti.png",
+  "capitolo": "H",
+  "titolo": "Scenario in bozza: compiti assegnati",
+  "cosa_si_vede": "Lo scenario \"Esercitazione 1 - Scorta condivisa\" in stato Bozza con la tabella dei compiti di tutti gli studenti: studente, ruolo, compito, merce, quantità, stato (anche \"Bloccato: scorta insufficiente\") e la scelta Riassegna a.",
+  "passaggi": [
+   "Dopo Genera lo scenario è in Bozza: gli studenti non vedono ancora i compiti.",
+   "Controlla la tabella: ogni studente ha compiti adatti al suo ruolo aziendale.",
+   "I compiti \"Bloccato\" aspettano che arrivi merce (sblocco automatico).",
+   "Con \"Riassegna a\" puoi spostare un compito a un altro studente.",
+   "Premi Attiva quando sei pronto."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "57-docente-utenti-online.png",
+  "capitolo": "H",
+  "titolo": "Utenti online e cosa stanno facendo",
+  "cosa_si_vede": "La tabella Studenti della Classe demo con la presenza (online/offline), la pagina in cui si trova ciascuno, il magazzino usato, l'ultima azione e i compiti completati, errori e bloccati.",
+  "passaggi": [
+   "Dall'Area docente apri la classe.",
+   "Nella colonna Presenza vedi chi è online adesso (si aggiorna ogni 5 secondi).",
+   "Le colonne Pagina e Ultima azione dicono cosa sta facendo ciascuno; la colonna Compiti dice quanti ne ha completati e se ha errori o compiti bloccati.",
+   "Il contenuto dei magazzini personali non è visibile: si vede solo che lo studente li sta usando."
+  ],
+  "utente": "docente (con Anna, Bruno ed Elisa appena usciti)"
+ },
+ {
+  "file": "58-docente-compiti-tutti.png",
+  "capitolo": "H",
+  "titolo": "Tabella dei compiti di tutti",
+  "cosa_si_vede": "La tabella dei compiti dello scenario attivo con studente, ruolo, compito, merce, quantità e stato (Completato, Da fare, Errore, Bloccato) di ogni compito.",
+  "passaggi": [
+   "Nella pagina della classe, sezione Scenari, premi \"Compiti\" sullo scenario attivo.",
+   "La tabella mostra tutti i compiti di tutti gli studenti con il loro stato.",
+   "Cerca righe in Errore o Bloccato: sono gli studenti che hanno bisogno di aiuto."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "59-scenario-controlla-anomalie.png",
+  "capitolo": "H",
+  "titolo": "Controlla scenario: anomalie",
+  "cosa_si_vede": "Il risultato di \"Controlla scenario\": elenco di anomalie come giacenze negative, ordini non evasi, DDT senza fattura, fatture senza DDT, spedizioni ferme e compiti in errore.",
+  "passaggi": [
+   "Premi \"Controlla scenario\".",
+   "Il programma elenca le anomalie trovate, divise per tipo (ordini non evasi, DDT senza fattura, compiti in errore...).",
+   "Usalo a fine esercitazione per commentare in classe cosa è rimasto in sospeso."
+  ],
+  "utente": "docente"
+ },
+ {
+  "file": "60-compiti-studente.png",
+  "capitolo": "I",
+  "titolo": "I compiti di uno studente",
+  "cosa_si_vede": "La pagina Classe > Compiti di Anna (magazziniere): avviso di scorta bassa, compiti da fare con descrizione, merce, controparte, quantità e il pulsante \"Apri il documento\"; un compito è segnato \"Bloccato\".",
+  "passaggi": [
+   "Accedi come studente, entra nella classe e apri Classe > Compiti.",
+   "Ogni scheda è un compito: leggi cosa registrare, quale merce e per quale cliente o fornitore.",
+   "Premi \"Apri il documento\" per andare alla schermata giusta.",
+   "I compiti \"Bloccati\" si sbloccano da soli quando arriva la merce."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "61-compito-documento-compilato.png",
+  "capitolo": "I",
+  "titolo": "Compito svolto: scarico compilato",
+  "cosa_si_vede": "Lo studente Anna ha aperto lo scarico (DDT) per il compito: cliente Gallo Arredi Srl, Notebook S1-014, quantità 13, come richiesto dal compito.",
+  "passaggi": [
+   "Dal compito premi \"Apri il documento\" (si apre l'elenco degli scarichi).",
+   "Premi \"Nuovo: scarico (DDT)\".",
+   "Scegli il cliente, la merce e la quantità indicate dal compito.",
+   "Premi Conferma: il programma controlla da solo il compito."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "62-scarico-secondo-studente.png",
+  "capitolo": "I",
+  "titolo": "Secondo scarico sulla stessa merce (Elisa)",
+  "cosa_si_vede": "Elisa, un'altra studentessa magazziniere, compila lo scarico di 11 Notebook S1-014 per Mancini Cartolibreria: Anna ne ha già scaricati 13, e la giacenza attuale mostrata è 18.",
+  "passaggi": [
+   "Un secondo studente scarica la stessa merce per un altro cliente.",
+   "Nella riga, \"Giacenza attuale\" mostra quanta merce resta dopo lo scarico di Anna (18).",
+   "Premi Conferma: la giacenza scende a 7, sotto il punto di riordino."
+  ],
+  "utente": "elisa"
+ },
+ {
+  "file": "63-scorta-bassa-articolo.png",
+  "capitolo": "I",
+  "titolo": "Scorta bassa: articolo sotto il punto di riordino",
+  "cosa_si_vede": "L'elenco articoli filtrato su S1-014: giacenza 7, scarichi 24 e il segno giallo \"!\" che indica che la merce è sotto il punto di riordino.",
+  "passaggi": [
+   "Dopo i due scarichi la giacenza dei Notebook è 7, sotto il punto di riordino.",
+   "Nella colonna Stato compare il segno giallo \"!\".",
+   "Il programma avvisa tutta la classe e assegna un compito di riordino a chi fa gli acquisti."
+  ],
+  "utente": "elisa"
+ },
+ {
+  "file": "64-notifica-scorta-bassa.png",
+  "capitolo": "I",
+  "titolo": "Notifica di scorta bassa visibile a tutti",
+  "cosa_si_vede": "La finestra Notifiche (aperta dalla campanella) con il messaggio di scorta bassa sui Notebook S1-014, visibile a tutti gli studenti della classe.",
+  "passaggi": [
+   "La campanella in alto mostra un numero rosso quando ci sono notifiche non lette.",
+   "Premi la campanella: compare l'elenco, uguale per tutta la classe.",
+   "Leggi il messaggio di scorta bassa: chi si occupa degli acquisti deve riordinare."
+  ],
+  "utente": "elisa"
+ },
+ {
+  "file": "65-cruscotto-notifica-altro-studente.png",
+  "capitolo": "I",
+  "titolo": "La notifica arriva anche agli altri studenti",
+  "cosa_si_vede": "Il Cruscotto di Carla (commerciale): il riquadro Notifiche mostra lo stesso avviso di scorta bassa visto da Elisa, e la campanella ha il contatore delle non lette.",
+  "passaggi": [
+   "Entra come un altro studente (qui Carla).",
+   "Nel Cruscotto, riquadro Notifiche, trovi gli stessi avvisi: sono comuni a tutta la classe.",
+   "Il riquadro \"I miei compiti\" riassume i compiti personali."
+  ],
+  "utente": "carla"
+ },
+ {
+  "file": "66-compito-riordino.png",
+  "capitolo": "I",
+  "titolo": "Compito di riordino per lo studente acquisti",
+  "cosa_si_vede": "La pagina Compiti di Bruno (acquisti): in cima il nuovo compito dinamico di riordino per i Notebook S1-014 creato dalla scorta bassa, insieme ai compiti dello scenario.",
+  "passaggi": [
+   "Entra come lo studente con ruolo Acquisti (Bruno).",
+   "Apri Classe > Compiti: è comparso un compito di riordino per la merce sotto scorta.",
+   "Leggi quanto serve e a quale fornitore ordinare."
+  ],
+  "utente": "bruno"
+ },
+ {
+  "file": "67-ordine-riordino-compilato.png",
+  "capitolo": "I",
+  "titolo": "Ordine fornitore per il riordino",
+  "cosa_si_vede": "Bruno compila l'ordine al fornitore Ufficio Facile Srl per 30 Notebook S1-014 (il compito chiedeva almeno 17).",
+  "passaggi": [
+   "Dal compito di riordino premi \"Apri il documento\", poi \"Nuovo: ordine fornitore\".",
+   "Scegli il fornitore indicato e la merce, e una quantità almeno pari a quella richiesta (qui 30 invece di 17, per coprire anche lo scarico bloccato).",
+   "Premi Conferma."
+  ],
+  "utente": "bruno"
+ },
+ {
+  "file": "68-compito-riordino-in-attesa.png",
+  "capitolo": "I",
+  "titolo": "Compito di riordino ancora aperto dopo l'ordine",
+  "cosa_si_vede": "La pagina Compiti di Bruno dopo aver confermato l'ordine fornitore: il compito di riordino è ancora \"Da fare\", perché si chiude da solo solo quando la merce arriva e la giacenza supera il punto di riordino.",
+  "passaggi": [
+   "Dopo Conferma torna in Classe > Compiti.",
+   "Il compito di riordino resta \"Da fare\": aspetta che un magazziniere evada l'ordine.",
+   "Quando la merce è entrata e la giacenza supera il punto di riordino il compito si completa da solo."
+  ],
+  "utente": "bruno"
+ },
+ {
+  "file": "69-compito-bloccato.png",
+  "capitolo": "I",
+  "titolo": "Compito bloccato per scorta insufficiente",
+  "cosa_si_vede": "La pagina Compiti di Anna: il compito di scarico di 12 Notebook per Ferrari Uffici è \"Bloccato\" con il motivo \"Non c'è abbastanza merce in magazzino: serve un riordino\"; in alto l'avviso del compito bloccato.",
+  "passaggi": [
+   "Quando la merce non basta per tutti gli scarichi, un compito diventa \"Bloccato\".",
+   "Leggi il motivo nella scheda: serve un riordino.",
+   "Non puoi farlo finché non arriva la merce: aspetta l'ordine e la sua evasione."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "70-ordine-da-evadere.png",
+  "capitolo": "I",
+  "titolo": "Evasione dell'ordine di riordino (magazziniere)",
+  "cosa_si_vede": "Anna, magazziniere, apre l'ordine fornitore 2/2026 per 30 Notebook confermato da Bruno: in fondo al dettaglio c'è il pulsante \"Evadi ordine\".",
+  "passaggi": [
+   "Quando la merce arriva, il magazziniere apre Documenti > Ordini fornitore.",
+   "Seleziona l'ordine confermato dall'acquisti.",
+   "Premi \"Evadi ordine\": il carico entra in magazzino."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "71-compito-sbloccato.png",
+  "capitolo": "I",
+  "titolo": "Il compito bloccato si sblocca",
+  "cosa_si_vede": "Dopo l'evasione dell'ordine la giacenza è risalita: il compito di scarico dei 12 Notebook è tornato \"Da fare\" e l'avviso del compito bloccato è sparito.",
+  "passaggi": [
+   "Dopo \"Evadi ordine\" la merce è in magazzino.",
+   "Torna in Classe > Compiti: il compito non è più bloccato (si aggiorna entro 5 secondi).",
+   "Ora puoi registrare lo scarico per Ferrari Uffici Srl."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "72-compito-errore.png",
+  "capitolo": "I",
+  "titolo": "Compito in errore",
+  "cosa_si_vede": "La scheda del compito \"Scarico: S1-002 Tastiera USB italiana\" con stato Errore e l'esito che elenca cosa non va: quantità attesa 11, trovata 10.",
+  "passaggi": [
+   "Torna in Classe > Compiti.",
+   "Il compito è in \"Errore\": la scheda elenca cosa non va (atteso e trovato).",
+   "Correggi: annulla il documento sbagliato e registrane uno giusto."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "73-annulla-documento-conferma.png",
+  "capitolo": "I",
+  "titolo": "Annullare il documento sbagliato",
+  "cosa_si_vede": "La finestra di conferma di \"Annulla documento\" per lo scarico sbagliato: l'annullo storna i movimenti e rimette la merce in magazzino.",
+  "passaggi": [
+   "Apri il documento sbagliato in Documenti > DDT / Scarichi.",
+   "Premi \"Annulla documento\".",
+   "Leggi la conferma e premi di nuovo \"Annulla documento\": i movimenti vengono stornati."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": "74-compito-corretto.png",
+  "capitolo": "I",
+  "titolo": "Compito corretto",
+  "cosa_si_vede": "Dopo l'annullo e il nuovo scarico con la quantità giusta (11), la scheda del compito Tastiere passa a Completato e il contatore dei completati sale.",
+  "passaggi": [
+   "Registra di nuovo lo scarico con i dati giusti (cliente Romano Ristorazione, quantità 11) e conferma.",
+   "Il controllo si ripete da solo: il compito diventa \"Completato\"."
+  ],
+  "utente": "anna"
+ },
+ {
+  "file": null,
+  "capitolo": "I",
+  "titolo": "Nota: limiti della demo locale",
+  "cosa_si_vede": "Nessuno screenshot. Nella demo locale tutte le schede condividono un solo utente collegato alla volta, quindi due studenti non possono scaricare nello stesso istante: i due scarichi sulla stessa merce sono stati fatti uno dopo l'altro (Anna poi Elisa), con lo stesso effetto (scorta bassa, notifica e compito di riordino). Gli utenti online nella vista docente sono stati ottenuti cambiando rapidamente utente con Entra come (online = battito negli ultimi 45 secondi).",
+  "passaggi": [],
+  "utente": "-"
+ }
+]

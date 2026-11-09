@@ -61,7 +61,7 @@ Azioni: `articoli.scrivi`, `anagrafiche.scrivi`, `lotti_ubicazioni`, `carico`, `
 | Ruolo aziendale | Azioni |
 | --- | --- |
 | magazziniere | `carico`, `scarico`, `reso`, `trasferimento`, `inventario`, `evadi_ordine`, `spedizione`, `lotti_ubicazioni`, `scadenze` |
-| acquisti | `ordine_fornitore`, `anagrafiche.scrivi`, `articoli.scrivi`, `scadenze` |
+| acquisti | `ordine_fornitore`, `evadi_ordine`, `anagrafiche.scrivi`, `articoli.scrivi`, `scadenze` |
 | commerciale | `preventivo`, `ordine_cliente`, `anagrafiche.scrivi`, `scadenze` |
 | amministrazione | `fattura`, `anagrafiche.scrivi`, `scadenze` |
 

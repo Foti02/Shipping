@@ -129,7 +129,7 @@ export default function Inventario() {
             <>
               <div className="righe-bottoni" style={{ marginBottom: 16 }}>
                 <Badge tono={aperto ? 'blu' : 'grigio'}>{aperto ? 'Aperto' : 'Chiuso'}</Badge>
-                <span>{inv.n_contate} righe contate su {inv.n_righe} · {inv.n_rettificate} rettificate</span>
+                <span>{inv.n_contate} {inv.n_contate === 1 ? 'riga contata' : 'righe contate'} su {inv.n_righe} · {inv.n_rettificate} {inv.n_rettificate === 1 ? 'rettificata' : 'rettificate'}</span>
                 <span className="muto">{aperto ? `aperto il ${dataOra(inv.created_at)}` : `chiuso il ${dataOra(inv.chiuso_il)}`}</span>
                 {aperto && scrive && (
                   <Button variante="tenue" disabled={daContare > 0 || chiudi.isPending} onClick={() => chiudi.mutate({ p_inventario: inv.id }, { onSuccess: (r) => setNota(r) })}>
@@ -141,7 +141,7 @@ export default function Inventario() {
               {nota && (
                 <div className={`avviso ${nota.non_rettificate.length ? '' : 'ok-box'}`} role="status">
                   <h3>Inventario chiuso</h3>
-                  <p>{nota.rettificate} righe rettificate su {nota.righe}.</p>
+                  <p>{nota.rettificate} {nota.rettificate === 1 ? 'riga rettificata' : 'righe rettificate'} su {nota.righe}.</p>
                   {nota.non_rettificate.length > 0 && (
                     <p>Differenze lasciate senza rettifica (il sistema non è cambiato): {nota.non_rettificate.map((x) => `${x.matricola} (${segno(x.differenza)})`).join(', ')}.</p>
                   )}

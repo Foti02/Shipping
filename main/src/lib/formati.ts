@@ -5,7 +5,8 @@ const fData = new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: '2-digit
 const fDataOra = new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
 /** Centesimi -> "1.234,56 €" (con spazio non divisibile prima del simbolo). */
-export const euro = (cent: number | string | null | undefined) => fEuro.format(Number(cent ?? 0) / 100);
+// + 0 trasforma -0 in 0: senza, una ritenuta nulla si vedrebbe come "-0,00 €".
+export const euro = (cent: number | string | null | undefined) => fEuro.format(Number(cent ?? 0) / 100 + 0);
 
 /** Quantita' in formato italiano, fino a 3 decimali: 1234.5 -> "1.234,5". */
 export const qta = (n: number | string | null | undefined) => fQta.format(Number(n ?? 0));

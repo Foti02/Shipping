@@ -13,7 +13,7 @@ export interface Ruolo {
 // Matrice di architecture.md sezione 4. Serve solo a nascondere i pulsanti: la verita' e' nel database.
 export const PERMESSI_RUOLO: Record<RuoloAziendale, readonly Azione[]> = {
   magazziniere: ['carico', 'scarico', 'reso', 'trasferimento', 'inventario', 'evadi_ordine', 'spedizione', 'lotti_ubicazioni', 'scadenze'],
-  acquisti: ['ordine_fornitore', 'anagrafiche.scrivi', 'articoli.scrivi', 'scadenze'],
+  acquisti: ['ordine_fornitore', 'evadi_ordine', 'anagrafiche.scrivi', 'articoli.scrivi', 'scadenze'],
   commerciale: ['preventivo', 'ordine_cliente', 'anagrafiche.scrivi', 'scadenze'],
   amministrazione: ['fattura', 'anagrafiche.scrivi', 'scadenze'],
 };

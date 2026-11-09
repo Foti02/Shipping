@@ -5,6 +5,7 @@ const nb = (s: string) => s.replace(/ /g, ' ');
 
 test('euro da centesimi', () => {
   expect(nb(euro(123456))).toBe('1.234,56 €');
+  expect(nb(euro(-0))).toBe('0,00 €'); // niente "-0,00 €" per importi nulli
   expect(nb(euro(0))).toBe('0,00 €');
   expect(nb(euro(-50))).toBe('-0,50 €');
   expect(nb(euro(null))).toBe('0,00 €');
