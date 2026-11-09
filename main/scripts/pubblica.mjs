@@ -8,8 +8,10 @@ import { unisci } from './unisci.mjs';
 const BUCKET = 'installer';
 const URL_BASE = (process.env.SUPABASE_URL ?? '').replace(/\/$/, '');
 const KEY = process.env.SUPABASE_SERVICE_KEY ?? '';
-const die = (m) => { console.error(m); process.exit(1); };
-if (!URL_BASE || !KEY) die('Mancano SUPABASE_URL o SUPABASE_SERVICE_KEY (variabile e segreto del repo GitHub).');
+// ::error:: fa comparire il messaggio tra le annotazioni del lavoro su GitHub (i log completi richiedono l'accesso)
+const die = (m) => { console.error('::error::' + String(m).replace(/
+/g, ' | ')); process.exit(1); };
+if (!URL_BASE || !KEY) die(`Mancano: ${[!URL_BASE && 'variabile SUPABASE_URL', !KEY && 'segreto SUPABASE_SERVICE_KEY'].filter(Boolean).join(' e ')} (Settings > Secrets and variables > Actions del repo).`);
 
 const pubblico = (nome) => `${URL_BASE}/storage/v1/object/public/${BUCKET}/${nome}`;
 

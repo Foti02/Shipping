@@ -21,12 +21,12 @@ git push --follow-tags
 ```
 
 Il primo comando alza il numero, aggiorna `main/CHANGELOG.md`, fa il commit `release: vX.Y.Z` e mette il tag `vX.Y.Z`. Rifiuta di partire se ci sono modifiche non salvate o se manca la descrizione.
-Il push del tag avvia GitHub Actions (`.github/workflows/release.yml`), che controlla che tag e `package.json` coincidano, esegue i test e pubblica su GitHub Releases:
+Il push del tag avvia GitHub Actions (`.github/workflows/release.yml`), che controlla che tag e `package.json` coincidano, esegue i test e carica gli installer nell'archivio pubblico "installer" di Supabase, aggiornando `latest.json`:
 
-- `Shipping-Setup-X.Y.Z.exe` (Windows)
-- `Shipping-X.Y.Z-mac.dmg` (macOS)
+- `Shipping-ERP-Setup-X.Y.Z.exe` (Windows)
+- `Shipping-ERP-X.Y.Z-mac.dmg` (macOS)
 
-Il sito mostra la versione in basso e i pulsanti "Installa per Windows / macOS" puntano all'ultima release. L'app desktop avvisa quando ne esiste una più nuova.
+Il sito mostra la versione in basso e i pulsanti "Installa per Windows / macOS" leggono `latest.json` e puntano all'ultima versione. L'app desktop avvisa quando ne esiste una più nuova.
 
 ## Database
 
