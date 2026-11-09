@@ -28,5 +28,5 @@ writeFileSync('CHANGELOG.md', updated);
 
 execSync('git add package.json package-lock.json CHANGELOG.md', { stdio: 'inherit' });
 execSync(`git commit -m "release: v${version}"`, { stdio: 'inherit' });
-execSync(`git tag v${version}`, { stdio: 'inherit' });
+execSync(`git tag -a v${version} -m "v${version}"`, { stdio: 'inherit' }); // annotato: solo cosi' lo porta `git push --follow-tags`
 console.log(`\nVersione ${version} pronta. Per pubblicarla:\n  git push --follow-tags`);
