@@ -1,9 +1,11 @@
 name: Release
 
 # Si avvia con un tag vX.Y.Z (lo crea `npm run release`) oppure a mano da Actions indicando un tag esistente.
-# Costruisce l'installer Windows (.exe) e quello macOS (.dmg), li carica nell'archivio pubblico "installer"
-# di Supabase e aggiorna latest.json, che il sito e l'app leggono per i pulsanti "Installa" e per l'avviso di
-# aggiornamento. Servono: variabile SUPABASE_URL e segreto SUPABASE_SERVICE_KEY nel repo.
+# Costruisce l'installer Windows (.exe) e quello macOS (.dmg), li carica come allegati di una release del repo
+# PUBBLICO dei download (gli installer superano i 50 MB dell'archivio gratuito di Supabase) e aggiorna latest.json
+# su Supabase, che il sito e l'app leggono per i pulsanti "Installa" e per l'avviso di aggiornamento.
+# Servono nel repo: segreto RELEASES_TOKEN (token con scrittura sul repo dei download), variabile SUPABASE_URL,
+# segreto SUPABASE_SERVICE_KEY, e facoltativa la variabile DOWNLOAD_REPO (default Foti02/Shipping-download).
 on:
   push:
     tags: ['v*']
@@ -51,12 +53,12 @@ jobs:
         env:
           # macOS senza firma Apple (nessun abbonamento): l'app funziona ma va aperta con clic destro > Apri la prima volta.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-      - name: Carica su Supabase
+      - name: Carica nel repo pubblico dei download
         shell: bash
         run: node scripts/pubblica.mjs carica ${{ matrix.piattaforma }} ${{ matrix.ext }}
         env:
-          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          DOWNLOAD_REPO: ${{ vars.DOWNLOAD_REPO }}
       - uses: actions/upload-artifact@v4
         with:
           name: esito-${{ matrix.piattaforma }}
