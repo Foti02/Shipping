@@ -1,0 +1,125 @@
+/* Stile ITS: superfici piene, spigoli arrotondati, niente bordi ne ombre, niente loghi. */
+@font-face { font-family: Montserrat; font-weight: 400; src: url('/fonts/Montserrat-Regular.ttf'); }
+@font-face { font-family: Montserrat; font-weight: 700; src: url('/fonts/Montserrat-Bold.ttf'); }
+@font-face { font-family: Montserrat; font-weight: 800; src: url('/fonts/Montserrat-ExtraBold.ttf'); }
+
+:root {
+  --blu: #00496d;
+  --arancione: #ea5b0c;
+  --testo: #1a1a1a;
+  --attenuato: #407794;
+  --pannello: #eaf1f6;
+  --sfondo: #ffffff;
+  --zebra: #f4f8fb;
+  --selezione: #00496d;
+  --sul-blu: #ffffff;
+  --ok-sfondo: #d6efdb; --ok-testo: #17602a;
+  --avviso-sfondo: #fff0b8; --avviso-testo: #6b5000;
+  --info-sfondo: #d2e5f2; --info-testo: #00496d;
+  --errore-sfondo: #fbdada; --errore-testo: #9b1c1c;
+  --raggio: 14px;
+  --barra-laterale: 232px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --blu: #a9c4d3;
+    --testo: #f2f6f8;
+    --attenuato: #a9c4d3;
+    --pannello: #10364a;
+    --sfondo: #0b2635;
+    --zebra: #0f3044;
+    --selezione: #2a6f94;
+    --sul-blu: #ffffff;
+    --ok-sfondo: #1c4a2b; --ok-testo: #bfeccb;
+    --avviso-sfondo: #5a4710; --avviso-testo: #ffe8a0;
+    --info-sfondo: #1d4d6b; --info-testo: #cfe6f5;
+    --errore-sfondo: #5d2222; --errore-testo: #ffd0d0;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background: var(--sfondo);
+  color: var(--testo);
+  font-family: Montserrat, system-ui, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+h1, h2, h3 { color: var(--blu); margin: 0 0 8px; line-height: 1.2; }
+h1 { font-size: 2rem; font-weight: 800; }
+h2 { font-size: 1.25rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+.dot { color: var(--arancione); }
+a { color: var(--blu); }
+p { margin: 0 0 12px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--arancione); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* ---------- pagine pubbliche (accesso, database non configurato) ---------- */
+.pubblica { max-width: 640px; margin: 0 auto; padding: 40px 16px; }
+.pubblica h1 { font-size: 3rem; }
+.lead { color: var(--attenuato); margin: 0 0 24px; }
+.panel { background: var(--pannello); border-radius: 20px; padding: 24px; margin-bottom: 16px; }
+.panel.accent { background: var(--arancione); color: #fff; }
+.panel.accent a.btn { background: #fff; color: var(--arancione); }
+.buttons { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0 8px; }
+.hint { color: var(--attenuato); font-size: 0.85rem; margin: 0; }
+.panel code, .panel pre { background: var(--sfondo); border-radius: 8px; padding: 2px 6px; font-size: 0.9rem; }
+.panel pre { padding: 12px; overflow-x: auto; }
+
+/* ---------- guscio dell'app ---------- */
+.shell { display: grid; grid-template-columns: var(--barra-laterale) minmax(0, 1fr); min-height: 100vh; }
+.nav { background: var(--pannello); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.nav .marchio { font-size: 1.6rem; font-weight: 800; color: var(--blu); padding: 0 12px 16px; margin: 0; }
+.nav a {
+  display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px;
+  color: var(--testo); text-decoration: none; font-weight: 700;
+}
+.nav a:hover { background: var(--sfondo); }
+.nav a.active { background: var(--blu); color: var(--sfondo); }
+.colonna { display: flex; flex-direction: column; min-width: 0; min-height: 100vh; }
+.top { display: flex; align-items: center; gap: 12px; padding: 12px 24px; background: var(--pannello); }
+.top .titolo { flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top .titolo small { font-weight: 400; color: var(--attenuato); font-size: 0.85rem; margin-left: 8px; }
+.top-icona {
+  position: relative; min-width: 44px; min-height: 44px; border: 0; border-radius: 999px; background: var(--sfondo);
+  cursor: pointer; font-weight: 700; padding: 0 14px; color: var(--blu);
+}
+.top-icona .conto {
+  position: absolute; top: 2px; right: 2px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px;
+  background: var(--arancione); color: #fff; font-size: 0.75rem; line-height: 20px; text-align: center;
+}
+.menu-utente { position: relative; }
+.menu-utente .tendina { position: absolute; right: 0; top: 52px; z-index: 20; background: var(--sfondo); border-radius: var(--raggio); padding: 12px; min-width: 200px; }
+.contenuto { flex: 1; padding: 24px; min-width: 0; }
+.piede { padding: 12px 24px; color: var(--attenuato); font-size: 0.85rem; }
+.avviso-agg { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--arancione); color: #fff; padding: 8px 24px; }
+.avviso-agg a { color: var(--arancione); background: #fff; border-radius: 999px; padding: 8px 16px; font-weight: 700; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+
+/* ---------- griglie e carte (cruscotto, scelta magazzino) ---------- */
+.griglia { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.carta { background: var(--pannello); border-radius: 20px; padding: 20px; min-width: 0; }
+.carta ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.carta li { display: flex; gap: 8px; align-items: center; justify-content: space-between; background: var(--sfondo); border-radius: 12px; padding: 10px 14px; min-height: 44px; }
+.kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kpi div { background: var(--sfondo); border-radius: 12px; padding: 10px 14px; }
+.kpi strong { display: block; font-size: 1.25rem; color: var(--blu); }
+.kpi span { font-size: 0.8rem; color: var(--attenuato); }
+.muto { color: var(--attenuato); font-size: 0.9rem; }
+
+/* ---------- sotto 800px: barra in basso ---------- */
+@media (max-width: 800px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .nav {
+    position: fixed; top: auto; bottom: 0; left: 0; right: 0; height: auto; z-index: 30; flex-direction: row; gap: 4px;
+    padding: 6px 8px; overflow-x: auto; overflow-y: hidden; border-radius: 20px 20px 0 0;
+  }
+  .nav .marchio { display: none; }
+  .nav a { flex: 0 0 auto; min-width: 72px; justify-content: center; padding: 0 12px; font-size: 0.85rem; }
+  .colonna { padding-bottom: 68px; }
+  .top, .contenuto, .piede, .avviso-agg { padding-left: 16px; padding-right: 16px; }
+  .pubblica h1 { font-size: 2.4rem; }
+}

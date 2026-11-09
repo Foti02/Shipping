@@ -1,0 +1,67 @@
+/* Kit di componenti: solo token di style.css. Superfici piene, nessun bordo, nessuna ombra. */
+
+/* Button */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 24px;
+  border: 0; border-radius: 999px; font-weight: 700; text-decoration: none; cursor: pointer;
+  background: var(--blu); color: var(--sfondo);
+}
+.btn:hover { filter: brightness(1.12); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-accento, .btn.primary { background: var(--arancione); color: #fff; }
+.btn-tenue { background: var(--pannello); color: var(--blu); }
+.btn-pericolo { background: #b3261e; color: #fff; }
+
+/* Field, Select */
+.field { display: grid; gap: 4px; margin-bottom: 12px; }
+.field label { font-weight: 700; font-size: 0.9rem; color: var(--blu); }
+.field input, .field select {
+  min-height: 44px; padding: 0 14px; border: 0; border-radius: 12px; background: var(--pannello); color: var(--testo); width: 100%;
+}
+.field input[aria-invalid='true'], .field select[aria-invalid='true'] { background: var(--errore-sfondo); }
+.field small { color: var(--attenuato); }
+.field small.errore, .errore { color: var(--errore-testo); font-weight: 700; }
+.form-errore { background: var(--errore-sfondo); color: var(--errore-testo); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-weight: 700; }
+
+/* Dialog */
+.dialog { border: 0; border-radius: 20px; padding: 0; background: var(--sfondo); color: var(--testo); width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); }
+.dialog::backdrop { background: rgba(0, 20, 30, 0.55); }
+.dialog-corpo { padding: 24px; }
+.dialog-azioni { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-top: 16px; }
+
+/* Tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.tabs button { min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--pannello); color: var(--blu); font-weight: 700; cursor: pointer; }
+.tabs button[aria-selected='true'] { background: var(--blu); color: var(--sfondo); }
+
+/* Badge */
+.badge { display: inline-block; padding: 2px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+.badge-verde { background: var(--ok-sfondo); color: var(--ok-testo); }
+.badge-giallo { background: var(--avviso-sfondo); color: var(--avviso-testo); }
+.badge-blu { background: var(--info-sfondo); color: var(--info-testo); }
+.badge-rosso { background: var(--errore-sfondo); color: var(--errore-testo); }
+.badge-grigio { background: var(--pannello); color: var(--attenuato); }
+
+/* EmptyState */
+.vuoto { background: var(--pannello); border-radius: 20px; padding: 32px 24px; text-align: center; color: var(--attenuato); }
+.vuoto h3 { color: var(--blu); }
+
+/* Toast */
+.toasts { position: fixed; right: 16px; bottom: 80px; z-index: 100; display: grid; gap: 8px; max-width: calc(100vw - 32px); }
+.toast { padding: 12px 18px; border-radius: 14px; font-weight: 700; background: var(--blu); color: var(--sfondo); }
+.toast-ok { background: var(--ok-testo); color: var(--ok-sfondo); }
+.toast-errore { background: #b3261e; color: #fff; }
+
+/* DataTable */
+.dt-scroll { overflow-x: auto; border-radius: var(--raggio); background: var(--sfondo); }
+.dt table { width: 100%; border-collapse: collapse; }
+.dt th { text-align: left; background: var(--pannello); font-weight: 700; color: var(--blu); padding: 0; white-space: nowrap; }
+.dt th:not(:has(button)) { padding: 0 14px; }
+.dt th button { width: 100%; min-height: 44px; padding: 0 14px; border: 0; background: none; text-align: inherit; font-weight: 700; color: var(--blu); cursor: pointer; }
+.dt .destra { text-align: right; }
+.dt td { padding: 10px 14px; min-height: 44px; }
+.dt tbody tr { cursor: pointer; }
+.dt tbody tr:nth-child(even) { background: var(--zebra); }
+.dt tbody tr:hover { background: var(--pannello); }
+.dt tbody tr.sel { background: var(--selezione); color: var(--sul-blu); }
+.dt-dettaglio { margin-top: 16px; background: var(--pannello); border-radius: 20px; padding: 20px; }

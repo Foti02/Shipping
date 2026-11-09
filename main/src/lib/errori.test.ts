@@ -1,0 +1,17 @@
+import { expect, test } from 'vitest';
+import { MESSAGGIO_GENERICO, messaggioErrore } from './errori';
+
+const CODICI = ['non_autenticato', 'permesso_negato', 'non_trovato', 'dato_non_valido', 'giacenza_insufficiente', 'codice_non_valido', 'conferma_errata', 'stato_non_valido', 'gia_esiste'];
+
+test('ogni codice del contratto ha un testo proprio', () => {
+  const testi = CODICI.map((c) => messaggioErrore(c));
+  for (const t of testi) expect(t).not.toBe(MESSAGGIO_GENERICO);
+  expect(new Set(testi).size).toBe(CODICI.length);
+});
+
+test('accetta Error e ricade sul generico', () => {
+  expect(messaggioErrore(new Error('giacenza_insufficiente'))).toBe(messaggioErrore('giacenza_insufficiente'));
+  expect(messaggioErrore('boh')).toBe(MESSAGGIO_GENERICO);
+  expect(messaggioErrore(undefined)).toBe(MESSAGGIO_GENERICO);
+  expect(messaggioErrore(new Error('Failed to fetch'))).toBe(MESSAGGIO_GENERICO);
+});

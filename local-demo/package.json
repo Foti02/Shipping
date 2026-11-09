@@ -1,0 +1,1 @@
+{"name":"shipping-local-demo","version":"0.0.0","private":true,"type":"module","scripts":{"dev":"vite --config vite.config.ts","build":"vite build --config vite.config.ts"},"devDependencies":{"@electric-sql/pglite":"^0.5.15","@vitejs/plugin-react":"^6.3.0","typescript":"^7.0.2","vite":"^8.3.6"}}

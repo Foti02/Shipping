@@ -1,0 +1,40 @@
+name: Release
+
+# Si avvia quando si fa push di un tag vX.Y.Z (lo crea `npm run release`).
+# Costruisce l'installer Windows (.exe) e quello macOS (.dmg) e li allega alla release.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: main
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: main/package-lock.json
+      - run: npm ci
+      - name: Il tag deve coincidere con la versione in package.json
+        shell: bash
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - run: npm test
+      - run: npm run build
+      - name: Installer
+        shell: bash
+        run: npx electron-builder ${{ matrix.os == 'windows-latest' && '--win' || '--mac' }} --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # macOS senza firma Apple: l'app funziona ma va aperta con clic destro > Apri la prima volta.
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'

@@ -1,0 +1,48 @@
+name: Deploy sito
+
+# Pubblica il sito su GitHub Pages a ogni release (stesso tag degli installer),
+# oppure a mano da Actions. URL e chiave anon di Supabase vanno in
+# Settings > Secrets and variables > Actions > Variables (SUPABASE_URL, SUPABASE_ANON_KEY).
+# La chiave anon e' pubblica per progetto: la sicurezza sta nelle funzioni SQL.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: main
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: main/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: main/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

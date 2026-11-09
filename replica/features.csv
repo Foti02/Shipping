@@ -1,0 +1,106 @@
+feature,area,priority,original,clone,notes
+Login e logout con account personale,Accesso,must,no,no,Miglioria: Supabase Auth
+Magazzino personale isolato,Accesso,must,no,no,Creato al primo accesso; solo il proprietario lo vede
+Magazzino di classe condiviso,Accesso,must,no,no,Piu studenti sugli stessi dati; RLS su Membro
+Docente emette codice di ingresso,Accesso,must,no,no,Multiuso; disattiva e rigenera
+Studente entra con codice,Accesso,must,no,no,Piu classi possibili
+Selettore magazzino (personale / classe),Accesso,must,no,no,
+Ruoli docente e studente,Accesso,must,no,no,Docente assegnato dall'admin
+Persistenza fino a eliminazione del docente,Accesso,must,no,no,Nessuna scadenza automatica
+Docente azzera dati di classe,Accesso,must,no,no,Conferma scritta
+Docente elimina magazzino di classe,Accesso,must,no,no,Conferma scritta
+Docente rimuove studente,Accesso,should,no,no,
+Autore e ora su ogni operazione di classe,Accesso,must,no,no,Registro attivita
+Ripristina dati demo,Accesso,should,no,no,Seed inventato non quello di MerciGest
+Azzera il mio magazzino personale,Accesso,should,no,no,Solo i propri dati
+Giacenza e numerazione coerenti con piu utenti,Movimenti,must,no,no,Funzioni SQL transazionali
+Anagrafica azienda (wizard),Azienda,must,yes,no,S00; una sola riga per account
+Logo azienda caricabile,Azienda,could,yes,no,100x60
+Elenco articoli ordinabile,Magazzino,must,yes,no,S01
+Inserisci articolo,Magazzino,must,yes,no,Matricola, descrizione, categoria
+Modifica articolo,Magazzino,must,yes,no,
+Elimina articolo,Magazzino,must,yes,no,Bloccare se ha movimenti
+Giacenza calcolata (carichi meno scarichi),Magazzino,must,yes,no,S01
+Movimenti dell'articolo selezionato,Magazzino,must,yes,no,Pannello inferiore S01
+Filtro articoli,Magazzino,should,yes,no,
+Importa articoli,Magazzino,should,yes,no,CSV
+Variazioni prezzi e ricarichi su piu articoli,Magazzino,should,yes,no,Dal manuale
+Offerte e promozioni,Magazzino,could,yes,no,Non descritto nel manuale: da vedere a schermo
+Scheda articolo completa (foto barcode posizione prezzi IVA sconti),Magazzino,must,yes,no,Dal manuale
+Icone stato articolo (normale scorta bassa gia ordinato),Magazzino,should,yes,no,Verde giallo blu
+Resi e ordinato tra i dati articolo,Magazzino,should,yes,no,
+Lista prezzi stampa,Magazzino,should,yes,no,
+Etichette con barcode stampa,Magazzino,should,yes,no,
+Esporta lista Excel o XML,Magazzino,should,yes,no,CSV e XML
+Filtro movimenti per tipo (carichi scarichi resi),Movimenti,should,yes,no,
+Stampa DDT senza valori,Movimenti,should,yes,no,
+Rapporto movimenti filtrabile,Movimenti,should,yes,no,Data categoria articolo soggetto
+Stato scadenza in sospeso o completato,Agenda,should,yes,no,
+Tipo scadenza o appuntamento,Agenda,should,yes,no,
+Installer Windows (.exe),Distribuzione,must,no,no,Prima priorita; Electron
+Installer macOS (.dmg),Distribuzione,should,no,no,Dopo Windows; build su Mac o GitHub Actions; firma da decidere
+Aggiornamento automatico dell'app desktop,Distribuzione,could,no,no,Miglioria
+Android (.apk),Distribuzione,could,no,no,Solo se richiesto: la PWA gia si installa
+Ricerca con lettore barcode,Magazzino,should,yes,no,Miglioria: fotocamera
+Scorta minima e avviso,Magazzino,should,no,no,Miglioria
+Carico/acquisto,Movimenti,must,yes,no,F01
+Scarico/vendita,Movimenti,must,yes,no,F02
+Reso da cliente,Movimenti,must,yes,no,F03
+Righe movimento con sconto e imposta,Movimenti,must,yes,no,S02
+Numerazione progressiva per anno,Movimenti,must,yes,no,N/2026
+Modifica ed elimina movimento,Movimenti,should,yes,no,Ricalcola giacenza
+Filtro per data,Movimenti,should,yes,no,
+Blocco scarico oltre giacenza,Movimenti,should,no,no,Miglioria
+Ordine a fornitore,Ordini,must,yes,no,F04
+Ordine da cliente,Ordini,must,yes,no,F04
+Evadi ordine,Ordini,must,yes,no,Genera movimento
+Righe ordine,Ordini,must,yes,no,S04
+Fattura di acquisto,Fatture,should,yes,no,F05
+Fattura di vendita,Fatture,should,yes,no,F05
+Imposta INPS e ritenuta d'acconto,Fatture,should,yes,no,Regole da fissare con il docente
+Filtro vendite/acquisti,Fatture,should,yes,no,
+Bilancio,Fatture,could,yes,no,Anteprima e stampa
+Bozza fattura elettronica XML,Fatture,could,no,no,Miglioria
+Elenco clienti e fornitori,Anagrafiche,must,yes,no,S05
+Inserisci cliente,Anagrafiche,must,yes,no,
+Inserisci fornitore,Anagrafiche,must,yes,no,
+Modifica ed elimina anagrafica,Anagrafiche,must,yes,no,
+Filtro clienti/fornitori,Anagrafiche,should,yes,no,
+Storico movimenti del soggetto,Anagrafiche,should,yes,no,Ultimi 250
+Calendario mensile,Agenda,should,yes,no,S06
+Scadenza/appuntamento (inserisci modifica elimina),Agenda,should,yes,no,
+Vista giornata con ore,Agenda,could,yes,no,
+Stampa lista merce,Stampe,should,yes,no,PDF
+Valore merce,Stampe,should,yes,no,
+Storico movimenti stampa,Stampe,should,yes,no,
+Lista fatture e anagrafiche stampa,Stampe,could,yes,no,
+Anteprima di stampa,Stampe,should,yes,no,
+Esporta CSV,Stampe,should,no,no,Miglioria
+Ricerca globale,Interfaccia,should,no,no,Miglioria
+Dashboard iniziale,Interfaccia,should,no,no,Miglioria
+Pannelli mostra/nascondi,Interfaccia,could,yes,no,Barra di stato barra righe
+Web app installabile PWA,Interfaccia,must,no,no,Miglioria
+Layout responsive telefono,Interfaccia,must,no,no,Miglioria
+Tema chiaro scuro,Interfaccia,could,yes,no,Menu Stile originale
+Manuale utente con screenshot,Documentazione,must,no,no,Richiesto dall'utente
+Attivazione licenza e prova,Licenza,skip,yes,no,Non si clona
+Aggiornamenti programma,Licenza,skip,yes,no,Non serve sul web
+Ruoli aziendali nel magazzino di classe,Classe,must,no,no,
+Scenari del docente con dati fittizi,Scenari,must,no,no,
+Compiti personalizzati distinti per studente,Scenari,must,no,no,
+Controllo automatico degli errori sui compiti,Scenari,must,no,no,
+Sottoscorta condivisa con riordino e sblocco dei compiti,Scenari,must,no,no,
+Ciclo preventivo ordine DDT fattura collegato,Documenti,must,no,no,
+Stato di spedizione dei documenti,Documenti,should,no,no,
+Inventario con giacenza fisica fittizia e rettifiche,Inventario,should,no,no,
+Punto di riordino scorta di sicurezza ed EOQ,Analisi,should,no,no,
+Cruscotto KPI con rotazione e analisi ABC,Analisi,should,no,no,
+Lotti e scadenze FEFO FIFO,Magazzino,should,no,no,
+Ubicazioni e trasferimenti,Magazzino,should,no,no,
+Valorizzazione costo medio FIFO LIFO a confronto,Analisi,could,no,no,
+Registro attivita,Classe,must,no,no,
+Notifiche in-app,Classe,must,no,no,
+Vista docente utenti connessi e attivita,Docente,must,no,no,
+Accesso con nome utente e password senza email,Accesso,must,no,no,
+Sito su GitHub Pages,Distribuzione,must,no,no,
+local-demo con PGlite e utenti pronti,Distribuzione,should,no,no,

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+release/
+.env
+.env.*
+!.env.example
+
+# Riferimenti dell'app originale: restano solo sul PC, non si pubblicano.
+replica/screens/
+*.mdb
+
+# Manuale di terzi: resta sul PC.
+manuale_uso_gestionale_merci.pdf
