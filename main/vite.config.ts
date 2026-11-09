@@ -12,5 +12,5 @@ export default defineConfig({
   plugins: [react()],
   define: { __APP_VERSION__: JSON.stringify(version) },
   resolve: { alias: { '@backend-impl': fileURLToPath(new URL('./src/backend/supabase.ts', import.meta.url)) } },
-  test: { include: ['src/**/*.test.{ts,tsx}', 'supabase/tests/**/*.test.ts'], testTimeout: 30000, hookTimeout: 120000 }, // caricare PGlite in parallelo e' lento: senza questo i beforeAll vanno in timeout
+  test: { include: ['src/**/*.test.{ts,tsx}', 'supabase/tests/**/*.test.ts', 'scripts/**/*.test.ts'], testTimeout: 30000, hookTimeout: 120000 }, // caricare PGlite in parallelo e' lento: senza questo i beforeAll vanno in timeout
 });

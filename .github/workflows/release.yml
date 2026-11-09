@@ -1,25 +1,39 @@
 name: Release
 
-# Si avvia quando si fa push di un tag vX.Y.Z (lo crea `npm run release`).
-# Costruisce l'installer Windows (.exe) e quello macOS (.dmg) e li allega alla release.
+# Si avvia con un tag vX.Y.Z (lo crea `npm run release`) oppure a mano da Actions indicando un tag esistente.
+# Costruisce l'installer Windows (.exe) e quello macOS (.dmg), li carica nell'archivio pubblico "installer"
+# di Supabase e aggiorna latest.json, che il sito e l'app leggono per i pulsanti "Installa" e per l'avviso di
+# aggiornamento. Servono: variabile SUPABASE_URL e segreto SUPABASE_SERVICE_KEY nel repo.
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag da ricostruire (es. v0.1.0)'
+        required: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
     strategy:
+      fail-fast: false # se il runner macOS non e' disponibile, l'installer Windows esce comunque
       matrix:
-        os: [windows-latest, macos-latest]
+        include:
+          - { os: windows-latest, piattaforma: windows, flag: --win, ext: exe }
+          - { os: macos-15-intel, piattaforma: mac, flag: --mac, ext: dmg }
     runs-on: ${{ matrix.os }}
     defaults:
       run:
         working-directory: main
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -28,13 +42,48 @@ jobs:
       - run: npm ci
       - name: Il tag deve coincidere con la versione in package.json
         shell: bash
-        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+        run: test "v$(node -p "require('./package.json').version")" = "$TAG"
       - run: npm test
       - run: npm run build
       - name: Installer
         shell: bash
-        run: npx electron-builder ${{ matrix.os == 'windows-latest' && '--win' || '--mac' }} --publish always
+        run: npx electron-builder ${{ matrix.flag }} --publish never
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # macOS senza firma Apple: l'app funziona ma va aperta con clic destro > Apri la prima volta.
+          # macOS senza firma Apple (nessun abbonamento): l'app funziona ma va aperta con clic destro > Apri la prima volta.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Carica su Supabase
+        shell: bash
+        run: node scripts/pubblica.mjs carica ${{ matrix.piattaforma }} ${{ matrix.ext }}
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: esito-${{ matrix.piattaforma }}
+          path: main/esito-${{ matrix.piattaforma }}.json
+
+  latest:
+    needs: build
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: main
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        continue-on-error: true # nessun esito se tutte le costruzioni sono fallite: lo script lo segnala
+        with:
+          pattern: esito-*
+          merge-multiple: true
+          path: main
+      - name: Aggiorna latest.json
+        run: node scripts/pubblica.mjs latest
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}

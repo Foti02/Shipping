@@ -18,7 +18,9 @@
   },
   "build": {
     "appId": "it.itsmobilita.shipping",
-    "productName": "Shipping",
+    "productName": "Shipping ERP",
+    "compression": "maximum",
+    "electronLanguages": ["it", "en-US"],
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -37,7 +39,7 @@
           ]
         }
       ],
-      "artifactName": "Shipping-Setup-${version}.${ext}"
+      "artifactName": "Shipping-ERP-Setup-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -56,13 +58,7 @@
       ],
       "identity": null,
       "category": "public.app-category.business",
-      "artifactName": "Shipping-${version}-mac.${ext}"
-    },
-    "publish": {
-      "provider": "github",
-      "owner": "Foti02",
-      "repo": "Shipping",
-      "releaseType": "release"
+      "artifactName": "Shipping-ERP-${version}-mac.${ext}"
     }
   },
   "devDependencies": {
