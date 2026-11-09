@@ -1,0 +1,242 @@
+[
+ {
+  "id": "a-chi-serve",
+  "titolo": "A chi serve",
+  "livello": 2
+ },
+ {
+  "id": "come-si-entra",
+  "titolo": "Come si entra",
+  "livello": 2
+ },
+ {
+  "id": "accesso-e-primo-ingresso",
+  "titolo": "A. Accesso e primo ingresso",
+  "livello": 2
+ },
+ {
+  "id": "a-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "a-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "a-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "articoli-carichi-e-scarichi",
+  "titolo": "B. Articoli, carichi e scarichi",
+  "livello": 2
+ },
+ {
+  "id": "b-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "b-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "b-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "preventivi-ordini-cliente-ddt-e-fatture-di-vendita",
+  "titolo": "C. Preventivi, ordini cliente, DDT e fatture di vendita",
+  "livello": 2
+ },
+ {
+  "id": "c-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "c-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "c-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "ordini-ai-fornitori-e-merce-in-arrivo",
+  "titolo": "D. Ordini ai fornitori e merce in arrivo",
+  "livello": 2
+ },
+ {
+  "id": "d-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "d-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "d-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "anagrafiche-dati-azienda-e-agenda",
+  "titolo": "E. Anagrafiche, dati azienda e agenda",
+  "livello": 2
+ },
+ {
+  "id": "e-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "e-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "e-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "inventario",
+  "titolo": "F. Inventario",
+  "livello": 2
+ },
+ {
+  "id": "f-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "f-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "f-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "analisi-riordino-kpi-e-valorizzazione",
+  "titolo": "G. Analisi: riordino, KPI e valorizzazione",
+  "livello": 2
+ },
+ {
+  "id": "g-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "g-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "g-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "area-docente-classi-ruoli-scenari-e-controllo",
+  "titolo": "H. Area docente: classi, ruoli, scenari e controllo",
+  "livello": 2
+ },
+ {
+  "id": "h-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "h-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "h-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "esercitazione-di-gruppo-compiti-scorta-condivisa-e-riordino",
+  "titolo": "I. Esercitazione di gruppo: compiti, scorta condivisa e riordino",
+  "livello": 2
+ },
+ {
+  "id": "i-passaggi",
+  "titolo": "Passaggi",
+  "livello": 3
+ },
+ {
+  "id": "i-cosa-succede",
+  "titolo": "Cosa succede",
+  "livello": 3
+ },
+ {
+  "id": "i-errori-comuni",
+  "titolo": "Errori comuni",
+  "livello": 3
+ },
+ {
+  "id": "i-nota-sulla-demo",
+  "titolo": "Nota sulla demo",
+  "livello": 3
+ },
+ {
+  "id": "esercitazione-di-gruppo-spiegata",
+  "titolo": "Esercitazione di gruppo spiegata",
+  "livello": 2
+ },
+ {
+  "id": "ruoli-aziendali",
+  "titolo": "Ruoli aziendali",
+  "livello": 2
+ },
+ {
+  "id": "per-il-docente",
+  "titolo": "Per il docente",
+  "livello": 2
+ },
+ {
+  "id": "glossario",
+  "titolo": "Glossario",
+  "livello": 2
+ },
+ {
+  "id": "installare-l-app-sul-computer",
+  "titolo": "Installare l'app sul computer",
+  "livello": 2
+ },
+ {
+  "id": "installare-l-app-sul-computer-windows",
+  "titolo": "Windows",
+  "livello": 3
+ },
+ {
+  "id": "installare-l-app-sul-computer-macos",
+  "titolo": "macOS",
+  "livello": 3
+ },
+ {
+  "id": "versioni",
+  "titolo": "Versioni",
+  "livello": 2
+ },
+ {
+  "id": "problemi-frequenti",
+  "titolo": "Problemi frequenti",
+  "livello": 2
+ }
+]

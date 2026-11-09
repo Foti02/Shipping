@@ -1,0 +1,115 @@
+/* Accesso: a sinistra il pannello di marca (sempre scuro, ardesia con un accento blu), a destra il modulo nei colori del tema. */
+
+.accesso { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); min-height: 100vh; background: var(--sfondo); }
+
+/* ---------- pannello di marca ---------- */
+.accesso-marca {
+  --m-fondo: #0f172a;
+  --m-testo: #e2e8f0;
+  --m-attenuato: #a3b1c4;
+  --m-accento: #7aa7d9;
+  position: relative; display: flex; flex-direction: column; gap: 24px; padding: 40px 48px 28px; overflow: hidden;
+  background-color: var(--m-fondo); color: var(--m-testo);
+  /* Reticolo appena visibile, come la carta di un progetto. */
+  background-image: linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px; border-right: 1px solid rgba(148, 163, 184, 0.14);
+}
+.marca-testa { display: flex; align-items: center; gap: 14px; }
+.marchio-segno { display: inline-flex; align-items: center; justify-content: center; flex: none; border-radius: 8px; background: var(--accento); color: var(--sul-accento); }
+.accesso-marca .marchio-segno { background: #2f6196; color: #fff; }
+.marca-nome { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.01em; line-height: 1.2; color: #fff; }
+.marca-sotto { margin: 2px 0 0; color: var(--m-attenuato); font-size: 0.9375rem; }
+.marca-corpo { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+.illustrazione { display: block; width: 100%; max-width: 560px; max-height: 44vh; margin: 0 auto; }
+.marca-punti { list-style: none; margin: 0 auto; padding: 0; display: grid; gap: 12px; width: 100%; max-width: 560px; }
+.marca-punti li { display: flex; align-items: center; gap: 12px; font-size: 0.9375rem; font-weight: 500; }
+.marca-punto-icona { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 34px; height: 34px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(148, 163, 184, 0.1); color: var(--m-accento); }
+.marca-firma { margin: 0; color: var(--m-attenuato); font-size: 0.8125rem; }
+
+/* Illustrazione: tonalita' di ardesia e blu, tratti puliti. */
+.ill-pavimento { fill: #334155; }
+.ill-corsia { fill: none; stroke: #3b6fb0; stroke-width: 2; stroke-dasharray: 14 12; }
+.ill-scaffale rect { fill: #475569; }
+.ill-sc rect { stroke-width: 1.5; }
+.ill-nastro { stroke: rgba(15, 23, 42, 0.35); stroke-width: 3; fill: none; }
+.ill-t1 rect { fill: #3b6fb0; stroke: #5f93d1; }
+.ill-t2 rect { fill: #2f5683; stroke: #4a76a8; }
+.ill-t3 rect { fill: #3a4a60; stroke: #55677f; }
+.ill-t4 rect { fill: #64748b; stroke: #8294ab; }
+.ill-etichetta { fill: none; stroke: #e2e8f0; stroke-width: 2; stroke-linecap: round; }
+.ill-pallet rect { fill: #7a6a52; }
+.ill-telaio rect { fill: #94a3b8; }
+.ill-telaio path { stroke: #94a3b8; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.ill-ruota circle { fill: #1e293b; stroke: #94a3b8; stroke-width: 3; }
+.ill-ruota .ill-mozzo { fill: #94a3b8; stroke: none; }
+/* Il movimento e' un tocco leggero: il carrello va avanti e indietro, la corsia scorre, una scatola respira. */
+@media (prefers-reduced-motion: no-preference) {
+  .ill-carrello { animation: ill-carrello 7s ease-in-out infinite alternate; }
+  .ill-corsia { animation: ill-corsia 3s linear infinite; }
+  .ill-evidenza { animation: ill-evidenza 3.2s ease-in-out infinite; }
+}
+@keyframes ill-carrello { from { transform: translateX(-14px); } to { transform: translateX(16px); } }
+@keyframes ill-corsia { to { stroke-dashoffset: -26; } }
+@keyframes ill-evidenza { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+/* ---------- pannello del modulo ---------- */
+.accesso-forma { position: relative; display: flex; justify-content: center; align-items: flex-start; padding: 72px 32px 40px; }
+.accesso-tema { position: absolute; top: 16px; right: 16px; }
+.accesso-colonna { width: 100%; max-width: 420px; margin: auto 0; }
+.scheda-accesso {
+  background: var(--superficie); border: 1px solid var(--bordo); border-radius: 10px; padding: 28px 28px 24px;
+  box-shadow: var(--ombra), 0 12px 32px -16px rgba(15, 23, 42, 0.22);
+}
+.scheda-accesso h1 { font-size: 1.375rem; margin-bottom: 4px; }
+.scheda-accesso .lead { margin-bottom: 16px; font-size: 0.9rem; }
+.scheda-accesso .tabs { margin-bottom: 20px; }
+.scheda-accesso .tabs button { flex: 1; }
+.accesso-invia { width: 100%; margin-top: 4px; min-height: 42px; font-weight: 600; }
+.scheda-accesso .form-errore { border-left-width: 4px; }
+
+/* Demo: separatore con titolo, poi una griglia di utenti. */
+.accesso-demo { margin-top: 24px; }
+.accesso-separatore { display: flex; align-items: center; gap: 12px; margin: 0 0 4px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--attenuato); }
+.accesso-separatore::before, .accesso-separatore::after { content: ''; flex: 1; height: 1px; background: var(--bordo); }
+.accesso-demo .hint { text-align: center; margin-bottom: 12px; }
+.demo-elenco { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.demo-utente {
+  display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 10px; border: 1px solid var(--bordo); border-radius: var(--raggio-g);
+  background: var(--superficie); color: var(--testo); text-align: left; cursor: pointer; transition: border-color 0.12s, background-color 0.12s;
+}
+.demo-docente { grid-column: 1 / -1; }
+.demo-utente:hover:not(:disabled) { border-color: var(--accento); background: var(--accento-tenue); }
+.demo-utente:disabled { opacity: 0.5; cursor: not-allowed; }
+.demo-avatar { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accento-tenue); color: var(--accento-testo); font-size: 0.75rem; font-weight: 700; }
+.demo-utente:hover:not(:disabled) .demo-avatar { background: var(--superficie); }
+.demo-nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; font-size: 0.875rem; }
+.demo-azzera { display: block; margin: 12px auto 0; padding: 4px 8px; border: 0; background: none; color: var(--attenuato); font-size: 0.8125rem; text-decoration: underline; cursor: pointer; }
+.demo-azzera:hover { color: var(--testo); }
+
+.accesso-forma .installa { margin: 24px 0 0; padding: 16px 0 0; background: none; border: 0; border-top: 1px solid var(--bordo); border-radius: 0; box-shadow: none; }
+.accesso-forma .installa h2 { font-size: 0.875rem; margin-bottom: 2px; }
+.accesso-forma .installa p { font-size: 0.8125rem; color: var(--attenuato); margin-bottom: 8px; }
+.accesso-forma .installa .buttons { margin: 8px 0 4px; }
+.accesso-piede { margin: 20px 0 0; text-align: center; color: var(--attenuato); font-size: 0.8125rem; }
+.firma-compatta { display: none; }
+
+/* ---------- sotto 900px: il pannello di marca e' una testata compatta ---------- */
+@media (max-width: 899px) {
+  .accesso { position: relative; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
+  .accesso-forma { position: static; }
+  .accesso-marca { padding: 20px 16px; gap: 0; }
+  .marca-corpo, .marca-firma { display: none; }
+  .marca-nome { font-size: 1.25rem; }
+  .marca-sotto { font-size: 0.875rem; }
+  .accesso-marca .marca-testa { padding-right: 48px; }
+  .accesso-tema { position: absolute; top: 14px; right: 12px; z-index: 2; }
+  .accesso-tema .top-icona { color: #e2e8f0; }
+  .accesso-tema .top-icona:hover { background: rgba(148, 163, 184, 0.2); }
+  .accesso-forma { padding: 24px 16px 32px; }
+  .accesso-colonna { margin: 0 auto; }
+  .scheda-accesso { padding: 20px 18px 18px; }
+  .firma-compatta { display: inline; }
+}
+@media (max-width: 400px) {
+  .demo-elenco { grid-template-columns: minmax(0, 1fr); }
+}

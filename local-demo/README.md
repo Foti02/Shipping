@@ -1,4 +1,4 @@
-# Shipping local-demo
+# Shipping ERP local-demo
 
 Stessa app di `main/`, ma senza Supabase e senza rete: le **stesse migrazioni SQL** di produzione girano su PGlite (Postgres in WebAssembly) dentro il browser. I dati stanno in IndexedDB.
 

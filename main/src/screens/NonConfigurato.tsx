@@ -1,6 +1,9 @@
+import { FIRMA, NOME_PRODOTTO } from '../lib/marchio';
+
 export default function NonConfigurato() {
   return (
     <main className="pubblica">
+      <p className="marchio-pubblico">{NOME_PRODOTTO}</p>
       <h1>
         Database non configurato
       </h1>
@@ -19,6 +22,7 @@ export default function NonConfigurato() {
         <pre>{`VITE_SUPABASE_URL=https://xxxx.supabase.co\nVITE_SUPABASE_ANON_KEY=eyJ...`}</pre>
         <p className="hint">Nel sito pubblicato i due valori stanno in <code>.env.production</code>. Per provare l'app senza Supabase usa la cartella <code>local-demo</code>.</p>
       </section>
+      <p className="hint">{FIRMA}</p>
     </main>
   );
 }

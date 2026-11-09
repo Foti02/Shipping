@@ -1,4 +1,8 @@
-# Manuale d'uso di Shipping
+# Shipping ERP: manuale d'uso
+
+Versione 0.1.0
+
+Powered by Francesco Foti · ITS Team Innovazione
 
 ## A chi serve
 
@@ -617,17 +621,17 @@ Questa parte è per chi gestisce la classe. Le operazioni sono nel capitolo H.
 
 ## Installare l'app sul computer
 
-L'app si può usare nel browser. Per averla sul computer scarica l'installer dal sito del progetto.
+Shipping ERP si può usare nel browser. Per averlo sul computer scarica l'installer dal sito del progetto.
 
 ### Windows
 
 1. Dal sito premi "Installa per Windows".
-2. Apri il file scaricato, Shipping-Setup-X.Y.Z.exe, e segui i passaggi.
+2. Apri il file scaricato, Shipping-ERP-Setup-X.Y.Z.exe, e segui i passaggi.
 3. Windows può mostrare un avviso SmartScreen. Premi "Maggiori informazioni", poi "Esegui comunque".
 
 ### macOS
 
-1. Dal sito premi "Installa per macOS". Il file è Shipping-X.Y.Z-mac.dmg.
+1. Dal sito premi "Installa per macOS". Il file è Shipping-ERP-X.Y.Z-mac.dmg.
 2. Apri il file e copia l'app nella cartella Applicazioni.
 3. L'app non è firmata. La prima volta fai clic con il tasto destro sull'app e scegli "Apri".
 

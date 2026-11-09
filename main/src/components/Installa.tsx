@@ -36,7 +36,7 @@ export function Installa() {
     );
   };
   return (
-    <section className="panel">
+    <section className="panel installa">
       <h2>Installa l'app sul computer</h2>
       <p>Stessa app del sito, in una finestra tutta sua.</p>
       <div className="buttons">

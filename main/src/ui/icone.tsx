@@ -20,6 +20,11 @@ const PERCORSI = {
   su: 'M7 14l5-5 5 5',
   giu: 'M7 10l5 5 5-5',
   utente: 'M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0',
+  sole: 'M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v2M12 20v2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400',
+  luna: 'M20 14.500A8 8 0 019.500 4a8 8 0 1010.500 10.500z',
+  schermo: 'M3 5h18v11H3zM8 20h8M12 16v4',
+  guida: 'M12 3a9 9 0 100 18 9 9 0 000-18zM9.500 9.500a2.500 2.500 0 114 2c-.8.600-1.500 1-1.500 2M12 17v.01',
+  spunta: 'M5 12.500l4.500 4.500L19 7.500',
 } as const;
 
 export type NomeIcona = keyof typeof PERCORSI;
@@ -42,5 +47,14 @@ export function Icona({ nome, dimensione = 18, ...p }: { nome: NomeIcona; dimens
     >
       <path d={PERCORSI[nome]} />
     </svg>
+  );
+}
+
+/** Segno del marchio: una scatola in un riquadro, per accesso e barra laterale. */
+export function SegnoMarchio({ dimensione = 32 }: { dimensione?: number }) {
+  return (
+    <span className="marchio-segno" style={{ width: dimensione, height: dimensione }} aria-hidden="true">
+      <Icona nome="articoli" dimensione={Math.round(dimensione * 0.6)} />
+    </span>
   );
 }

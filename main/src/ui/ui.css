@@ -15,6 +15,10 @@
 .btn-pericolo { background: var(--pericolo); color: var(--sul-pericolo); }
 .btn-pericolo:hover { background: var(--pericolo); filter: brightness(0.92); }
 .btn-icona { padding: 0; min-width: var(--alt-controllo); }
+.btn small { font-size: 0.75rem; font-weight: 600; padding: 0 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.2); line-height: 1.5; }
+.btn-tenue small { background: var(--neutro-sfondo); color: var(--neutro-testo); }
+/* Pulsante non disponibile (nessun installer pubblicato): grigio, non cliccabile. */
+.btn.btn-spento, .btn.btn-spento:hover { background: var(--neutro-sfondo); color: var(--attenuato); border-color: var(--bordo); cursor: not-allowed; }
 
 /* Field, Select */
 .field { display: grid; gap: 4px; margin-bottom: 12px; }

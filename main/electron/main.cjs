@@ -11,7 +11,7 @@ function createWindow() {
     height: 800,
     minWidth: 900,
     minHeight: 600,
-    title: 'Shipping',
+    title: 'Shipping ERP',
     icon: path.join(__dirname, '../build/icon.png'),
     webPreferences: { contextIsolation: true, sandbox: true },
   });

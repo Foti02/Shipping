@@ -6,11 +6,14 @@ import { useMagazzinoOpzionale } from '../context/magazzino';
 import { useSessione } from '../context/sessione';
 import { useApi } from '../lib/api';
 import { dataOra } from '../lib/formati';
+import { guidaHref } from '../lib/guida';
 import { nomePagina, useHeartbeat } from '../lib/heartbeat';
+import { FIRMA, NOME_PRODOTTO } from '../lib/marchio';
 import type { Azione } from '../lib/permessi';
 import { Button, Dialog } from '../ui';
-import { Icona, type NomeIcona } from '../ui/icone';
+import { Icona, SegnoMarchio, type NomeIcona } from '../ui/icone';
 import { AvvisoAggiornamento } from './Installa';
+import { InterruttoreTema } from './InterruttoreTema';
 
 /** `a` e' relativo a /m/:id (con eventuale query); `assoluta` lo prende com'e'. `escludeQ`: non attiva se la query contiene questo testo. */
 interface Voce { a: string; testo: string; azione?: Azione; soloClasse?: boolean; soloDocente?: boolean; assoluta?: boolean; escludeQ?: string }
@@ -209,7 +212,10 @@ export function Layout() {
     <div className="shell">
       <nav id="nav-principale" className={`nav${cassetto ? ' aperta' : ''}`} aria-label="Menu principale">
         <div className="nav-testa">
-          <p className="marchio">Shipping</p>
+          <p className="marchio">
+            <SegnoMarchio dimensione={28} />
+            {NOME_PRODOTTO}
+          </p>
           <button ref={bottoneChiudi} type="button" className="top-icona nav-chiudi" aria-label="Chiudi il menu" onClick={() => { setCassetto(false); bottoneMenu.current?.focus(); }}>
             <Icona nome="chiudi" />
           </button>
@@ -229,6 +235,7 @@ export function Layout() {
           )}
           {gruppoDocente && vistaGruppo(gruppoDocente)}
         </ul>
+        <p className="nav-piede">{FIRMA}</p>
       </nav>
       {cassetto && <button type="button" className="nav-velo" aria-label="Chiudi il menu" tabIndex={-1} onClick={() => setCassetto(false)} />}
       <div className="colonna">
@@ -238,9 +245,14 @@ export function Layout() {
             <Icona nome="menu" dimensione={20} />
           </button>
           <div className="top-contesto">
-            {m ? m.nome : 'Shipping'}
+            {m ? m.nome : NOME_PRODOTTO}
             {m && <small>{m.tipo === 'personale' ? 'personale' : m.ruolo === 'docente' ? 'docente' : (m.ruolo_aziendale ?? 'classe')}</small>}
           </div>
+          <Link to={guidaHref(pathname)} className="top-icona" aria-label="Guida" title="Guida di questa pagina">
+            <Icona nome="guida" />
+            <span className="top-testo">Guida</span>
+          </Link>
+          <InterruttoreTema />
           {m && (
             <button type="button" className="top-icona" onClick={apriCampanella} aria-label={`Notifiche, ${non_lette} non lette`}>
               <Icona nome="campana" />
@@ -265,7 +277,10 @@ export function Layout() {
         <main className="contenuto">
           <Outlet />
         </main>
-        <footer className="piede">Versione {__APP_VERSION__}</footer>
+        <footer className="piede">
+          {NOME_PRODOTTO} · Versione {__APP_VERSION__}
+          <span className="solo-piccolo"> · {FIRMA}</span>
+        </footer>
       </div>
       <Dialog aperto={campanella} titolo="Notifiche" onChiudi={() => setCampanella(false)}>
         {notifiche.data?.elenco?.length ? (

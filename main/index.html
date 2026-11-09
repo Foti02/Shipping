@@ -3,7 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shipping</title>
+    <title>Shipping ERP</title>
+    <!-- Applica il tema scelto prima del primo disegno, cosi' la pagina non lampeggia. Stessa chiave di src/lib/tema.ts. -->
+    <style>
+      html[data-theme='dark'] { background: #0f141a; color-scheme: dark; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme='light']) { background: #0f141a; color-scheme: dark; } }
+    </style>
+    <script>
+      try {
+        var t = localStorage.getItem('shipping-tema');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

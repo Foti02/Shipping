@@ -17,6 +17,7 @@ import Docente from './screens/Docente';
 import DocenteClasse from './screens/DocenteClasse';
 import Documenti from './screens/Documenti';
 import ImpostazioniClasse from './screens/ImpostazioniClasse';
+import Guida from './screens/Guida';
 import Inventario from './screens/Inventario';
 import NonConfigurato from './screens/NonConfigurato';
 import SceltaMagazzino from './screens/SceltaMagazzino';
@@ -50,6 +51,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/accedi" element={<Accedi />} />
+      <Route path="/guida/:sezione?" element={<Guida />} />
       <Route element={<RichiedeAccesso />}>
         <Route element={<Layout />}>
           <Route index element={<SceltaMagazzino />} />
