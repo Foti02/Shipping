@@ -14,3 +14,4 @@ manuale_uso_gestionale_merci.pdf
 
 # Valori pubblici di Supabase (URL e chiave publishable): servono al sito e agli installer.
 !.env.production
+replica/screens/nuovo-stile/
