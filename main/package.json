@@ -1,6 +1,6 @@
 {
   "name": "shipping",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Gestionale di magazzino per le esercitazioni ITS",
   "author": "ITS Mobilita",
   "private": true,
@@ -21,7 +21,10 @@
     "appId": "it.itsmobilita.shipping",
     "productName": "Shipping ERP",
     "compression": "maximum",
-    "electronLanguages": ["it", "en-US"],
+    "electronLanguages": [
+      "it",
+      "en-US"
+    ],
     "directories": {
       "output": "release",
       "buildResources": "build"
