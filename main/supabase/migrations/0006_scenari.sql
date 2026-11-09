@@ -137,7 +137,7 @@ begin
   perform _membro(p_magazzino);
   if not _sono_docente(p_magazzino) then raise exception 'permesso_negato'; end if;
   select tipo into tipo_m from magazzini where id = p_magazzino;
-  if tipo_m <> 'classe' or coalesce(trim(p_nome), '') = '' then raise exception 'dato_non_valido'; end if;
+  if tipo_m <> 'classe' or coalesce(trim(p_nome), '') = '' or char_length(trim(p_nome)) > 500 then raise exception 'dato_non_valido'; end if;
 
   -- studenti in ordine di username: l'assegnazione dipende solo da seed e classe, non dagli uuid
   select array_agg(m.user_id order by pr.username), array_agg(m.ruolo_aziendale order by pr.username)

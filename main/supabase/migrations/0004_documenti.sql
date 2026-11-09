@@ -490,7 +490,7 @@ begin
   perform _ricalcola_documento(v_id);
   perform _registra(p_magazzino, 'documento_salva', 'documento', v_id, jsonb_build_object('tipo', v_tipo, 'righe', v_pos));
   return _documento_completo(v_id);
-  exception when invalid_text_representation or numeric_value_out_of_range or datatype_mismatch or check_violation
+  exception when invalid_text_representation or numeric_value_out_of_range or feature_not_supported or datatype_mismatch or check_violation
                  or datetime_field_overflow or invalid_datetime_format then
     raise exception 'dato_non_valido';
   end;

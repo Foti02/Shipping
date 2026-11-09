@@ -55,7 +55,7 @@ declare v_id uuid; n int;
 begin
   perform _membro(p_magazzino);
   perform _richiedi(p_magazzino, 'inventario');
-  if nullif(trim(coalesce(p_nome, '')), '') is null then raise exception 'dato_non_valido'; end if;
+  if nullif(trim(coalesce(p_nome, '')), '') is null or char_length(trim(p_nome)) > 500 then raise exception 'dato_non_valido'; end if;
   insert into inventari (magazzino_id, nome, creato_da) values (p_magazzino, trim(p_nome), _uid()) returning id into v_id;
   insert into inventario_righe (inventario_id, articolo_id, lotto_id, ubicazione_id, qta_sistema)
   select v_id, g.articolo_id, g.lotto_id, g.ubicazione_id, g.qta from giacenze g where g.magazzino_id = p_magazzino;
@@ -85,7 +85,7 @@ begin
   else
     v_qta := p_qta;
   end if;
-  if v_qta < 0 then raise exception 'dato_non_valido'; end if;
+  if _qta_non_valida(v_qta) or v_qta < 0 then raise exception 'dato_non_valido'; end if;  -- NaN supera "< 0"
   update inventario_righe set qta_contata = v_qta, user_id = _uid() where id = p_riga;
   select matricola into v_matr from articoli where id = r.articolo_id;
   perform _registra(r.mag, 'inventario_conta', 'inventario', r.inventario_id,
@@ -96,10 +96,13 @@ begin
 end $$;
 
 -- ritorna: {riga, differenza, movimento}   (movimento = false se la differenza e' zero: nessuna rettifica scritta)
--- p_causale: conteggio | danneggiato | smarrito | errore_registrazione. differenza = qta_contata - qta_sistema.
+-- p_causale: conteggio | danneggiato | smarrito | errore_registrazione.
+-- differenza = qta_contata - giacenza ATTUALE della riga (articolo, lotto, ubicazione), non quella fotografata all'apertura:
+-- cosi' la giacenza finale e' sempre quella contata anche se nel frattempo ci sono stati movimenti. qta_sistema viene
+-- aggiornata alla giacenza trovata al momento della rettifica (differenza = qta_contata - qta_sistema resta coerente).
 create function api_inventario_rettifica(p_riga uuid, p_causale text) returns jsonb
 language plpgsql security definer set search_path = public as $$
-declare r record; v_diff numeric; v_mov boolean := false; v_matr text;
+declare r record; v_diff numeric; v_mov boolean := false; v_matr text; v_cur numeric;
 begin
   select ir.*, i.magazzino_id as mag, i.stato as inv_stato into r
   from inventario_righe ir join inventari i on i.id = ir.inventario_id where ir.id = p_riga for update of ir;
@@ -110,14 +113,18 @@ begin
     raise exception 'dato_non_valido';
   end if;
   if r.inv_stato <> 'aperto' or r.rettificata or r.qta_contata is null then raise exception 'stato_non_valido'; end if;
-  v_diff := r.qta_contata - r.qta_sistema;
+  -- stesso blocco di _movimenta (tutte le righe dell'articolo, per id): la giacenza letta qui non cambia fino alla fine
+  perform 1 from giacenze where articolo_id = r.articolo_id order by id for update;
+  select coalesce(sum(qta), 0) into v_cur from giacenze
+  where articolo_id = r.articolo_id and lotto_id is not distinct from r.lotto_id and ubicazione_id is not distinct from r.ubicazione_id;
+  v_diff := r.qta_contata - v_cur;
   select matricola into v_matr from articoli where id = r.articolo_id;
   if v_diff <> 0 then
     -- esatto = true: tocca proprio la riga (lotto, ubicazione) contata, senza FEFO/FIFO
     perform _movimenta(r.mag, r.articolo_id, r.lotto_id, r.ubicazione_id, v_diff, _costo_medio(r.articolo_id), 'rettifica', null, true);
     v_mov := true;
   end if;
-  update inventario_righe set causale = p_causale, rettificata = true, user_id = _uid() where id = p_riga;
+  update inventario_righe set causale = p_causale, rettificata = true, user_id = _uid(), qta_sistema = v_cur where id = p_riga;
   perform _valuta_inventario(r.mag, r.articolo_id);
   perform _registra(r.mag, 'inventario_rettifica', 'inventario', r.inventario_id,
                     jsonb_build_object('riga', p_riga, 'matricola', v_matr, 'differenza', v_diff, 'causale', p_causale));

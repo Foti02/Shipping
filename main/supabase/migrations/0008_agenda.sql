@@ -28,7 +28,10 @@ declare u uuid := _uid(); r scadenze; v_id uuid := nullif(p_dati ->> 'id', '')::
         v_ini timestamptz; v_fine timestamptz; v_ana uuid := nullif(p_dati ->> 'anagrafica_id', '')::uuid;
 begin
   perform _richiedi(p_magazzino, 'scadenze');
-  if coalesce(trim(p_dati ->> 'oggetto'), '') = '' then raise exception 'dato_non_valido'; end if;
+  if coalesce(trim(p_dati ->> 'oggetto'), '') = '' or char_length(p_dati ->> 'oggetto') > 500
+     or char_length(coalesce(p_dati ->> 'descrizione', '')) > 500 then
+    raise exception 'dato_non_valido';
+  end if;
   begin
     v_ini := (p_dati ->> 'inizio')::timestamptz;
     v_fine := coalesce((p_dati ->> 'fine')::timestamptz, v_ini);

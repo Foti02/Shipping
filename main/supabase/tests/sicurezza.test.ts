@@ -1,5 +1,5 @@
 // Revisione di sicurezza e concorrenza.
-// describe 'BUCHI': ogni test dimostra un problema reale e DEVE fallire finche' non si corregge la migrazione.
+// describe 'ex BUCHI': ogni test dimostra un problema reale ora corretto nelle migrazioni (deve restare verde).
 // describe 'gia sicuro': comportamenti verificati, devono passare.
 import { beforeAll, describe, expect, test } from 'vitest';
 import { PGlite } from '@electric-sql/pglite';
@@ -40,8 +40,8 @@ async function classe(ruoli: (string | null)[]) {
   return { doc, m: c.id as string, nome: c.nome as string, codice: c.codice_ingresso as string, st };
 }
 
-describe('BUCHI (devono fallire finche non corretti)', () => {
-  // BUCO: 'NaN' passa i controlli "<= 0" (NaN e' maggiore di tutto in Postgres) e numeric(14,3) lo accetta:
+describe('ex BUCHI (corretti nelle migrazioni)', () => {
+  // Corretto: 'NaN' passa i controlli "<= 0" (NaN e' maggiore di tutto in Postgres) e numeric(14,3) lo accetta:
   // la giacenza diventa NaN e poi ogni scarico passa il controllo di giacenza negativa (NaN + x < 0 e' falso).
   test('api_trasferimento rifiuta p_qta = NaN', async () => {
     const { u, m } = await personale();
@@ -53,14 +53,14 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     expect(await giac(a)).toBe(10);
   });
 
-  // BUCO: stessa radice (NaN) via giacenza_iniziale di api_articolo_salva.
+  // Corretto: stessa radice (NaN) via giacenza_iniziale di api_articolo_salva.
   test('api_articolo_salva rifiuta giacenza_iniziale NaN', async () => {
     const { u, m } = await personale();
     await expect(rpc(db, u, 'api_articolo_salva', { p_magazzino: m, p_dati: { matricola: nome('N'), descrizione: 'x', giacenza_iniziale: 'NaN' } }))
       .rejects.toThrow('dato_non_valido');
   });
 
-  // BUCO: stessa radice (NaN) via conta + rettifica d'inventario.
+  // Corretto: stessa radice (NaN) via conta + rettifica d'inventario.
   test('api_inventario_conta rifiuta p_qta NaN', async () => {
     const { u, m } = await personale();
     const a = await articolo(u, m);
@@ -70,7 +70,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     await expect(rpc(db, u, 'api_inventario_conta', { p_riga: riga, p_qta: 'NaN' })).rejects.toThrow('dato_non_valido');
   });
 
-  // BUCO: documento_origine_id libero in api_documento_salva: un secondo carico con origine = ordine gia' evaso
+  // Corretto: documento_origine_id libero in api_documento_salva: un secondo carico con origine = ordine gia' evaso
   // viene confermato -> la stessa merce ordinata entra due volte (doppia evasione).
   test('doppia evasione: secondo carico con origine = ordine gia evaso e rifiutato', async () => {
     const { u, m } = await personale();
@@ -83,7 +83,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     expect(await giac(a)).toBe(7);
   });
 
-  // BUCO: un commerciale (solo preventivo/ordine_cliente) mette come origine di un preventivo un ordine fornitore:
+  // Corretto: un commerciale (solo preventivo/ordine_cliente) mette come origine di un preventivo un ordine fornitore:
   // alla conferma l'ordine fornitore passa a 'evaso' senza alcun carico (salta il permesso evadi_ordine).
   test('commerciale non puo evadere un ordine fornitore via documento_origine_id', async () => {
     const k = await classe(['commerciale']);
@@ -96,7 +96,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     expect(s).toBe('confermato');
   });
 
-  // BUCO: compiti.anagrafica_id e' "on delete cascade": uno studente con anagrafiche.scrivi elimina un cliente dello
+  // Corretto: compiti.anagrafica_id e' "on delete cascade": uno studente con anagrafiche.scrivi elimina un cliente dello
   // scenario non ancora usato in documenti e cancella i compiti degli altri studenti.
   test('eliminare un anagrafica non cancella i compiti dello scenario', async () => {
     const k = await classe(['magazziniere', 'magazziniere', 'acquisti']);
@@ -111,7 +111,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     expect(dopo).toBe(prima);
   });
 
-  // BUCO: la rettifica usa qta_sistema fotografata all'apertura: se nel frattempo ci sono movimenti,
+  // Corretto: la rettifica usa qta_sistema fotografata all'apertura: se nel frattempo ci sono movimenti,
   // la giacenza finale non e' quella contata (TOCTOU tra apertura e rettifica).
   test('rettifica porta la giacenza alla quantita contata anche dopo movimenti', async () => {
     const { u, m } = await personale();
@@ -125,7 +125,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     expect(await giac(a)).toBe(12);
   });
 
-  // BUCO: iva_perc / inps_perc / ritenuta_perc delle righe non sono validati (solo numeric(5,2)): totali negativi.
+  // Corretto: iva_perc / inps_perc / ritenuta_perc delle righe non sono validati (solo numeric(5,2)): totali negativi.
   test('api_documento_salva rifiuta iva_perc negativa', async () => {
     const { u, m } = await personale();
     await expect(rpc(db, u, 'api_documento_salva', {
@@ -134,7 +134,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     })).rejects.toThrow('dato_non_valido');
   });
 
-  // BUCO: le funzioni create DOPO 0099 (nuove migrazioni applicate su un DB dove 0099 e' gia' girata) prendono
+  // Corretto: le funzioni create DOPO 0099 (nuove migrazioni applicate su un DB dove 0099 e' gia' girata) prendono
   // EXECUTE per PUBLIC (default di Postgres) e, su Supabase, ALL per anon/authenticated (default privileges);
   // le tabelle nuove prendono i grant e non hanno RLS. Si simula il default di Supabase e si crea un oggetto dopo 0099.
   test('oggetti creati dopo 0099 non sono accessibili a anon/authenticated', async () => {
@@ -152,7 +152,7 @@ describe('BUCHI (devono fallire finche non corretti)', () => {
     expect(r.rows[0]).toEqual({ fa: false, fu: false, ta: false });
   }, 120_000);
 
-  // BUCO (basso): lo username viene dai metadati, non dall'email: con email x@shipping.local si prende lo username
+  // Corretto (basso): lo username viene dai metadati, non dall'email: con email x@shipping.local si prende lo username
   // "prof.rossi" prima del docente vero (che poi verrebbe promosso da SQL per username sull'account sbagliato).
   test('lo username del profilo coincide con la parte locale dell email', async () => {
     const r = await db.query<{ id: string }>(`insert into auth.users (email, raw_user_meta_data) values ($1, $2::jsonb) returning id`,
