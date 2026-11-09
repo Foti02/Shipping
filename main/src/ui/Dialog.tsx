@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { Icona } from './icone';
 
 interface Props {
   aperto: boolean;
@@ -30,10 +31,12 @@ export function Dialog({ aperto, titolo, onChiudi, children }: Props) {
     >
       {aperto && (
         <div className="dialog-corpo">
-          <h2 id="dialog-titolo">
-            {titolo}
-            <span className="dot">.</span>
-          </h2>
+          <div className="dialog-testa">
+            <h2 id="dialog-titolo">{titolo}</h2>
+            <button type="button" className="dialog-chiudi" aria-label="Chiudi" onClick={onChiudi}>
+              <Icona nome="chiudi" />
+            </button>
+          </div>
           {children}
         </div>
       )}

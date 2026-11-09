@@ -3,6 +3,7 @@ import { useMagazzino } from '../context/magazzino';
 import { useApi } from '../lib/api';
 import { dataOra, euro, qta } from '../lib/formati';
 import { BadgeStato } from '../ui';
+import { Termine } from '../ui/Suggerimento';
 
 interface Compito { id: string; titolo: string; stato: string }
 interface Notifiche { non_lette: number; elenco: { id: string; messaggio: string; created_at?: string }[] }
@@ -22,7 +23,7 @@ export default function Cruscotto() {
   return (
     <>
       <h1>
-        Cruscotto<span className="dot">.</span>
+        Cruscotto
       </h1>
       <div className="griglia">
         <section className="carta">
@@ -71,9 +72,9 @@ export default function Cruscotto() {
           ) : (
             <div className="kpi">
               <div><strong>{k?.valore_giacenza != null ? euro(k.valore_giacenza) : '-'}</strong><span>Valore giacenza</span></div>
-              <div><strong>{k?.rotazione != null ? qta(k.rotazione) : '-'}</strong><span>Rotazione</span></div>
-              <div><strong>{k?.copertura_giorni != null ? `${qta(k.copertura_giorni)} gg` : '-'}</strong><span>Copertura</span></div>
-              <div><strong>{k?.sottoscorta != null ? qta(k.sottoscorta) : '-'}</strong><span>Sotto scorta</span></div>
+              <div><strong>{k?.rotazione != null ? qta(k.rotazione) : '-'}</strong><span><Termine aiuto="rotazione">Rotazione</Termine></span></div>
+              <div><strong>{k?.copertura_giorni != null ? `${qta(k.copertura_giorni)} gg` : '-'}</strong><span><Termine aiuto="copertura_giorni">Copertura</Termine></span></div>
+              <div><strong>{k?.sottoscorta != null ? qta(k.sottoscorta) : '-'}</strong><span><Termine aiuto="scorta_minima">Sotto scorta</Termine></span></div>
             </div>
           )}
           <p style={{ marginTop: 12 }}><Link to={`/m/${m.id}/analisi`}>Riordino, ABC e valorizzazione</Link></p>

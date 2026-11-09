@@ -37,7 +37,7 @@ export default function SceltaMagazzino() {
   return (
     <>
       <h1>
-        Scegli il magazzino<span className="dot">.</span>
+        Scegli il magazzino
       </h1>
       <div className="griglia">
         <section className="carta">

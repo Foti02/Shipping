@@ -6,6 +6,7 @@ import { useApi, useMutazione } from '../lib/api';
 import { messaggioErrore } from '../lib/errori';
 import { stampa } from '../lib/stampa';
 import { Badge, Button, DataTable, Dialog, EmptyState, Field, Select, useToast, type Colonna } from '../ui';
+import { Termine } from '../ui/Suggerimento';
 import type { ClasseDocente } from './Docente';
 import './classe/classe.css';
 
@@ -59,7 +60,7 @@ export default function ImpostazioniClasse() {
   if (!docente)
     return (
       <>
-        <h1>Classe<span className="dot">.</span></h1>
+        <h1>Classe</h1>
         <EmptyState titolo="Solo il docente può gestire la classe" testo="Codice, membri, ruoli e cancellazione dei dati sono riservati al docente." />
         <p className="muto">
           Giacenza negativa: {impostazioni.data ? (impostazioni.data.blocca_giacenza_negativa ? 'bloccata' : 'consentita') : '...'}.
@@ -98,7 +99,7 @@ export default function ImpostazioniClasse() {
     { chiave: 'username', titolo: 'Utente', render: (u) => <><strong>{u.username}</strong><br /><span className="muto">{u.nome}</span></> },
     { chiave: 'ruolo', titolo: 'Ruolo', render: (u) => (u.ruolo === 'docente' ? <Badge tono="blu">docente</Badge> : <Badge>studente</Badge>) },
     {
-      chiave: 'ruolo_aziendale', titolo: 'Ruolo aziendale',
+      chiave: 'ruolo_aziendale', titolo: 'Ruolo aziendale', aiuto: 'ruolo_aziendale',
       render: (u) =>
         u.ruolo === 'docente' ? (
           <span className="muto">-</span>
@@ -128,10 +129,10 @@ export default function ImpostazioniClasse() {
   return (
     <>
       <div className="no-stampa">
-        <h1>Classe: {m.nome}<span className="dot">.</span></h1>
+        <h1>Classe: {m.nome}</h1>
 
         <section className="pannello" aria-labelledby="h-codice">
-          <h2 id="h-codice">Codice di ingresso</h2>
+          <h2 id="h-codice"><Termine aiuto="codice_ingresso">Codice di ingresso</Termine></h2>
           <p className="muto">Gli studenti lo scrivono in "Entra con codice". Finché è attivo, chiunque lo conosca può entrare.</p>
           <div>
             <span className={`codice-grande ${attivo ? '' : 'codice-spento'}`} aria-label={`Codice ${cod.split('').join(' ')}`}>{cod}</span>{' '}
@@ -166,11 +167,11 @@ export default function ImpostazioniClasse() {
           <div className="pannello">
             <Select
               label="Giacenza negativa"
+              aiuto="blocca_giacenza_negativa"
               opzioni={GIACENZA}
               value={impostazioni.data ? (impostazioni.data.blocca_giacenza_negativa ? 'si' : 'no') : 'si'}
               disabled={!impostazioni.data || giacenza.isPending}
               onChange={(e) => giacenza.mutate({ ...arg, p_blocca_giacenza_negativa: e.target.value === 'si' })}
-              aiuto="Con il blocco attivo uno scarico oltre la giacenza viene rifiutato."
             />
           </div>
         </section>

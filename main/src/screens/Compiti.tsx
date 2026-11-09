@@ -4,6 +4,7 @@ import { useApi } from '../lib/api';
 import { messaggioErrore } from '../lib/errori';
 import { qta } from '../lib/formati';
 import { BadgeStato, EmptyState } from '../ui';
+import { Termine } from '../ui/Suggerimento';
 import { tempoRelativo } from './classe/logica';
 import { useAdesso } from './classe/componenti';
 import { azioneCompito, ordinaCompiti, percorsoCompito, righeErrore, spiegaBlocco, testoPulsanteCompito, type Compito } from './compiti/logica';
@@ -29,12 +30,12 @@ export default function Compiti() {
   return (
     <>
       <h1>
-        Compiti<span className="dot">.</span>
+        Compiti
       </h1>
 
       {scorte.length > 0 && (
         <div className="avviso" role="status">
-          <h3>Scorta bassa in magazzino</h3>
+          <h3><Termine aiuto="scorta_minima">Scorta bassa</Termine> in magazzino</h3>
           <ul>
             {scorte.map((n) => (
               <li key={n.id}>{n.messaggio} <span className="muto">({tempoRelativo(n.created_at, adesso)})</span></li>
@@ -72,7 +73,7 @@ export default function Compiti() {
                 <article key={c.id} className={`compito ${c.stato}`} aria-labelledby={`c-${c.id}`}>
                   <div className="testa">
                     <h2 id={`c-${c.id}`}>{c.titolo}</h2>
-                    <BadgeStato stato={c.stato} />
+                    {c.stato === 'bloccato' || c.stato === 'errore' ? <Termine aiuto="stato_compito"><BadgeStato stato={c.stato} /></Termine> : <BadgeStato stato={c.stato} />}
                   </div>
                   {c.istruzioni && <p>{c.istruzioni}</p>}
                   <div className="dati">

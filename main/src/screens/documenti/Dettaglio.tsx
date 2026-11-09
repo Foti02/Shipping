@@ -6,6 +6,7 @@ import { messaggioErrore } from '../../lib/errori';
 import { data as fData, euro, qta as fQta } from '../../lib/formati';
 import { scaricaCsv, stampa } from '../../lib/stampa';
 import { Badge, Button, Dialog, type Tono } from '../../ui';
+import { Termine } from '../../ui/Suggerimento';
 import { centInEuro } from './calcolo';
 import { PASSI_SPEDIZIONE, TIPI, minuscolo, numeroDoc, type Collegato, type DocumentoCompleto, type TipoDoc } from './tipi';
 
@@ -107,8 +108,8 @@ export function Dettaglio({ id, onModifica, onMostra }: Props) {
                 <th className="destra">Prezzo</th>
                 <th className="destra">Sconto</th>
                 <th className="destra">IVA</th>
-                {cfg.fattura && <th className="destra">INPS</th>}
-                {cfg.fattura && <th className="destra">Rit.</th>}
+                {cfg.fattura && <th className="destra"><Termine aiuto="inps">INPS</Termine></th>}
+                {cfg.fattura && <th className="destra"><Termine aiuto="ritenuta_acconto">Rit.</Termine></th>}
                 {bozza && d.tipo === 'scarico' && <th className="destra">Giacenza</th>}
                 <th className="destra">Totale</th>
               </tr>
@@ -134,8 +135,8 @@ export function Dettaglio({ id, onModifica, onMostra }: Props) {
       <dl className="doc-totali" aria-label="Totali">
         <div><dt>Imponibile</dt><dd>{euro(d.imponibile_cent)}</dd></div>
         <div><dt>Imposta</dt><dd>{euro(d.imposta_cent)}</dd></div>
-        {cfg.fattura && <div><dt>INPS</dt><dd>{euro(d.inps_cent)}</dd></div>}
-        {cfg.fattura && <div><dt>Ritenuta</dt><dd>-{euro(d.ritenuta_cent)}</dd></div>}
+        {cfg.fattura && <div><dt><Termine aiuto="inps">INPS</Termine></dt><dd>{euro(d.inps_cent)}</dd></div>}
+        {cfg.fattura && <div><dt><Termine aiuto="ritenuta_acconto">Ritenuta</Termine></dt><dd>-{euro(d.ritenuta_cent)}</dd></div>}
         <div className="doc-totale"><dt>Totale</dt><dd>{euro(d.totale_cent)}</dd></div>
       </dl>
 
@@ -199,14 +200,14 @@ export function Dettaglio({ id, onModifica, onMostra }: Props) {
           <>
             <Button variante="tenue" onClick={() => onModifica(d.tipo, id)}>Modifica</Button>
             <Button variante="accento" disabled={conferma.isPending || righe.length === 0} onClick={confermaDoc}>Conferma</Button>
-            <Button variante="pericolo" onClick={() => setChiede('elimina')}>Elimina bozza</Button>
+            <Button variante="pericolo" aiuto="annulla_elimina" onClick={() => setChiede('elimina')}>Elimina bozza</Button>
           </>
         )}
         {d.stato === 'confermato' && d.tipo === 'ordine_fornitore' && m.puo('evadi_ordine') && (
-          <Button variante="accento" disabled={evadi.isPending} onClick={() => evadi.mutate({ p_id: id }, { onSuccess: vai })}>Evadi ordine</Button>
+          <Button variante="accento" aiuto="evadi_ordine" disabled={evadi.isPending} onClick={() => evadi.mutate({ p_id: id }, { onSuccess: vai })}>Evadi ordine</Button>
         )}
         {d.stato === 'confermato' && succ && m.puo(TIPI[succ].azione) && (
-          <Button variante="primario" disabled={genera.isPending} onClick={() => genera.mutate({ p_origine: id, p_tipo: succ }, { onSuccess: (n) => onModifica(n.documento.tipo, n.documento.id) })}>
+          <Button variante="primario" aiuto="genera_successivo" disabled={genera.isPending} onClick={() => genera.mutate({ p_origine: id, p_tipo: succ }, { onSuccess: (n) => onModifica(n.documento.tipo, n.documento.id) })}>
             Genera {minuscolo(TIPI[succ].singolare)}
           </Button>
         )}
@@ -215,7 +216,7 @@ export function Dettaglio({ id, onModifica, onMostra }: Props) {
             {d.pagato ? 'Segna non pagato' : 'Segna pagato'}
           </Button>
         )}
-        {attivo && puoScrivere && <Button variante="pericolo" onClick={() => setChiede('annulla')}>Annulla documento</Button>}
+        {attivo && puoScrivere && <Button variante="pericolo" aiuto="annulla_elimina" onClick={() => setChiede('annulla')}>Annulla documento</Button>}
         <Button variante="tenue" onClick={stampa}>Stampa</Button>
         <Button variante="tenue" onClick={csvRighe} disabled={righe.length === 0}>Esporta righe CSV</Button>
       </div>

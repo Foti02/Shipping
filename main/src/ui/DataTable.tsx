@@ -1,5 +1,8 @@
 import { useMemo, useState, type KeyboardEvent, type ReactNode } from 'react';
+import type { ChiaveAiuto } from '../lib/aiuti';
 import { EmptyState } from './EmptyState';
+import { Icona } from './icone';
+import { PuntoAiuto, Suggerimento, testoAiuto } from './Suggerimento';
 
 export interface Colonna<T> {
   chiave: string;
@@ -11,6 +14,10 @@ export interface Colonna<T> {
   allinea?: 'destra';
   /** false per disattivare l'ordinamento al clic (default true). */
   ordinabile?: boolean;
+  /** Chiave di src/lib/aiuti.ts: spiegazione sull'intestazione della colonna (1,5 s di puntatore fermo, o "?" al tocco). */
+  aiuto?: ChiaveAiuto;
+  /** Colonna delle azioni di riga (pulsanti, menu): stretta, a destra, senza titolo visibile e senza ordinamento. */
+  azioni?: boolean;
 }
 
 interface Props<T> {
@@ -69,18 +76,29 @@ export function DataTable<T>({ righe, colonne, rigaId, dettaglio, onSeleziona, v
           <thead>
             <tr>
               {colonne.map((c) => {
-                const ordinabile = c.ordinabile !== false;
+                const ordinabile = c.ordinabile !== false && !c.azioni;
                 const attiva = ord?.chiave === c.chiave;
+                const titolo = c.azioni ? <span className="solo-lettori">{c.titolo}</span> : c.titolo;
+                const ordina = () => setOrd(attiva && ord!.verso === 1 ? { chiave: c.chiave, verso: -1 } : { chiave: c.chiave, verso: 1 });
+                const contenuto = (extra: object = {}) =>
+                  ordinabile ? (
+                    <button type="button" onClick={ordina} {...extra}>
+                      {titolo}
+                      {attiva && <Icona nome={ord!.verso === 1 ? 'su' : 'giu'} dimensione={14} />}
+                    </button>
+                  ) : c.aiuto ? (
+                    <span className="dt-titolo" tabIndex={0} {...extra}>{titolo}</span>
+                  ) : (
+                    titolo
+                  );
                 return (
-                  <th key={c.chiave} className={c.allinea} aria-sort={attiva ? (ord!.verso === 1 ? 'ascending' : 'descending') : undefined}>
-                    {ordinabile ? (
-                      <button type="button" onClick={() => setOrd(attiva && ord!.verso === 1 ? { chiave: c.chiave, verso: -1 } : { chiave: c.chiave, verso: 1 })}>
-                        {c.titolo}
-                        <span aria-hidden="true">{attiva ? (ord!.verso === 1 ? ' ▲' : ' ▼') : ''}</span>
-                      </button>
-                    ) : (
-                      c.titolo
-                    )}
+                  <th key={c.chiave} className={c.azioni ? 'dt-azioni' : c.allinea} aria-sort={attiva ? (ord!.verso === 1 ? 'ascending' : 'descending') : undefined}>
+                    {c.aiuto ? (
+                      <>
+                        <Suggerimento testo={testoAiuto(c.aiuto)}>{({ attacchi, descrittoDa }) => contenuto({ ...attacchi, onClick: () => { attacchi.onClick(); if (ordinabile) ordina(); }, 'aria-describedby': descrittoDa })}</Suggerimento>
+                        <PuntoAiuto testo={testoAiuto(c.aiuto)} etichetta={`Spiegazione: ${c.titolo}`} />
+                      </>
+                    ) : contenuto()}
                   </th>
                 );
               })}
@@ -92,7 +110,7 @@ export function DataTable<T>({ righe, colonne, rigaId, dettaglio, onSeleziona, v
               return (
                 <tr key={id} tabIndex={0} aria-selected={id === sel} className={id === sel ? 'sel' : undefined} onClick={() => scegli(r)} onKeyDown={(e) => tasto(e, r)}>
                   {colonne.map((c) => (
-                    <td key={c.chiave} className={c.allinea}>
+                    <td key={c.chiave} className={c.azioni ? 'dt-azioni' : c.allinea}>
                       {c.render ? c.render(r) : String((r as Record<string, unknown>)[c.chiave] ?? '')}
                     </td>
                   ))}

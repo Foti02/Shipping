@@ -394,6 +394,7 @@ begin
   end loop;
 end $$;
 
+
 -- ===== migrations/0002_base.sql =====
 -- 0002_base.sql
 -- Base comune: identita', permessi, registro attivita', sessione. Tutte le altre migrazioni la usano.
@@ -507,6 +508,7 @@ begin
   on conflict (user_id) do update set magazzino_id = excluded.magazzino_id, pagina = excluded.pagina, visto_il = now();
   return jsonb_build_object('ok', true);
 end $$;
+
 
 -- ===== migrations/0003_dati.sql =====
 -- 0003_dati.sql
@@ -1099,6 +1101,7 @@ begin
   end if;
   return jsonb_build_object('magazzino_id', v_mag.id, 'blocca_giacenza_negativa', v_mag.blocca_giacenza_negativa);
 end $$;
+
 
 -- ===== migrations/0004_documenti.sql =====
 -- 0004_documenti.sql
@@ -1784,6 +1787,7 @@ begin
   return jsonb_build_object('ok', true, 'articolo_id', p_articolo, 'lotto_id', p_lotto, 'da', p_da, 'a', p_a, 'qta', p_qta);
 end $$;
 
+
 -- ===== migrations/0005_classe.sql =====
 -- 0005_classe.sql
 -- Classe: creazione, ingresso con codice, gestione membri, azzera/elimina, vista docente, notifiche, registro attivita'.
@@ -2065,6 +2069,7 @@ begin
           where a.magazzino_id = p_magazzino and (p_dopo_id is null or a.id > p_dopo_id)
           order by a.id desc limit greatest(1, least(coalesce(p_limite, 50), 200))) x), '[]'::jsonb);
 end $$;
+
 
 -- ===== migrations/0006_scenari.sql =====
 -- 0006_scenari.sql
@@ -2716,6 +2721,7 @@ begin
   end if;
 end $$;
 
+
 -- ===== migrations/0007_analisi.sql =====
 -- 0007_analisi.sql
 -- Inventario (con "fisico" fittizio), riordino/EOQ, KPI/ABC, valorizzazione CMP/FIFO/LIFO.
@@ -3057,6 +3063,7 @@ begin
                  'diff_fifo_lifo', coalesce(sum(r.f - r.l), 0)) from r)));
 end $$;
 
+
 -- ===== migrations/0008_agenda.sql =====
 -- 0008_agenda.sql
 -- Agenda personale: scadenze e appuntamenti dell'utente dentro un magazzino.
@@ -3138,6 +3145,7 @@ begin
   return jsonb_build_object('ok', true);
 end $$;
 
+
 -- ===== migrations/0009_scenari_elenco.sql =====
 -- 0009_scenari_elenco.sql
 -- Elenco degli scenari di una classe (mancava nel catalogo): serve alla schermata del docente.
@@ -3162,6 +3170,7 @@ begin
     from scenari s where s.magazzino_id = p_magazzino
   ), '[]'::jsonb);
 end $$;
+
 
 -- ===== migrations/0099_grants.sql =====
 -- 0099_grants.sql  (resta sempre l'ultima migrazione)
@@ -3201,3 +3210,4 @@ begin
     execute format('grant execute on function %s to authenticated', f.sig);
   end loop;
 end $$;
+

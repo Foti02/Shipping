@@ -6,6 +6,7 @@ import { useApi, useMutazione } from '../../lib/api';
 import { messaggioErrore } from '../../lib/errori';
 import { euro, qta as fQta } from '../../lib/formati';
 import { Button, Field } from '../../ui';
+import { Termine } from '../../ui/Suggerimento';
 import { calcolaTotali, centInEuro, euroInCent, numero, totaleRiga } from './calcolo';
 import { TIPI, minuscolo, type DocumentoCompleto, type TipoDoc } from './tipi';
 
@@ -218,7 +219,7 @@ function Modulo({ tipo, iniziale, onChiudi, onFatto }: { tipo: TipoDoc; iniziale
             <Field label="Titolo" value={titolo} onChange={(e) => setTitolo(e.target.value)} />
             <Field label="Banca" value={banca} onChange={(e) => setBanca(e.target.value)} />
             <Field label="IBAN" value={iban} onChange={(e) => setIban(e.target.value)} />
-            <Field label="Condizioni di pagamento" value={condizioni} onChange={(e) => setCondizioni(e.target.value)} placeholder="es. Bonifico 30 giorni" />
+            <Field label="Condizioni di pagamento" aiuto="condizioni_pagamento" value={condizioni} onChange={(e) => setCondizioni(e.target.value)} placeholder="es. Bonifico 30 giorni" />
           </>
         )}
         <Field label="Note" value={note} onChange={(e) => setNote(e.target.value)} />
@@ -247,7 +248,7 @@ function Modulo({ tipo, iniziale, onChiudi, onFatto }: { tipo: TipoDoc; iniziale
                   autoComplete="off"
                   aria-label={`Articolo riga ${i + 1}`}
                   errore={err(`${k}-articolo`)}
-                  aiuto={tipo === 'scarico' && art ? `Giacenza attuale: ${fQta(art.giacenza)}` : undefined}
+                  nota={tipo === 'scarico' && art ? `Giacenza attuale: ${fQta(art.giacenza)}` : undefined}
                 />
               </div>
               <div className="doc-riga-larga">
@@ -259,8 +260,8 @@ function Modulo({ tipo, iniziale, onChiudi, onFatto }: { tipo: TipoDoc; iniziale
               <Field label="IVA %" inputMode="decimal" value={r.iva} onChange={(e) => aggiorna(r.chiave, { iva: e.target.value })} aria-label={`IVA riga ${i + 1}`} />
               {cfg.fattura && (
                 <>
-                  <Field label="INPS %" inputMode="decimal" value={r.inps} onChange={(e) => aggiorna(r.chiave, { inps: e.target.value })} aria-label={`INPS riga ${i + 1}`} />
-                  <Field label="Ritenuta %" inputMode="decimal" value={r.ritenuta} onChange={(e) => aggiorna(r.chiave, { ritenuta: e.target.value })} aria-label={`Ritenuta riga ${i + 1}`} />
+                  <Field label="INPS %" aiuto="inps" inputMode="decimal" value={r.inps} onChange={(e) => aggiorna(r.chiave, { inps: e.target.value })} aria-label={`INPS riga ${i + 1}`} />
+                  <Field label="Ritenuta %" aiuto="ritenuta_acconto" inputMode="decimal" value={r.ritenuta} onChange={(e) => aggiorna(r.chiave, { ritenuta: e.target.value })} aria-label={`Ritenuta riga ${i + 1}`} />
                 </>
               )}
               <div className="doc-riga-fine">
@@ -280,8 +281,8 @@ function Modulo({ tipo, iniziale, onChiudi, onFatto }: { tipo: TipoDoc; iniziale
       <dl className="doc-totali" aria-label="Totali">
         <div><dt>Imponibile</dt><dd>{euro(tot.imponibile_cent)}</dd></div>
         <div><dt>Imposta</dt><dd>{euro(tot.imposta_cent)}</dd></div>
-        {cfg.fattura && <div><dt>INPS</dt><dd>{euro(tot.inps_cent)}</dd></div>}
-        {cfg.fattura && <div><dt>Ritenuta</dt><dd>-{euro(tot.ritenuta_cent)}</dd></div>}
+        {cfg.fattura && <div><dt><Termine aiuto="inps">INPS</Termine></dt><dd>{euro(tot.inps_cent)}</dd></div>}
+        {cfg.fattura && <div><dt><Termine aiuto="ritenuta_acconto">Ritenuta</Termine></dt><dd>-{euro(tot.ritenuta_cent)}</dd></div>}
         <div className="doc-totale"><dt>Totale</dt><dd>{euro(tot.totale_cent)}</dd></div>
       </dl>
 

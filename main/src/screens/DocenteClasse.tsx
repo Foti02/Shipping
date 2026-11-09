@@ -82,7 +82,7 @@ export default function DocenteClasse() {
     <>
       <div className="intestazione">
         <h1>
-          {classe?.nome ?? 'Classe'}<span className="dot">.</span>
+          {classe?.nome ?? 'Classe'}
         </h1>
         <div className="righe-bottoni">
           <Link className="btn btn-tenue" to="/docente">Tutte le classi</Link>

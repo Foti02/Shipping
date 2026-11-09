@@ -1,20 +1,22 @@
 /* Stampa pulita: via barra laterale, intestazione, piede e tutto cio' che ha classe "no-stampa".
    I selettori sono piu' specifici di quelli di style.css cosi' vincono qualunque sia l'ordine di caricamento. */
 @media print {
-  :root, :root:not([data-theme='light']) {
-    --blu: #00496d !important; --testo: #000 !important; --attenuato: #333 !important; --pannello: #fff !important; --sfondo: #fff !important;
-    --zebra: #fff !important; --ok-sfondo: #fff !important; --ok-testo: #17602a !important; --avviso-sfondo: #fff !important; --avviso-testo: #000 !important;
-    --info-sfondo: #fff !important; --info-testo: #00496d !important; --errore-sfondo: #fff !important; --errore-testo: #9b1c1c !important;
+  :root, :root:not([data-theme='light']), :root[data-theme='dark'] {
+    --sfondo: #fff !important; --superficie: #fff !important; --superficie-2: #fff !important; --testo: #000 !important; --attenuato: #333 !important;
+    --bordo: #bbb !important; --bordo-forte: #888 !important; --accento: #000 !important; --accento-tenue: #fff !important; --accento-testo: #000 !important;
+    --ok-sfondo: #fff !important; --ok-testo: #17602a !important; --avviso-sfondo: #fff !important; --avviso-testo: #000 !important;
+    --info-sfondo: #fff !important; --info-testo: #000 !important; --errore-sfondo: #fff !important; --errore-testo: #9b1c1c !important;
+    --neutro-sfondo: #fff !important; --neutro-testo: #000 !important; --ombra: none !important;
   }
-  html body .nav, html body .top, html body .piede, html body .avviso-agg, html body .toasts, html body .no-stampa { display: none !important; }
+  html body .nav, html body .nav-velo, html body .top, html body .piede, html body .avviso-agg, html body .toasts, html body .suggerimento, html body .no-stampa { display: none !important; }
   html body div.shell { display: block; }
   html body div.colonna { display: block; min-height: 0; padding-bottom: 0; }
   html body main.contenuto { padding: 0; }
   body { background: #fff; color: #000; }
   /* Se la pagina ha un elenco con un documento selezionato, si stampa solo il documento. */
   html body .no-stampa-lista { display: none !important; }
-  .dt-dettaglio { background: none; padding: 0; margin: 0; }
-  .dt-scroll { overflow: visible; }
+  .dt-dettaglio { background: none; padding: 0; margin: 0; border: 0; box-shadow: none; }
+  .dt-scroll { overflow: visible; box-shadow: none; }
   .badge { border: 1px solid #333; background: none; color: #000; }
   tr, li { break-inside: avoid; }
 }

@@ -123,7 +123,7 @@ function Corpo({ ubicazione, onChiudi }: { ubicazione: Ubicazione | null; onChiu
   return (
     <form onSubmit={invia} noValidate>
       <ErroreForm testo={errore} />
-      <Field label="Codice" value={f.codice} onChange={set('codice')} errore={errCodice} aiuto="Per esempio A-01-03." maxLength={30} />
+      <Field label="Codice" value={f.codice} onChange={set('codice')} errore={errCodice} nota="Per esempio A-01-03." maxLength={30} />
       <Field label="Zona" value={f.zona} onChange={set('zona')} />
       <Field label="Corridoio" value={f.corridoio} onChange={set('corridoio')} />
       <Field label="Scaffale" value={f.scaffale} onChange={set('scaffale')} />

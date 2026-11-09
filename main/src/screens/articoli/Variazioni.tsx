@@ -6,9 +6,9 @@ import { ErroreForm, useScrivi } from './comuni';
 import { leggiNumero } from './logica';
 
 const TIPI = [
-  { value: 'prezzo_perc', label: 'Aumenta o riduci il prezzo di acquisto (%)', min: -100, max: Infinity, aiuto: 'Positivo aumenta, negativo riduce: -10 toglie il 10%.' },
-  { value: 'ricarico_perc', label: 'Imposta il ricarico di vendita (%)', min: 0, max: 999.99, aiuto: 'Sostituisce il ricarico di ogni articolo scelto.' },
-  { value: 'sconto_perc', label: 'Imposta lo sconto fisso (%)', min: 0, max: 100, aiuto: 'Sostituisce lo sconto di ogni articolo scelto.' },
+  { value: 'prezzo_perc', label: 'Aumenta o riduci il prezzo di acquisto (%)', min: -100, max: Infinity, nota: 'Positivo aumenta, negativo riduce: -10 toglie il 10%.' },
+  { value: 'ricarico_perc', label: 'Imposta il ricarico di vendita (%)', min: 0, max: 999.99, nota: 'Sostituisce il ricarico di ogni articolo scelto.' },
+  { value: 'sconto_perc', label: 'Imposta lo sconto fisso (%)', min: 0, max: 100, nota: 'Sostituisce lo sconto di ogni articolo scelto.' },
 ];
 
 interface Props {
@@ -59,7 +59,7 @@ function Corpo({ ids, onChiudi }: Omit<Props, 'aperto'>) {
       </p>
       <ErroreForm testo={errore} />
       <Select label="Cosa vuoi cambiare" value={tipo} onChange={(e) => setTipo(e.target.value)} opzioni={TIPI} />
-      <Field label="Valore (%)" value={valore} onChange={(e) => setValore(e.target.value)} errore={errCampo} aiuto={t.aiuto} inputMode="decimal" />
+      <Field label="Valore (%)" value={valore} onChange={(e) => setValore(e.target.value)} errore={errCampo} nota={t.nota} inputMode="decimal" />
       <div className="dialog-azioni">
         <Button variante="tenue" onClick={onChiudi}>
           Annulla

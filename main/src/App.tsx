@@ -30,7 +30,7 @@ function RichiedeAccesso() {
     return (
       <main className="pubblica">
         <h1>
-          Non riesco a collegarmi<span className="dot">.</span>
+          Non riesco a collegarmi
         </h1>
         <p>{messaggioErrore(errore)}</p>
         <div className="buttons">

@@ -57,7 +57,7 @@ function FormAnagrafica({ magazzino, tipo, anagrafica, onChiudi }: Omit<Props, '
         <Field label="Partita IVA" inputMode="numeric" {...campo('p_iva')} errore={av.p_iva} />
         <Field label="Sconto %" inputMode="decimal" {...campo('sconto_perc')} errore={err.sconto_perc} />
         {t === 'fornitore' && (
-          <Field label="Giorni di consegna" inputMode="numeric" {...campo('lead_time_giorni')} errore={err.lead_time_giorni} aiuto="Dall'ordine all'arrivo della merce." />
+          <Field label="Giorni di consegna" inputMode="numeric" {...campo('lead_time_giorni')} errore={err.lead_time_giorni} aiuto="lead_time" />
         )}
       </div>
       <Field label="Note" {...campo('note')} />

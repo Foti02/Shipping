@@ -46,7 +46,7 @@ export default function Agenda() {
   return (
     <div className="agenda-pagina">
       <h1>
-        Agenda<span className="dot">.</span>
+        Agenda
       </h1>
       <p className="muto">Agenda personale: in questo magazzino le voci le vedi solo tu.</p>
 

@@ -83,9 +83,9 @@ export function ElencoArticoli() {
     { chiave: 'carichi', titolo: 'Carichi', allinea: 'destra', render: (a) => qta(a.carichi), valore: (a) => Number(a.carichi) },
     { chiave: 'scarichi', titolo: 'Scarichi', allinea: 'destra', render: (a) => qta(a.scarichi), valore: (a) => Number(a.scarichi) },
     { chiave: 'resi', titolo: 'Resi', allinea: 'destra', render: (a) => qta(a.resi), valore: (a) => Number(a.resi) },
-    { chiave: 'giacenza', titolo: 'Giacenza', allinea: 'destra', render: (a) => `${qta(a.giacenza)} ${a.um}`, valore: (a) => Number(a.giacenza) },
-    { chiave: 'ordinato', titolo: 'Ordinato', allinea: 'destra', render: (a) => qta(a.ordinato), valore: (a) => Number(a.ordinato) },
-    { chiave: 'stato_riga', titolo: 'Stato', render: (a) => <StatoIcona stato={a.stato_riga} />, valore: (a) => ORDINE_STATO[a.stato_riga ?? 'verde'] },
+    { chiave: 'giacenza', titolo: 'Giacenza', aiuto: 'giacenza_ordinato', allinea: 'destra', render: (a) => `${qta(a.giacenza)} ${a.um}`, valore: (a) => Number(a.giacenza) },
+    { chiave: 'ordinato', titolo: 'Ordinato', aiuto: 'giacenza_ordinato', allinea: 'destra', render: (a) => qta(a.ordinato), valore: (a) => Number(a.ordinato) },
+    { chiave: 'stato_riga', titolo: 'Stato', aiuto: 'stato_riga', render: (a) => <StatoIcona stato={a.stato_riga} />, valore: (a) => ORDINE_STATO[a.stato_riga ?? 'verde'] },
   ];
 
   const esporta = () =>

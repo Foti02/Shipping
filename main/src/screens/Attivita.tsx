@@ -19,7 +19,7 @@ export default function Attivita() {
   return (
     <>
       <h1>
-        Attività<span className="dot">.</span>
+        Attività
       </h1>
       <p className="muto">Cosa succede nel magazzino, da chiunque. Si aggiorna ogni 5 secondi.</p>
       {errore ? (

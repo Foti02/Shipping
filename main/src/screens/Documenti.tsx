@@ -57,7 +57,7 @@ function Schermata({ tipo }: { tipo: TipoDoc }) {
     { chiave: 'anagrafica', titolo: cfg.etichettaControparte, render: (r) => r.anagrafica ?? '-' },
     { chiave: 'totale_cent', titolo: 'Totale', allinea: 'destra', render: (r) => euro(r.totale_cent), valore: (r) => Number(r.totale_cent) },
     {
-      chiave: 'stato', titolo: 'Stato',
+      chiave: 'stato', titolo: 'Stato', aiuto: 'stato_documento',
       render: (r) => (
         <>
           <BadgeStatoDoc stato={r.stato} />
@@ -67,7 +67,7 @@ function Schermata({ tipo }: { tipo: TipoDoc }) {
     },
     ...(cfg.spedizione
       ? [{
-          chiave: 'stato_spedizione', titolo: 'Spedizione',
+          chiave: 'stato_spedizione', titolo: 'Spedizione', aiuto: 'stato_spedizione' as const,
           render: (r: RigaElenco) => (r.stato_spedizione ? PASSI_SPEDIZIONE.find((p) => p.id === r.stato_spedizione)?.testo ?? r.stato_spedizione : '-'),
         }]
       : []),
@@ -85,14 +85,16 @@ function Schermata({ tipo }: { tipo: TipoDoc }) {
   return (
     <div className="doc-schermata">
       <h1 className="no-stampa">
-        {cfg.titolo}<span className="dot">.</span>
+        {cfg.titolo}
       </h1>
       <div className="no-stampa">
-        <Tabs
-          voci={GRUPPI[cfg.gruppo].map((t) => ({ id: t, etichetta: TIPI[t].titolo }))}
-          attiva={tipo}
-          onCambia={(t) => navigate(`/m/${m.id}/documenti/${t}`)}
-        />
+        <div className="solo-piccolo">
+          <Tabs
+            voci={GRUPPI[cfg.gruppo].map((t) => ({ id: t, etichetta: TIPI[t].titolo }))}
+            attiva={tipo}
+            onCambia={(t) => navigate(`/m/${m.id}/documenti/${t}`)}
+          />
+        </div>
 
         <div className="doc-filtri">
           <Field label="Dal" type="date" value={dal} onChange={(e) => setDal(e.target.value)} />

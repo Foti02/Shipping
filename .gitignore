@@ -11,3 +11,6 @@ replica/screens/
 
 # Manuale di terzi: resta sul PC.
 manuale_uso_gestionale_merci.pdf
+
+# Valori pubblici di Supabase (URL e chiave publishable): servono al sito e agli installer.
+!.env.production

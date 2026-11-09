@@ -47,7 +47,7 @@ export default function Docente() {
     <>
       <div className="intestazione">
         <h1>
-          Le mie classi<span className="dot">.</span>
+          Le mie classi
         </h1>
         <Button variante="accento" onClick={() => setNuova(true)}>
           Nuova classe

@@ -52,7 +52,7 @@ export default function Anagrafiche() {
   return (
     <div className="anagrafiche-pagina">
       <h1>
-        Anagrafiche<span className="dot">.</span>
+        Anagrafiche
       </h1>
 
       <div className="barra-azioni no-stampa">
@@ -61,7 +61,7 @@ export default function Anagrafiche() {
             <Button variante="accento" onClick={() => setModale({ tipo: 'nuovo', nuovo: 'cliente' })}>
               Nuovo cliente
             </Button>
-            <Button variante="accento" onClick={() => setModale({ tipo: 'nuovo', nuovo: 'fornitore' })}>
+            <Button variante="tenue" onClick={() => setModale({ tipo: 'nuovo', nuovo: 'fornitore' })}>
               Nuovo fornitore
             </Button>
             <Button variante="tenue" disabled={!sel} onClick={() => setModale({ tipo: 'modifica' })}>

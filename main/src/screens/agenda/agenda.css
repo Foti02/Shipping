@@ -1,54 +1,51 @@
-/* Agenda. Solo token di style.css. Appuntamento = blu, scadenza = arancione. */
-.agenda-pagina .barra-azioni { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+/* Agenda. Solo token di style.css. Appuntamento = blu, scadenza = ambra. */
+.agenda-pagina .barra-azioni { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .ag-layout { display: grid; gap: 16px; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); align-items: start; }
 @media (max-width: 900px) { .ag-layout { grid-template-columns: minmax(0, 1fr); } }
+.ag-layout > section { background: var(--superficie); border: 1px solid var(--bordo); border-radius: var(--raggio-g); box-shadow: var(--ombra); padding: 16px; min-width: 0; }
 .ag-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
-.ag-nav h2 { margin: 0; text-align: center; flex: 1; text-transform: capitalize; font-size: 1.05rem; }
-.ag-nav .btn { min-width: 44px; padding: 0 12px; }
+.ag-nav h2 { margin: 0; text-align: center; flex: 1; text-transform: capitalize; font-size: 0.9375rem; }
+.ag-nav .btn { min-width: var(--alt-controllo); padding: 0 10px; }
 
 /* mese */
 .cal-mese { display: grid; gap: 2px; }
 .cal-riga { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
-.cal-intest span { text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--attenuato); }
+.cal-intest span { text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--attenuato); padding-bottom: 4px; }
 .cal-giorno {
-  width: 100%; min-height: 48px; border: 0; border-radius: 12px; background: var(--sfondo); color: var(--testo); cursor: pointer;
+  width: 100%; min-height: 44px; border: 1px solid transparent; border-radius: var(--raggio); background: none; color: var(--testo); cursor: pointer;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px 0;
 }
-.cal-giorno:hover { background: var(--zebra); }
+.cal-giorno:hover { background: var(--superficie-2); border-color: var(--bordo); }
 .cal-giorno.fuori { color: var(--attenuato); opacity: 0.6; }
-.cal-giorno.oggi .cal-num { background: var(--arancione); color: #fff; border-radius: 999px; min-width: 26px; line-height: 26px; }
-.cal-giorno.sel { background: var(--selezione); color: var(--sul-blu); opacity: 1; }
-.cal-num { font-weight: 700; text-align: center; padding: 0 4px; }
+.cal-giorno.oggi .cal-num { background: var(--accento); color: var(--sul-accento); border-radius: 50%; min-width: 24px; line-height: 24px; }
+.cal-giorno.sel { background: var(--accento-tenue); border-color: var(--accento); color: var(--accento-testo); opacity: 1; }
+.cal-num { font-weight: 500; text-align: center; padding: 0 4px; }
 .cal-puntini { display: flex; gap: 3px; height: 8px; align-items: center; }
-.cal-puntini i { width: 7px; height: 7px; border-radius: 50%; background: var(--blu); }
-.cal-puntini i.scadenza { background: var(--arancione); }
+.cal-puntini i { width: 6px; height: 6px; border-radius: 50%; background: var(--accento); }
+.cal-puntini i.scadenza { background: var(--avviso-testo); }
 .cal-puntini i.fatto { opacity: 0.35; }
-.cal-giorno.sel .cal-puntini i:not(.scadenza) { background: var(--sul-blu); }
 .cal-puntini b { font-size: 0.7rem; line-height: 1; }
-.ag-legenda span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0 4px 0 12px; background: var(--blu); }
+.ag-legenda span { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 0 4px 0 12px; background: var(--accento); }
 .ag-legenda span:first-child { margin-left: 0; }
-.ag-legenda span.scadenza { background: var(--arancione); }
+.ag-legenda span.scadenza { background: var(--avviso-testo); }
 
 /* giorno: fasce orarie */
-.ag-fasce { height: 560px; overflow-y: auto; border-radius: 12px; background: var(--sfondo); }
+.ag-fasce { height: 560px; overflow-y: auto; border: 1px solid var(--bordo); border-radius: var(--raggio); background: var(--superficie); }
 .ag-corpo { position: relative; }
-.ag-ora { position: absolute; left: 0; right: 0; cursor: pointer; }
-.ag-ora:nth-child(even) { background: var(--zebra); }
-.ag-ora span { position: absolute; left: 8px; top: 2px; width: 48px; font-size: 0.8rem; color: var(--attenuato); }
-.ag-ora:hover { background: var(--zebra); }
-.ag-voce { display: flex; align-items: stretch; border-radius: 12px; overflow: hidden; background: var(--info-sfondo); color: var(--info-testo); }
+.ag-ora { position: absolute; left: 0; right: 0; cursor: pointer; border-top: 1px solid var(--bordo); }
+.ag-ora:hover { background: var(--superficie-2); }
+.ag-ora span { position: absolute; left: 8px; top: 2px; width: 48px; font-size: 0.75rem; color: var(--attenuato); }
+.ag-voce { display: flex; align-items: stretch; border-radius: var(--raggio); border-left: 3px solid var(--info-testo); overflow: hidden; background: var(--info-sfondo); color: var(--info-testo); }
 .ag-fasce .ag-voce { position: absolute; z-index: 1; }
-.ag-voce.scadenza { background: var(--avviso-sfondo); color: var(--avviso-testo); }
+.ag-voce.scadenza { background: var(--avviso-sfondo); color: var(--avviso-testo); border-left-color: var(--avviso-testo); }
 .ag-voce.fatto { opacity: 0.65; }
 .ag-voce.fatto strong { text-decoration: line-through; }
-.ag-testo { flex: 1; min-width: 0; border: 0; background: none; text-align: left; padding: 6px 10px 6px 0; cursor: pointer; display: grid; align-content: start; }
+.ag-testo { flex: 1; min-width: 0; border: 0; background: none; text-align: left; padding: 6px 10px; cursor: pointer; display: grid; align-content: start; color: inherit; }
 .ag-testo strong, .ag-testo small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ag-spunta {
-  flex: 0 0 44px; min-height: 44px; border: 0; background: none; cursor: pointer; font-weight: 800; font-size: 1.1rem; color: inherit;
-  display: flex; align-items: flex-start; justify-content: center; padding-top: 8px;
+  position: relative; flex: 0 0 var(--alt-controllo); min-height: var(--alt-controllo); border: 0; background: none; cursor: pointer; font-weight: 700; color: inherit;
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 6px;
 }
-.ag-spunta::before { content: ''; width: 22px; height: 22px; border-radius: 50%; background: var(--sfondo); display: block; position: absolute; z-index: -1; }
-.ag-spunta { position: relative; z-index: 0; }
 .ag-spunta:disabled { cursor: default; }
 
 /* giorno: elenco (telefono) */
@@ -57,5 +54,5 @@
   .ag-fasce { display: none; }
   .ag-lista { display: grid; }
   .ag-lista li.muto { padding: 12px 0; }
-  .ag-lista .ag-voce { min-height: 56px; }
+  .ag-lista .ag-voce { min-height: 52px; }
 }

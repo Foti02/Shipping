@@ -2,8 +2,10 @@ import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useMagazzino } from '../../context/magazzino';
 import { useApi } from '../../lib/api';
 import { messaggioErrore } from '../../lib/errori';
+import type { ChiaveAiuto } from '../../lib/aiuti';
 import { euro } from '../../lib/formati';
 import { Button, Dialog, Field, Select, Tabs, useToast } from '../../ui';
+import { Suggerimento, testoAiuto } from '../../ui/Suggerimento';
 import { ErroreForm, useScrivi } from './comuni';
 import { centInEuro, euroInCent, leggiNumero, numeroInTesto, prezzoVendita } from './logica';
 import type { Articolo, Fornitore, Ubicazione } from './tipi';
@@ -124,7 +126,7 @@ function Corpo({ articolo, categorie, onChiudi }: Omit<Props, 'aperto'>) {
   const fornitori = useApi<Fornitore[]>('api_anagrafiche_elenco', { p_magazzino: m.id, p_tipo: 'fornitore' });
 
   const set = (k: keyof Form) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF((v) => ({ ...v, [k]: e.target.value }));
-  const campo = (k: keyof Form, label: string, extra: { aiuto?: string; list?: string; maxLength?: number } = {}) => (
+  const campo = (k: keyof Form, label: string, extra: { aiuto?: ChiaveAiuto; nota?: string; list?: string; maxLength?: number } = {}) => (
     <Field label={label} value={f[k] as string} onChange={set(k)} errore={errori[k]} inputMode={DECIMALI.has(k) ? 'decimal' : undefined} {...extra} />
   );
 
@@ -190,10 +192,10 @@ function Corpo({ articolo, categorie, onChiudi }: Omit<Props, 'aperto'>) {
         {scheda === 'prezzi' && (
           <>
             <div className="art-griglia2">
-              {campo('prezzo', 'Prezzo di acquisto (€)', { aiuto: 'In euro, senza IVA: 12,50' })}
+              {campo('prezzo', 'Prezzo di acquisto (€)', { nota: 'In euro, senza IVA: 12,50' })}
               {campo('iva', 'IVA (%)')}
-              {campo('ricarico', 'Ricarico di vendita (%)', { aiuto: 'Quanto aggiungi al prezzo di acquisto.' })}
-              {campo('sconto', 'Sconto fisso (%)', { aiuto: 'Tolto dal prezzo di vendita.' })}
+              {campo('ricarico', 'Ricarico di vendita (%)', { aiuto: 'ricarico' })}
+              {campo('sconto', 'Sconto fisso (%)', { aiuto: 'sconto_fisso' })}
             </div>
             <dl className="art-prezzi" aria-label="Prezzi calcolati">
               <div><dt>Acquisto con IVA</dt><dd>{vendita ? euro(vendita.acquistoIvato) : '-'}</dd></div>
@@ -209,35 +211,37 @@ function Corpo({ articolo, categorie, onChiudi }: Omit<Props, 'aperto'>) {
             <p className="muto">Questi valori servono per le esercitazioni sul riordino: il programma li usa per segnalare la merce sotto scorta.</p>
             <div className="art-griglia2">
               {crea ? (
-                <div className="largo">{campo('giacenza', 'Giacenza iniziale', { aiuto: 'Quantità già in magazzino: crea il movimento di apertura. Si imposta solo qui, poi cambia con carichi, scarichi e inventario.' })}</div>
+                <div className="largo">{campo('giacenza', 'Giacenza iniziale', { nota: 'Crea il movimento di apertura. Si imposta solo qui, poi cambia con carichi, scarichi e inventario.' })}</div>
               ) : (
                 <p className="largo muto">La giacenza non si modifica da qui: cambia con carichi, scarichi, resi e inventario.</p>
               )}
-              {campo('minima', 'Scorta minima', { aiuto: 'Quantità sotto cui non vuoi scendere.' })}
-              {campo('sicurezza', 'Scorta di sicurezza', { aiuto: 'Margine extra per ritardi del fornitore o consumi più alti del previsto.' })}
+              {campo('minima', 'Scorta minima', { aiuto: 'scorta_minima' })}
+              {campo('sicurezza', 'Scorta di sicurezza', { aiuto: 'scorta_sicurezza' })}
               <div className="largo">
-                {campo('riordino', 'Punto di riordino', { aiuto: 'Quando la giacenza scende a questo livello conviene riordinare: domanda giornaliera × lead time + scorta di sicurezza. Se lo lasci vuoto lo propone il programma.' })}
+                {campo('riordino', 'Punto di riordino', { aiuto: 'punto_riordino', nota: 'Se lo lasci vuoto lo propone il programma.' })}
               </div>
-              {campo('lead', 'Lead time (giorni)', { aiuto: 'Giorni tra ordine al fornitore e arrivo della merce.' })}
-              {campo('domanda', 'Domanda giornaliera', { aiuto: 'Pezzi venduti in media al giorno. Vuota: la calcola il programma dai movimenti.' })}
-              {campo('costoOrdine', 'Costo di un ordine (€)', { aiuto: 'Trasporto, tempo, pratiche per ogni ordine. Serve al lotto economico (EOQ).' })}
-              {campo('costoMant', 'Costo di mantenimento (% annuo)', { aiuto: 'Quanto costa all\'anno tenere la merce, in % del suo valore. Serve all\'EOQ.' })}
+              {campo('lead', 'Lead time (giorni)', { aiuto: 'lead_time' })}
+              {campo('domanda', 'Domanda giornaliera', { aiuto: 'domanda_giornaliera' })}
+              {campo('costoOrdine', 'Costo di un ordine (€)', { aiuto: 'costo_ordine' })}
+              {campo('costoMant', 'Costo di mantenimento (% annuo)', { aiuto: 'costo_mantenimento' })}
             </div>
           </>
         )}
 
         {scheda === 'logistica' && (
           <>
-            <Select label="Ubicazione" value={f.ubicazione} onChange={set('ubicazione')} opzioni={opzUbicazioni} aiuto={ubicazioni.isError ? 'Ubicazioni non disponibili.' : undefined} />
-            <Select label="Fornitore abituale" value={f.fornitore} onChange={set('fornitore')} opzioni={opzFornitori} aiuto={fornitori.isError ? 'Fornitori non disponibili.' : undefined} />
+            <Select label="Ubicazione" value={f.ubicazione} onChange={set('ubicazione')} opzioni={opzUbicazioni} aiuto="ubicazione" nota={ubicazioni.isError ? 'Ubicazioni non disponibili.' : undefined} />
+            <Select label="Fornitore abituale" value={f.fornitore} onChange={set('fornitore')} opzioni={opzFornitori} nota={fornitori.isError ? 'Fornitori non disponibili.' : undefined} />
             <div className="art-griglia2">
               {campo('codiceFornitore', 'Codice del fornitore')}
               {campo('barcode', 'Codice a barre')}
             </div>
-            <label className="art-check">
-              <input type="checkbox" checked={f.lotti} onChange={(e) => setF((v) => ({ ...v, lotti: e.target.checked }))} />
-              Gestione lotti (scarico dal lotto che scade prima)
-            </label>
+            <Suggerimento testo={testoAiuto('gestione_lotti')}>
+              <label className="art-check">
+                <input type="checkbox" checked={f.lotti} onChange={(e) => setF((v) => ({ ...v, lotti: e.target.checked }))} />
+                Gestione lotti (scarico dal lotto che scade prima)
+              </label>
+            </Suggerimento>
           </>
         )}
       </div>

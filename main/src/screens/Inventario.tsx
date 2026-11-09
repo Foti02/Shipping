@@ -4,6 +4,7 @@ import { useApi, useMutazione } from '../lib/api';
 import { messaggioErrore } from '../lib/errori';
 import { data, dataOra, qta } from '../lib/formati';
 import { Badge, Button, DataTable, Dialog, EmptyState, Field, type Colonna } from '../ui';
+import { Suggerimento, testoAiuto } from '../ui/Suggerimento';
 import './classe/classe.css';
 
 interface Riga {
@@ -61,7 +62,7 @@ export default function Inventario() {
 
   const colonne: Colonna<Riga>[] = [
     { chiave: 'matricola', titolo: 'Articolo', render: (r) => <><strong>{r.matricola}</strong><br /><span className="muto">{r.descrizione}</span></> },
-    { chiave: 'ubicazione', titolo: 'Ubicazione / lotto', valore: (r) => r.ubicazione, render: (r) => [r.ubicazione, r.lotto].filter(Boolean).join(' / ') || <span className="muto">-</span> },
+    { chiave: 'ubicazione', titolo: 'Ubicazione / lotto', aiuto: 'ubicazione', valore: (r) => r.ubicazione, render: (r) => [r.ubicazione, r.lotto].filter(Boolean).join(' / ') || <span className="muto">-</span> },
     { chiave: 'qta_sistema', titolo: 'Sistema', allinea: 'destra', valore: (r) => Number(r.qta_sistema), render: (r) => qta(r.qta_sistema) },
     { chiave: 'qta_contata', titolo: 'Contata', allinea: 'destra', valore: (r) => (r.qta_contata == null ? null : Number(r.qta_contata)), render: (r) => (r.qta_contata == null ? <span className="muto">da contare</span> : qta(r.qta_contata)) },
     {
@@ -81,9 +82,11 @@ export default function Inventario() {
             <Button variante="tenue" onClick={() => { setContando(r); setQuantita(''); }}>{r.qta_contata == null ? 'Conta' : 'Riconta'}</Button>
             {serve && (
               <>
-                <select className="sel-tab" aria-label={`Causale per ${r.matricola}`} value={causali[r.id] ?? 'conteggio'} onChange={(e) => setCausali({ ...causali, [r.id]: e.target.value })}>
-                  {CAUSALI.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
-                </select>
+                <Suggerimento testo={testoAiuto('causale_rettifica')}>
+                  <select className="sel-tab" aria-label={`Causale per ${r.matricola}`} value={causali[r.id] ?? 'conteggio'} onChange={(e) => setCausali({ ...causali, [r.id]: e.target.value })}>
+                    {CAUSALI.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+                  </select>
+                </Suggerimento>
                 <Button variante="accento" disabled={rettifica.isPending} onClick={() => rettifica.mutate({ p_riga: r.id, p_causale: causali[r.id] ?? 'conteggio' })}>Rettifica</Button>
               </>
             )}
@@ -97,7 +100,7 @@ export default function Inventario() {
     <>
       <div className="intestazione">
         <h1>
-          Inventario<span className="dot">.</span>
+          Inventario
         </h1>
         {scrive && <Button variante="accento" onClick={() => { setNome(`Inventario del ${data(new Date())}`); setNuovo(true); }}>Nuovo inventario</Button>}
       </div>
@@ -167,7 +170,7 @@ export default function Inventario() {
           <Field label="Quantità contata" inputMode="decimal" value={quantita} onChange={(e) => setQuantita(e.target.value)} />
           <div className="dialog-azioni">
             <Button variante="tenue" onClick={chiudiConta}>Annulla</Button>
-            <Button variante="tenue" disabled={conta.isPending} onClick={() => eseguiConta(null)}>Rivela il fisico</Button>
+            <Button variante="tenue" aiuto="inventario_fisico" disabled={conta.isPending} onClick={() => eseguiConta(null)}>Rivela il fisico</Button>
             <Button type="submit" variante="accento" disabled={conta.isPending || quantita.trim() === '' || isNaN(Number(quantita.replace(',', '.')))}>Registra quantità</Button>
           </div>
         </form>

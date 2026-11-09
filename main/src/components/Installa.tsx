@@ -36,10 +36,10 @@ export function Installa() {
       <h2>Installa l'app sul computer</h2>
       <p>Stessa app del sito, in una finestra tutta sua.</p>
       <div className="buttons">
-        <a className={`btn${here === 'win' ? ' primary' : ''}`} href={trova(rel, '.exe') ?? RELEASES}>
+        <a className={`btn${here === 'win' ? '' : ' btn-tenue'}`} href={trova(rel, '.exe') ?? RELEASES}>
           Installa per Windows
         </a>
-        <a className={`btn${here === 'mac' ? ' primary' : ''}`} href={trova(rel, '.dmg') ?? RELEASES}>
+        <a className={`btn${here === 'mac' ? '' : ' btn-tenue'}`} href={trova(rel, '.dmg') ?? RELEASES}>
           Installa per macOS
         </a>
       </div>

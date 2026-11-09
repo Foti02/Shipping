@@ -5,6 +5,7 @@ import { useApi } from '../lib/api';
 import { messaggioErrore } from '../lib/errori';
 import { dataOra, euro, qta } from '../lib/formati';
 import { Badge, DataTable, EmptyState, Select, Tabs, type Colonna, type Tono } from '../ui';
+import { Termine } from '../ui/Suggerimento';
 import { AzioniScheda, euroCsv, numCsv } from './classe/componenti';
 import './classe/classe.css';
 
@@ -35,14 +36,14 @@ function Riordino({ magazzino, puoOrdinare }: { magazzino: string; puoOrdinare: 
   const colonne: Colonna<Suggerimento>[] = [
     { chiave: 'matricola', titolo: 'Articolo', render: (r) => <><strong>{r.matricola}</strong><br /><span className="muto">{r.descrizione}</span></> },
     { chiave: 'giacenza', titolo: 'Giacenza', allinea: 'destra', valore: (r) => Number(r.giacenza), render: (r) => `${qta(r.giacenza)} ${r.um}` },
-    { chiave: 'ordinato', titolo: 'In arrivo', allinea: 'destra', valore: (r) => Number(r.ordinato), render: (r) => qta(r.ordinato) },
-    { chiave: 'domanda_giornaliera', titolo: 'Domanda al giorno', allinea: 'destra', valore: (r) => Number(r.domanda_giornaliera), render: (r) => qta(r.domanda_giornaliera) },
-    { chiave: 'lead_time_giorni', titolo: 'Lead time (gg)', allinea: 'destra', valore: (r) => Number(r.lead_time_giorni) },
-    { chiave: 'scorta_sicurezza', titolo: 'Scorta di sicurezza', allinea: 'destra', valore: (r) => Number(r.scorta_sicurezza), render: (r) => qta(r.scorta_sicurezza) },
-    { chiave: 'punto_riordino_consigliato', titolo: 'Punto di riordino', allinea: 'destra', valore: (r) => Number(r.punto_riordino_consigliato), render: (r) => <>{qta(r.punto_riordino_consigliato)}{Number(r.punto_riordino) !== Number(r.punto_riordino_consigliato) && <span className="muto"> (impostato {qta(r.punto_riordino)})</span>}</> },
-    { chiave: 'eoq', titolo: 'EOQ', allinea: 'destra', valore: (r) => Number(r.eoq), render: (r) => (Number(r.eoq) > 0 ? qta(r.eoq) : <span className="muto">dati mancanti</span>) },
+    { chiave: 'ordinato', titolo: 'In arrivo', aiuto: 'giacenza_ordinato', allinea: 'destra', valore: (r) => Number(r.ordinato), render: (r) => qta(r.ordinato) },
+    { chiave: 'domanda_giornaliera', titolo: 'Domanda al giorno', aiuto: 'domanda_giornaliera', allinea: 'destra', valore: (r) => Number(r.domanda_giornaliera), render: (r) => qta(r.domanda_giornaliera) },
+    { chiave: 'lead_time_giorni', titolo: 'Lead time (gg)', aiuto: 'lead_time', allinea: 'destra', valore: (r) => Number(r.lead_time_giorni) },
+    { chiave: 'scorta_sicurezza', titolo: 'Scorta di sicurezza', aiuto: 'scorta_sicurezza', allinea: 'destra', valore: (r) => Number(r.scorta_sicurezza), render: (r) => qta(r.scorta_sicurezza) },
+    { chiave: 'punto_riordino_consigliato', titolo: 'Punto di riordino', aiuto: 'punto_riordino', allinea: 'destra', valore: (r) => Number(r.punto_riordino_consigliato), render: (r) => <>{qta(r.punto_riordino_consigliato)}{Number(r.punto_riordino) !== Number(r.punto_riordino_consigliato) && <span className="muto"> (impostato {qta(r.punto_riordino)})</span>}</> },
+    { chiave: 'eoq', titolo: 'EOQ', aiuto: 'eoq', allinea: 'destra', valore: (r) => Number(r.eoq), render: (r) => (Number(r.eoq) > 0 ? qta(r.eoq) : <span className="muto">dati mancanti</span>) },
     { chiave: 'qta_suggerita', titolo: 'Da ordinare', allinea: 'destra', valore: (r) => Number(r.qta_suggerita), render: (r) => (Number(r.qta_suggerita) > 0 ? <strong>{qta(r.qta_suggerita)}</strong> : '-') },
-    { chiave: 'urgenza', titolo: 'Urgenza', valore: (r) => ORD_URG[r.urgenza], render: (r) => <Badge tono={URGENZA[r.urgenza].tono}>{URGENZA[r.urgenza].testo}</Badge> },
+    { chiave: 'urgenza', titolo: 'Urgenza', aiuto: 'urgenza_riordino', valore: (r) => ORD_URG[r.urgenza], render: (r) => <Badge tono={URGENZA[r.urgenza].tono}>{URGENZA[r.urgenza].testo}</Badge> },
   ];
   return (
     <Stato q={q}>
@@ -115,12 +116,12 @@ function KpiScheda({ magazzino }: { magazzino: string }) {
               <div className="kpi largo">
                 <div><strong>{euro(k.valore_giacenza)}</strong><span>Valore della giacenza</span></div>
                 <div><strong>{euro(k.costo_venduto)}</strong><span>Costo venduto ({k.giorni} gg)</span></div>
-                <div><strong>{k.rotazione != null ? qta(k.rotazione) : '-'}</strong><span>Rotazione</span></div>
-                <div><strong>{k.copertura_giorni != null ? `${qta(k.copertura_giorni)} gg` : '-'}</strong><span>Copertura</span></div>
+                <div><strong>{k.rotazione != null ? qta(k.rotazione) : '-'}</strong><span><Termine aiuto="rotazione">Rotazione</Termine></span></div>
+                <div><strong>{k.copertura_giorni != null ? `${qta(k.copertura_giorni)} gg` : '-'}</strong><span><Termine aiuto="copertura_giorni">Copertura</Termine></span></div>
                 <div><strong>{qta(k.sottoscorta)}</strong><span>Articoli sotto scorta</span></div>
               </div>
               <p className="spiegazione">Rotazione = costo venduto / valore medio di magazzino. Copertura = per quanti giorni basta la giacenza al ritmo di consumo del periodo.</p>
-              <h2>Analisi ABC</h2>
+              <h2><Termine aiuto="analisi_abc">Analisi ABC</Termine></h2>
               <p className="spiegazione">Gli articoli sono ordinati per consumo: la classe A copre circa l'80% del consumo, la B fino al 95%, la C il resto.</p>
               <DataTable righe={k.abc} colonne={colonneAbc} rigaId={(r) => r.articolo_id} vuoto={<EmptyState titolo="Nessun consumo nel periodo" testo="Servono scarichi confermati per classificare gli articoli." />} />
               <h2 style={{ marginTop: 24 }}>Articoli fermi</h2>
@@ -146,9 +147,9 @@ function ValorizzazioneScheda({ magazzino }: { magazzino: string }) {
   const colonne: Colonna<R>[] = [
     { chiave: 'matricola', titolo: 'Articolo', render: (r) => <><strong>{r.matricola}</strong><br /><span className="muto">{r.descrizione}</span></> },
     { chiave: 'qta', titolo: 'Q.tà', allinea: 'destra', valore: (r) => Number(r.qta), render: (r) => `${qta(r.qta)} ${r.um}` },
-    { chiave: 'valore_cmp', titolo: 'Costo medio', allinea: 'destra', valore: (r) => Number(r.valore_cmp), render: (r) => euro(r.valore_cmp) },
-    { chiave: 'valore_fifo', titolo: 'FIFO', allinea: 'destra', valore: (r) => Number(r.valore_fifo), render: (r) => euro(r.valore_fifo) },
-    { chiave: 'valore_lifo', titolo: 'LIFO', allinea: 'destra', valore: (r) => Number(r.valore_lifo), render: (r) => euro(r.valore_lifo) },
+    { chiave: 'valore_cmp', titolo: 'Costo medio', aiuto: 'costo_medio', allinea: 'destra', valore: (r) => Number(r.valore_cmp), render: (r) => euro(r.valore_cmp) },
+    { chiave: 'valore_fifo', titolo: 'FIFO', aiuto: 'valorizzazione_fifo', allinea: 'destra', valore: (r) => Number(r.valore_fifo), render: (r) => euro(r.valore_fifo) },
+    { chiave: 'valore_lifo', titolo: 'LIFO', aiuto: 'valorizzazione_lifo', allinea: 'destra', valore: (r) => Number(r.valore_lifo), render: (r) => euro(r.valore_lifo) },
     { chiave: 'diff_fifo_cmp', titolo: 'FIFO - medio', allinea: 'destra', valore: (r) => Number(r.diff_fifo_cmp), render: (r) => diff(r.diff_fifo_cmp) },
     { chiave: 'diff_lifo_cmp', titolo: 'LIFO - medio', allinea: 'destra', valore: (r) => Number(r.diff_lifo_cmp), render: (r) => diff(r.diff_lifo_cmp) },
     { chiave: 'diff_fifo_lifo', titolo: 'FIFO - LIFO', allinea: 'destra', valore: (r) => Number(r.diff_fifo_lifo), render: (r) => diff(r.diff_fifo_lifo) },
@@ -189,7 +190,7 @@ export default function Analisi() {
   return (
     <>
       <h1>
-        Analisi<span className="dot">.</span>
+        Analisi
       </h1>
       <div className="no-stampa">
         <Tabs voci={SCHEDE} attiva={scheda} onCambia={setScheda} />

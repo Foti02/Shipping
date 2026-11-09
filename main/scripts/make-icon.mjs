@@ -1,18 +1,18 @@
-// Genera build/icon.png (1024x1024): icona segnaposto, un collo di magazzino su fondo blu ITS.
-// Nessun logo ITS. Si puo' sostituire il file con un'icona definitiva.
+// Genera build/icon.png (1024x1024): icona segnaposto, un quadrato accento su fondo ardesia neutro.
+// Nessun arancione, nessun logo. Si puo' sostituire il file con un'icona definitiva.
 import { deflateSync, crc32 } from 'node:zlib';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 const N = 1024;
-const BLU = [0x00, 0x49, 0x6d], ARANCIONE = [0xea, 0x5b, 0x0c], BIANCO = [255, 255, 255];
+const ARDESIA = [0x1e, 0x29, 0x3b], ACCENTO = [0x5b, 0x8d, 0xc4];
 const inRect = (x, y, x0, y0, x1, y1) => x >= x0 && x < x1 && y >= y0 && y < y1;
 
 function pixel(x, y) {
   // angoli arrotondati: fuori dal rettangolo con raggio 200 resta trasparente
   const R = 200, cx = Math.min(Math.max(x, R), N - 1 - R), cy = Math.min(Math.max(y, R), N - 1 - R);
   if ((x - cx) ** 2 + (y - cy) ** 2 > R * R) return [0, 0, 0, 0];
-  if (inRect(x, y, 392, 392, 632, 632)) return [...(inRect(x, y, 392, 492, 632, 532) ? ARANCIONE : BIANCO), 255]; // scatola
-  return [...BLU, 255];
+  if (inRect(x, y, 372, 372, 652, 652)) return [...ACCENTO, 255]; // il quadrato accento
+  return [...ARDESIA, 255];
 }
 
 const raw = Buffer.alloc(N * (N * 4 + 1));

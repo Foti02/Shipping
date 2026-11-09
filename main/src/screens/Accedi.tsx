@@ -55,7 +55,7 @@ export default function Accedi() {
   return (
     <main className="pubblica">
       <h1>
-        Shipping<span className="dot">.</span>
+        Shipping
       </h1>
       <p className="lead">Gestionale di magazzino per le esercitazioni in classe.</p>
 
@@ -85,7 +85,7 @@ export default function Accedi() {
             value={username}
             onChange={(e) => setUsername(e.target.value.toLowerCase())}
             errore={errori.username}
-            aiuto="Lettere minuscole, numeri, . _ -"
+            nota="Lettere minuscole, numeri, . _ -"
             autoComplete="username"
             autoCapitalize="none"
             spellCheck={false}

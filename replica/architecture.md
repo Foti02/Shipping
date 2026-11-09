@@ -7,7 +7,7 @@ Contratto per chi scrive codice. Se qualcosa qui è ambiguo, si chiede, non si i
 | Strato | Scelta | Perché |
 | --- | --- | --- |
 | Interfaccia | Vite + React + TypeScript, `HashRouter`, TanStack Query | file statici: funzionano su sito, su `file://` dentro Electron e senza server |
-| Stile | CSS con i token ITS già in `main/src/style.css`, niente Tailwind | superfici piene, spigoli arrotondati, nessun logo |
+| Stile | Neutro da gestionale moderno (il riferimento grafico ITS è superato): CSS con token in `main/src/style.css`, font di sistema, niente Tailwind; palette sfondo `#f4f6f8`, superfici `#fff`, testo ardesia `#1e293b`, un solo accento blu `#2f6196`, tema scuro neutro; angoli 6-8 px, bordi sottili, nessun logo | tabella densa, barra laterale a gruppi, suggerimenti dopo 1,5 s |
 | Database | Postgres (Supabase) | richiesto dall'utente |
 | Logica | **funzioni SQL `api_*`**, nessun accesso diretto alle tabelle | un solo posto per regole, permessi e concorrenza; gira uguale in Supabase e in PGlite |
 | Accesso | `username` + password, senza verifica email | il nome utente diventa l'email finta `<username>@shipping.local` (Supabase Auth, "Confirm email" spento) |

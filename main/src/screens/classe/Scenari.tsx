@@ -113,7 +113,7 @@ export default function Scenari({ magazzino, utenti, registro }: { magazzino: st
     { chiave: 'titolo', titolo: 'Compito' },
     { chiave: 'articolo_matricola', titolo: 'Merce', render: (c) => (c.articolo_matricola ? `${c.articolo_matricola} ${c.articolo_descrizione ?? ''}` : '') },
     { chiave: 'qta', titolo: 'Q.tà', allinea: 'destra', valore: (c) => (c.qta == null ? null : Number(c.qta)), render: (c) => (c.qta == null ? '' : qta(c.qta)) },
-    { chiave: 'stato', titolo: 'Stato', render: (c) => <><BadgeStato stato={c.stato} />{c.stato === 'bloccato' && c.motivo ? <small className="muto"> {c.motivo}</small> : null}</> },
+    { chiave: 'stato', titolo: 'Stato', aiuto: 'stato_compito', render: (c) => <><BadgeStato stato={c.stato} />{c.stato === 'bloccato' && c.motivo ? <small className="muto"> {c.motivo}</small> : null}</> },
     {
       chiave: 'riassegna', titolo: 'Riassegna a', ordinabile: false,
       render: (c) => (
@@ -138,7 +138,7 @@ export default function Scenari({ magazzino, utenti, registro }: { magazzino: st
     <section className="sezione" aria-labelledby="h-scenari">
       <div className="intestazione">
         <h2 id="h-scenari" style={{ margin: 0 }}>Scenari ed esercitazioni</h2>
-        <Button variante="accento" onClick={() => setNuovo(true)}>Crea scenario</Button>
+        <Button variante="accento" aiuto="scenario" onClick={() => setNuovo(true)}>Crea scenario</Button>
       </div>
 
       {!memoria.length ? (
@@ -195,10 +195,10 @@ export default function Scenari({ magazzino, utenti, registro }: { magazzino: st
       <Dialog aperto={nuovo} titolo="Crea scenario" onChiudi={() => setNuovo(false)}>
         <form onSubmit={invia}>
           <Field label="Nome" value={f.nome} onChange={(e) => setF({ ...f, nome: e.target.value })} autoFocus />
-          <Field label="Seed" type="number" value={f.seed} onChange={(e) => setF({ ...f, seed: e.target.value })} aiuto="Lo stesso seed genera sempre lo stesso scenario." />
-          <Field label="Numero di articoli" type="number" min={1} max={200} value={f.articoli} onChange={(e) => setF({ ...f, articoli: e.target.value })} aiuto="Almeno due articoli per studente: se serve ne vengono creati di più." />
-          <Select label="Sottoscorta forzata" opzioni={SI_NO} value={f.sotto} onChange={(e) => setF({ ...f, sotto: e.target.value })} aiuto="Alcuni scarichi insieme superano la giacenza: la classe deve riordinare." />
-          <Select label="Con inventario" opzioni={SI_NO} value={f.inv} onChange={(e) => setF({ ...f, inv: e.target.value })} aiuto="Il fisico simulato differisce dal sistema per alcune merci." />
+          <Field label="Seed" type="number" value={f.seed} onChange={(e) => setF({ ...f, seed: e.target.value })} aiuto="seed" />
+          <Field label="Numero di articoli" type="number" min={1} max={200} value={f.articoli} onChange={(e) => setF({ ...f, articoli: e.target.value })} nota="Almeno due articoli per studente: se serve ne vengono creati di più." />
+          <Select label="Sottoscorta forzata" opzioni={SI_NO} value={f.sotto} onChange={(e) => setF({ ...f, sotto: e.target.value })} aiuto="sottoscorta_forzata" />
+          <Select label="Con inventario" opzioni={SI_NO} value={f.inv} onChange={(e) => setF({ ...f, inv: e.target.value })} nota="Il fisico simulato differisce dal sistema per alcune merci." />
           <div className="dialog-azioni">
             <Button variante="tenue" onClick={() => setNuovo(false)}>Annulla</Button>
             <Button type="submit" variante="accento" disabled={!f.nome.trim() || genera.isPending}>Genera</Button>

@@ -60,7 +60,7 @@ function Movimenti({ righe, um }: { righe: Movimento[]; um: string }) {
           { chiave: 'causale', titolo: 'Movimento', render: (r) => CAUSALI[r.causale] ?? r.causale },
           { chiave: 'qta', titolo: `Quantità (${um})`, allinea: 'destra', render: (r) => segno(r.qta), valore: (r) => Number(r.qta) },
           { chiave: 'lotto_codice', titolo: 'Lotto' },
-          { chiave: 'ubicazione_codice', titolo: 'Ubicazione' },
+          { chiave: 'ubicazione_codice', titolo: 'Ubicazione', aiuto: 'ubicazione' },
           { chiave: 'costo_unit_cent', titolo: 'Costo unitario', allinea: 'destra', render: (r) => (r.costo_unit_cent == null ? '' : euro(r.costo_unit_cent)), valore: (r) => r.costo_unit_cent },
           { chiave: 'username', titolo: 'Utente' },
         ]}
@@ -80,9 +80,9 @@ function Giacenze({ righe, totale, um }: { righe: GiacenzaRiga[]; totale: number
         rigaId={(r) => r.id}
         vuoto={<EmptyState titolo="Nessuna giacenza" testo="La merce comparirà dopo il primo carico." />}
         colonne={[
-          { chiave: 'ubicazione_codice', titolo: 'Ubicazione' },
+          { chiave: 'ubicazione_codice', titolo: 'Ubicazione', aiuto: 'ubicazione' },
           { chiave: 'lotto_codice', titolo: 'Lotto' },
-          { chiave: 'scadenza', titolo: 'Scadenza', render: (r) => data(r.scadenza), valore: (r) => r.scadenza },
+          { chiave: 'scadenza', titolo: 'Scadenza', aiuto: 'scadenza_lotto', render: (r) => data(r.scadenza), valore: (r) => r.scadenza },
           { chiave: 'qta', titolo: 'Quantità', allinea: 'destra', render: (r) => qta(r.qta), valore: (r) => Number(r.qta) },
         ]}
       />
@@ -119,8 +119,8 @@ function Lotti({ articolo }: { articolo: Articolo }) {
           onSeleziona={setSel}
           vuoto={<EmptyState titolo="Nessun lotto" testo={scrivi ? 'Aggiungine uno con «Nuovo lotto».' : 'Non ci sono lotti per questo articolo.'} />}
           colonne={[
-            { chiave: 'codice', titolo: 'Codice lotto' },
-            { chiave: 'scadenza', titolo: 'Scadenza', render: (l) => data(l.scadenza) || 'Nessuna', valore: (l) => l.scadenza },
+            { chiave: 'codice', titolo: 'Codice lotto', aiuto: 'gestione_lotti' },
+            { chiave: 'scadenza', titolo: 'Scadenza', aiuto: 'scadenza_lotto', render: (l) => data(l.scadenza) || 'Nessuna', valore: (l) => l.scadenza },
             { chiave: 'qta', titolo: `Giacenza (${articolo.um})`, allinea: 'destra', render: (l) => qta(l.qta), valore: (l) => Number(l.qta) },
           ]}
         />
@@ -171,7 +171,7 @@ function Corpo({ lotto, articolo, onChiudi }: { lotto: Lotto | null; articolo: A
       </p>
       <ErroreForm testo={errore} />
       <Field label="Codice lotto" value={codice} onChange={(e) => setCodice(e.target.value)} errore={errCodice} maxLength={40} />
-      <Field label="Scadenza (facoltativa)" type="date" value={scadenza} onChange={(e) => setScadenza(e.target.value)} />
+      <Field label="Scadenza (facoltativa)" aiuto="scadenza_lotto" type="date" value={scadenza} onChange={(e) => setScadenza(e.target.value)} />
       <div className="dialog-azioni">
         <Button variante="tenue" onClick={onChiudi}>
           Annulla

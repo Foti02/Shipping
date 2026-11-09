@@ -2,7 +2,7 @@ export default function NonConfigurato() {
   return (
     <main className="pubblica">
       <h1>
-        Database non configurato<span className="dot">.</span>
+        Database non configurato
       </h1>
       <p className="lead">Mancano l'indirizzo e la chiave di Supabase, quindi l'app non può collegarsi.</p>
       <section className="panel">
