@@ -5,6 +5,7 @@ import { Installa } from '../components/Installa';
 import { IllustrazioneMagazzino } from '../components/IllustrazioneMagazzino';
 import { InterruttoreTema } from '../components/InterruttoreTema';
 import { useSessione } from '../context/sessione';
+import { CampiNominativo, useNominativo } from '../components/CampiNominativo';
 import { MSG_PASSWORD, MSG_USERNAME, USERNAME, passwordOk } from '../lib/account';
 import { messaggioErrore } from '../lib/errori';
 import { FIRMA, NOME_PRODOTTO } from '../lib/marchio';
@@ -27,8 +28,8 @@ export default function Accedi() {
   const [modo, setModo] = useState<'accedi' | 'registra'>('accedi');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [nome, setNome] = useState('');
-  const [errori, setErrori] = useState<{ username?: string; password?: string; nome?: string; form?: string }>({});
+  const nuovo = useNominativo();
+  const [errori, setErrori] = useState<{ username?: string; password?: string; form?: string }>({});
   const [occupato, setOccupato] = useState(false);
   const [demo, setDemo] = useState<DemoUtente[]>([]);
 
@@ -41,16 +42,17 @@ export default function Accedi() {
   const invia = async (e: FormEvent) => {
     e.preventDefault();
     const err: typeof errori = {};
-    if (!USERNAME.test(username)) err.username = MSG_USERNAME;
+    // In accesso basta il formato vecchio (esistono account creati prima del formato nome_cognome).
+    if (modo === 'accedi' && !USERNAME.test(username)) err.username = MSG_USERNAME;
     // Il minimo vale solo per crearla: in accesso lo decide il database (le password demo sono piu' corte).
     if (modo === 'registra' ? !passwordOk(password) : !password) err.password = modo === 'registra' ? MSG_PASSWORD : 'Scrivi la password.';
-    if (modo === 'registra' && !nome.trim()) err.nome = 'Scrivi il tuo nome.';
     setErrori(err);
-    if (Object.keys(err).length) return;
+    const nominativoOk = modo === 'accedi' || nuovo.controlla();
+    if (Object.keys(err).length || !nominativoOk) return;
     setOccupato(true);
     try {
       if (modo === 'accedi') await accedi(username, password);
-      else await registra(username, password, nome.trim());
+      else await registra(nuovo.username, password, nuovo.nominativo());
     } catch (x) {
       setErrori({ form: messaggioErrore(x) });
     } finally {
@@ -98,7 +100,7 @@ export default function Accedi() {
         <div className="accesso-colonna">
           <section className="scheda-accesso">
             <h1>{modo === 'accedi' ? `Accedi a ${NOME_PRODOTTO}` : 'Crea il tuo account'}</h1>
-            <p className="lead">{modo === 'accedi' ? 'Inserisci il tuo nome utente e la password.' : 'Bastano il tuo nome, un nome utente e una password.'}</p>
+            <p className="lead">{modo === 'accedi' ? 'Inserisci il tuo nome utente e la password.' : 'Scrivi nome e cognome veri: il nome account si compila da solo.'}</p>
             <Tabs
               voci={[
                 { id: 'accedi', etichetta: 'Accedi' },
@@ -108,6 +110,7 @@ export default function Accedi() {
               onCambia={(m) => {
                 setModo(m as typeof modo);
                 setErrori({});
+                nuovo.setErrori({});
               }}
             />
             <form onSubmit={invia} noValidate>
@@ -116,19 +119,19 @@ export default function Accedi() {
                   {errori.form}
                 </div>
               )}
-              {modo === 'registra' && (
-                <Field label="Nome" value={nome} onChange={(e) => setNome(e.target.value)} errore={errori.nome} autoComplete="name" />
+              {modo === 'registra' ? (
+                <CampiNominativo v={nuovo} />
+              ) : (
+                <Field
+                  label="Nome utente"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value.toLowerCase())}
+                  errore={errori.username}
+                  autoComplete="username"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                />
               )}
-              <Field
-                label="Nome utente"
-                value={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase())}
-                errore={errori.username}
-                nota="Lettere minuscole, numeri, . _ -"
-                autoComplete="username"
-                autoCapitalize="none"
-                spellCheck={false}
-              />
               <Field
                 label="Password"
                 type="password"

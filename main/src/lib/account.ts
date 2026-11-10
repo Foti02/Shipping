@@ -4,14 +4,12 @@ export const USERNAME = /^[a-z0-9._-]{3,20}$/;
 export const PASSWORD_MIN = 6;
 export const PASSWORD_MAX_BYTE = 72; // bcrypt ignora tutto dopo i primi 72 byte: il database le rifiuta oltre
 
-export const MSG_USERNAME = 'Da 3 a 20 caratteri: lettere minuscole, numeri, punto, trattino e trattino basso.';
+export const MSG_USERNAME = 'Da 3 a 20 caratteri: lettere minuscole, numeri, punto, trattino e trattino basso.'; // solo per accedere: le nuove registrazioni seguono lib/nomi.ts
 export const MSG_PASSWORD = `Da ${PASSWORD_MIN} caratteri a ${PASSWORD_MAX_BYTE} byte (le lettere accentate ne occupano due).`;
 
 /** Password accettabile per una registrazione o un cambio: almeno 6 caratteri e al massimo 72 byte. */
 export const passwordOk = (p: string) => p.length >= PASSWORD_MIN && new TextEncoder().encode(p).length <= PASSWORD_MAX_BYTE;
 
-export const validaUsername = (u: string) => (USERNAME.test(u) ? undefined : MSG_USERNAME);
-export const validaNome = (n: string) => (n.trim() ? undefined : 'Scrivi un nominativo.');
 
 /** Nuova password (con conferma): errori per campo, vuoto se tutto ok. `vecchia` serve solo al cambio password. */
 export function validaPassword(nuova: string, conferma: string, vecchia?: string): { vecchia?: string; nuova?: string; conferma?: string } {

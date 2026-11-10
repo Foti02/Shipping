@@ -1,15 +1,5 @@
 import { expect, test } from 'vitest';
-import { PASSWORD_MIN, confermaScritta, haErrori, validaNome, validaPassword, validaUsername } from './account';
-
-test('username: 3-20 caratteri a-z 0-9 . _ -', () => {
-  for (const ok of ['abc', 'francesco_foti', 'a.b-c_9', 'x'.repeat(20)]) expect(validaUsername(ok), ok).toBeUndefined();
-  for (const no of ['ab', 'x'.repeat(21), 'Anna', 'ann a', 'anna!', 'àèì', '']) expect(validaUsername(no), no).toBeDefined();
-});
-
-test('nominativo: non vuoto', () => {
-  expect(validaNome('Anna')).toBeUndefined();
-  expect(validaNome('   ')).toBeDefined();
-});
+import { PASSWORD_MIN, confermaScritta, haErrori, validaPassword } from './account';
 
 test('password: minimo, conferma uguale, nuova diversa dalla vecchia', () => {
   expect(haErrori(validaPassword('segreta', 'segreta'))).toBe(false);

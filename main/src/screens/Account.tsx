@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { backend } from '../backend';
 import { InterruttoreTema } from '../components/InterruttoreTema';
 import { useSessione } from '../context/sessione';
-import { PASSWORD_MIN, haErrori, validaNome, validaPassword } from '../lib/account';
+import { PASSWORD_MIN, haErrori, validaPassword } from '../lib/account';
+import { formattaNome, validaNominativoUnico } from '../lib/nomi';
 import { useApi, useMutazione } from '../lib/api';
 import { messaggioErrore } from '../lib/errori';
 import { dataOra } from '../lib/formati';
@@ -47,10 +48,10 @@ export default function Account() {
 
   const invioNome = (e: FormEvent) => {
     e.preventDefault();
-    const err = validaNome(valoreNome);
+    const err = validaNominativoUnico(valoreNome, profilo.username);
     setErrNome(err);
     if (err) return;
-    salvaNome.mutate({ p_nome: valoreNome.trim() }, { onSuccess: async () => { setNome(null); await ricarica(); } });
+    salvaNome.mutate({ p_nome: formattaNome(valoreNome) }, { onSuccess: async () => { setNome(null); await ricarica(); } });
   };
 
   const invioPassword = async (e: FormEvent) => {
@@ -91,8 +92,8 @@ export default function Account() {
         </dl>
         <p className="spiegazione">Il nome utente non si può cambiare: è quello con cui accedi.</p>
         <form onSubmit={invioNome} noValidate className="form-stretto">
-          <Field label="Nominativo" value={valoreNome} onChange={(e) => setNome(e.target.value)} errore={errNome} nota="Il nome che vedono docente e compagni." maxLength={60} autoComplete="name" />
-          <Button type="submit" variante="accento" disabled={salvaNome.isPending || valoreNome.trim() === (dati?.nome ?? profilo.nome)}>Salva il nominativo</Button>
+          <Field label="Nome e cognome" value={valoreNome} onChange={(e) => setNome(e.target.value)} errore={errNome} nota="Nome e cognome veri: li vedono docente e compagni." maxLength={60} autoComplete="name" />
+          <Button type="submit" variante="accento" disabled={salvaNome.isPending || formattaNome(valoreNome) === (dati?.nome ?? profilo.nome)}>Salva il nominativo</Button>
         </form>
       </section>
 

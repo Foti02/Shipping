@@ -13,7 +13,7 @@
 -- ---------- identita' ----------
 create table profili (
   user_id uuid primary key references auth.users(id) on delete cascade,
-  username text not null unique check (username ~ '^[a-z0-9._-]{3,20}$'),
+  username text not null unique check (username ~ '^[a-z0-9._-]{3,40}$'),
   nome text not null default '',
   ruolo_globale text not null default 'studente' check (ruolo_globale in ('studente','docente')),
   created_at timestamptz not null default now(),
@@ -3618,6 +3618,22 @@ begin
            where pronamespace = 'public'::regnamespace and proname like 'api\_%' loop
     execute format('grant execute on function %s to authenticated', f.sig);
   end loop;
+end $$;
+
+
+-- ===== migrations/0011_username_lungo.sql =====
+-- 0011_username_lungo.sql
+-- Il nome account ha il formato nome_cognome (es. alessandro_di_gregorio): il limite sale da 20 a 40 caratteri.
+-- Incrementale e rieseguibile: sostituisce il vincolo sul formato di profili.username.
+do $$
+declare c text;
+begin
+  for c in select conname from pg_constraint
+           where conrelid = 'public.profili'::regclass and contype = 'c'
+             and pg_get_constraintdef(oid) like '%username%' loop
+    execute format('alter table profili drop constraint %I', c);
+  end loop;
+  alter table profili add constraint profili_username_check check (username ~ '^[a-z0-9._-]{3,40}$');
 end $$;
 
 

@@ -10,7 +10,7 @@
 -- ---------- identita' ----------
 create table profili (
   user_id uuid primary key references auth.users(id) on delete cascade,
-  username text not null unique check (username ~ '^[a-z0-9._-]{3,20}$'),
+  username text not null unique check (username ~ '^[a-z0-9._-]{3,40}$'),
   nome text not null default '',
   ruolo_globale text not null default 'studente' check (ruolo_globale in ('studente','docente')),
   created_at timestamptz not null default now(),
