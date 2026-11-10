@@ -4,6 +4,8 @@ import { URL_LATEST, chiaveOs, haAggiornamento, leggiLatest, type Latest } from 
 // L'app desktop (Electron) si riconosce dal suffisso nello user agent.
 export const isDesktop = navigator.userAgent.includes('ShippingDesktop');
 const os = chiaveOs(navigator.platform);
+// Telefono o tablet (iPad compare come Mac ma ha il touch): gli installer sono per computer, non si mostrano.
+const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.platform));
 
 /** latest.json dell'archivio Supabase; offline o senza file resta null e i pulsanti restano spenti. */
 function useLatest() {
@@ -25,7 +27,7 @@ function useLatest() {
 /** Pannello "Installa l'app": solo sul sito, mai dentro l'app desktop. */
 export function Installa() {
   const { data } = useLatest();
-  if (isDesktop) return null;
+  if (isDesktop || isMobile) return null;
   const voce = (chiave: 'windows' | 'mac', testo: string) => {
     const p = data?.[chiave];
     const classe = `btn${os === chiave ? '' : ' btn-tenue'}`;
