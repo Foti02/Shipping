@@ -36,3 +36,26 @@ test('errori chiari', async () => {
   await expect(pubblicaAsset({ ...base, fetchFn: finto([risp(401)]).fn })).rejects.toThrow('401');
   await expect(pubblicaAsset({ ...base, fetchFn: finto([risp(200, { id: 1, assets: [] }), risp(422, { m: 'x' })]).fn })).rejects.toThrow('a.exe');
 });
+
+test('connessione caduta dopo l invio: se il file e gia completo non lo ricarica', async () => {
+  let n = 0;
+  const chiamate: string[] = [];
+  const fn = (async (url: string, init?: RequestInit) => {
+    chiamate.push(init?.method ?? 'GET');
+    if (init?.method === 'POST') throw new TypeError('fetch failed');
+    n++;
+    return n === 1 ? risp(200, { id: 3, assets: [] }) : risp(200, { id: 3, assets: [{ id: 5, name: 'a.exe', state: 'uploaded', size: 1, browser_download_url: 'gia' }] });
+  }) as unknown as typeof fetch;
+  expect(await pubblicaAsset({ ...base, fetchFn: fn })).toBe('gia');
+  expect(chiamate).toEqual(['GET', 'POST', 'GET']);
+});
+
+test('connessione caduta e file non arrivato: riprova, poi si arrende dopo 3 tentativi', async () => {
+  let post = 0;
+  const fn = (async (url: string, init?: RequestInit) => {
+    if (init?.method === 'POST') { post++; throw new TypeError('fetch failed'); }
+    return risp(200, { id: 3, assets: [] });
+  }) as unknown as typeof fetch;
+  await expect(pubblicaAsset({ ...base, fetchFn: fn })).rejects.toThrow('fetch failed');
+  expect(post).toBe(3);
+});
