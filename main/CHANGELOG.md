@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.0] - 2026-11-10
+
+- Barra laterale comprimibile (solo icone) e sezioni del cruscotto che si aprono e chiudono, con scelta ricordata
+
 ## [0.4.2] - 2026-11-10
 
 - Su telefono e tablet non compaiono i pulsanti di installazione per computer
