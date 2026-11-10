@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.2] - 2026-11-10
+
+- Su telefono e tablet non compaiono i pulsanti di installazione per computer
+
 ## [0.4.1] - 2026-11-10
 
 - Il caricamento dell'installer riprova se la connessione cade (errore fetch failed su macOS)
