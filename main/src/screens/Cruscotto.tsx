@@ -3,6 +3,7 @@ import { useMagazzino } from '../context/magazzino';
 import { useApi } from '../lib/api';
 import { dataOra, euro, qta } from '../lib/formati';
 import { BadgeStato } from '../ui';
+import { CartaRichiudibile } from '../ui/CartaRichiudibile';
 import { Termine } from '../ui/Suggerimento';
 
 interface Compito { id: string; titolo: string; stato: string }
@@ -26,8 +27,7 @@ export default function Cruscotto() {
         Cruscotto
       </h1>
       <div className="griglia">
-        <section className="carta">
-          <h2>I miei compiti</h2>
+        <CartaRichiudibile id="compiti" titolo="I miei compiti">
           {m.tipo !== 'classe' ? (
             <p className="muto">I compiti arrivano dalle classi.</p>
           ) : compiti.isError ? (
@@ -45,10 +45,9 @@ export default function Cruscotto() {
             </ul>
           )}
           {m.tipo === 'classe' && <p><Link to={`/m/${m.id}/compiti`}>Tutti i compiti</Link></p>}
-        </section>
+        </CartaRichiudibile>
 
-        <section className="carta">
-          <h2>Notifiche</h2>
+        <CartaRichiudibile id="notifiche" titolo="Notifiche">
           {notifiche.isError ? (
             <NonDisponibile />
           ) : !notifiche.data?.elenco?.length ? (
@@ -63,10 +62,9 @@ export default function Cruscotto() {
               ))}
             </ul>
           )}
-        </section>
+        </CartaRichiudibile>
 
-        <section className="carta">
-          <h2>Numeri del magazzino</h2>
+        <CartaRichiudibile id="numeri" titolo="Numeri del magazzino">
           {kpi.isError || (kpi.isSuccess && !k) ? (
             <NonDisponibile />
           ) : (
@@ -78,7 +76,7 @@ export default function Cruscotto() {
             </div>
           )}
           <p style={{ marginTop: 12 }}><Link to={`/m/${m.id}/analisi`}>Riordino, ABC e valorizzazione</Link></p>
-        </section>
+        </CartaRichiudibile>
       </div>
     </>
   );

@@ -8,6 +8,7 @@ import { useApi } from '../lib/api';
 import { dataOra } from '../lib/formati';
 import { guidaHref } from '../lib/guida';
 import { nomePagina, useHeartbeat } from '../lib/heartbeat';
+import { usePreferenza } from '../lib/preferenza';
 import { FIRMA, NOME_PRODOTTO } from '../lib/marchio';
 import { ETICHETTA_RUOLO_GLOBALE, eAdminGlobale, eDocenteGlobale, type Azione } from '../lib/permessi';
 import { Badge, Button, Dialog } from '../ui';
@@ -97,6 +98,7 @@ export function Layout() {
   const [campanella, setCampanella] = useState(false);
   const [cassetto, setCassetto] = useState(false);
   const [aperti, setAperti] = useState(leggiGruppi);
+  const [stretta, setStretta] = usePreferenza('shipping.nav.stretta', false); // solo da 801px in su: sotto la barra è un cassetto
   const menu = useRef<HTMLDivElement>(null);
   const bottoneMenu = useRef<HTMLButtonElement>(null);
   const bottoneChiudi = useRef<HTMLButtonElement>(null);
@@ -185,16 +187,21 @@ export function Layout() {
 
   // Funzioni di disegno e non componenti: cosi' il focus non si perde quando la barra si ridisegna.
   const linkVoce = (v: Voce, icona?: NomeIcona) => (
-    <Link to={percorso(v)} className={`nav-voce${attiva(v) ? ' attiva' : ''}`} aria-current={attiva(v) ? 'page' : undefined}>
+    <Link to={percorso(v)} className={`nav-voce${attiva(v) ? ' attiva' : ''}`} aria-current={attiva(v) ? 'page' : undefined} title={stretta && icona ? v.testo : undefined}>
       {icona && <Icona nome={icona} />}
       <span>{v.testo}</span>
     </Link>
   );
+  const larga = () => window.matchMedia('(min-width: 801px)').matches;
   const vistaGruppo = (g: Gruppo) => {
     const ora = eAperto(g);
     return (
       <li key={g.id}>
-        <button type="button" className={`nav-gruppo-testa${gruppoAttivo(g) ? ' attivo' : ''}`} aria-expanded={ora} aria-controls={`nav-g-${g.id}`} onClick={() => alterna(g.id, ora)}>
+        <button type="button" className={`nav-gruppo-testa${gruppoAttivo(g) ? ' attivo' : ''}`} aria-expanded={ora} aria-controls={`nav-g-${g.id}`} title={stretta ? g.testo : undefined}
+          onClick={() => {
+            // a barra stretta le voci non si vedono: il clic allarga la barra e apre il gruppo
+            if (stretta && larga()) { setStretta(false); alterna(g.id, false); } else alterna(g.id, ora);
+          }}>
           <Icona nome={g.icona} />
           <span className="nav-etichetta">{g.testo}</span>
           <Icona nome="freccia" dimensione={16} className="icona nav-freccia" />
@@ -211,12 +218,12 @@ export function Layout() {
   };
 
   return (
-    <div className="shell">
-      <nav id="nav-principale" className={`nav${cassetto ? ' aperta' : ''}`} aria-label="Menu principale">
+    <div className={`shell${stretta ? ' shell-stretta' : ''}`}>
+      <nav id="nav-principale" className={`nav${cassetto ? ' aperta' : ''}${stretta ? ' stretta' : ''}`} aria-label="Menu principale">
         <div className="nav-testa">
           <p className="marchio">
             <SegnoMarchio dimensione={28} />
-            {NOME_PRODOTTO}
+            <span className="marchio-testo">{NOME_PRODOTTO}</span>
           </p>
           <button ref={bottoneChiudi} type="button" className="top-icona nav-chiudi" aria-label="Chiudi il menu" onClick={() => { setCassetto(false); bottoneMenu.current?.focus(); }}>
             <Icona nome="chiudi" />
@@ -239,6 +246,12 @@ export function Layout() {
           {admin && <li>{linkVoce({ a: '/admin', testo: 'Amministrazione', assoluta: true }, 'scudo')}</li>}
         </ul>
         <ul className="nav-lista nav-account">
+          <li className="nav-riduci">
+            <button type="button" className="nav-voce" aria-pressed={stretta} title={stretta ? 'Espandi il menu' : undefined} onClick={() => setStretta(!stretta)}>
+              <Icona nome="freccia" dimensione={16} className="icona nav-riduci-freccia" />
+              <span>{stretta ? 'Espandi il menu' : 'Comprimi il menu'}</span>
+            </button>
+          </li>
           <li>{linkVoce({ a: '/account', testo: 'Il mio account', assoluta: true }, 'impostazioni')}</li>
         </ul>
         <p className="nav-piede">{FIRMA}</p>
