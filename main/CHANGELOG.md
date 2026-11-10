@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.0] - 2026-11-10
+
+- Registrazione con nome e cognome: nome account nome_cognome, filtro su parolacce, oggetti e nomi non veri
+
 ## [0.3.0] - 2026-11-09
 
 - Ruolo admin (superadmin), il mio account (nominativo, password, elimina), amministrazione utenti e classi, creazione account docente
