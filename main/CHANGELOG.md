@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.1] - 2026-11-10
+
+- Il caricamento dell'installer riprova se la connessione cade (errore fetch failed su macOS)
+
 ## [0.4.0] - 2026-11-10
 
 - Registrazione con nome e cognome: nome account nome_cognome, filtro su parolacce, oggetti e nomi non veri
